@@ -1,0 +1,8 @@
+= crystalcell Changelog
+
+== Master (for 0.0.1)
+* Change indent char from tab char to two spaces.
+* Introduce module CrystalCell as new namespace.
+
+== Version 0.0.0
+* Initial release.
