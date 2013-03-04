@@ -1164,4 +1164,8 @@ class TC_Cell < Test::Unit::TestCase
     assert_in_delta(0.0, result.atoms[1].position[2], $tolerance)
   end
 
+  def test_independent_axes
+    TODO
+  end
+
 end

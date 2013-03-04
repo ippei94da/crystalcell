@@ -16,29 +16,29 @@ require "mageo/vector3dinternal.rb"
 gem "maset"
 require "maset/mapping.rb"
 
-# Class for crystal cell with lattice axes and atoms.
-# Symmetry operations are not considered in this class.
-# A sub class SymmetricCell can do, which overrides equal_in_delta methods.
-# 
-# Written by Ippei Kishida [2010-12-19].
+#Class for crystal cell with lattice axes and atoms.
+#Symmetry operations are not considered in this class.
+#A sub class SymmetricCell can do, which overrides equal_in_delta methods.
 #
-## Cell
-#   セル内の原子は、内部的には配列として保持するが、
-#   この順序は制御できないものとする。
-#   たとえば Li, Ge, O の順序にソートされているなどと思ってはいけない。
-#   順序に依存するプログラムを作ってはいけない。
-# 
-## Note:
-# Cell クラスは元素情報をネイティブには持たない
-#   ボツ案:
-#   たとえば構成元素の情報を持ち、
-#   さらに Atom クラスインスタンスも持つとする。
-#   原子の追加の仕方によっては、
-#   Atoms クラスの元素情報と矛盾するという状況は十分に考えられる。
-# 
-#   構成元素として Li があっても、
-#   Li 原子リストが空リストだったらその元素はあると判定されるべきか、
-#   疑問が生じる。
+#Written by Ippei Kishida [2010-12-19].
+#
+##Cell
+#  セル内の原子は、内部的には配列として保持するが、
+#  この順序は制御できないものとする。
+#  たとえば Li, Ge, O の順序にソートされているなどと思ってはいけない。
+#  順序に依存するプログラムを作ってはいけない。
+#
+##Note:
+#Cell クラスは元素情報をネイティブには持たない
+#  ボツ案:
+#  たとえば構成元素の情報を持ち、
+#  さらに Atom クラスインスタンスも持つとする。
+#  原子の追加の仕方によっては、
+#  Atoms クラスの元素情報と矛盾するという状況は十分に考えられる。
+#
+#  構成元素として Li があっても、
+#  Li 原子リストが空リストだったらその元素はあると判定されるべきか、
+#  疑問が生じる。
 class CrystalCell::Cell
 
   class NoAtomError < Exception; end
@@ -46,12 +46,12 @@ class CrystalCell::Cell
   class AxesRangeError < Exception; end
   class SameAxesError < Exception; end
   class TypeError < Exception; end
-  class ArgumentError < Exception; end # その他的エラー
+  class ArgumentError < Exception; end #その他的エラー
 
   attr_reader :element_names, :atoms, :axes
   attr_accessor :comment
 
-  # Argument 'axes' must have :to_a method and expressed in 3x3 Array.
+  #Argument 'axes' must have :to_a method and expressed in 3x3 Array.
   def initialize(axes, atoms = [])
     #raise CellTypeError unless axes.is_a?(Axes)
     if axes.class == CrystalCell::LatticeAxes
@@ -70,52 +70,52 @@ class CrystalCell::Cell
     @atoms = atoms
   end
 
-  # セルに原子を追加する。
+  #セルに原子を追加する。
   def add_atom(atom)
     #raise "Cell::add_atom, 2nd argument must be Array." if pos.class != Array
     raise CellTypeError unless atom.is_a?(CrystalCell::Atom)
     @atoms << atom
   end
 
-  # Delete an atom from a cell.
-  # i は Cell クラスが保持している原子の番号。
-  # Cell クラスは原子を配列として保持しており、
-  # その番号を指定すると考えると分かり易かろう。
+  #Delete an atom from a cell.
+  #i は Cell クラスが保持している原子の番号。
+  #Cell クラスは原子を配列として保持しており、
+  #その番号を指定すると考えると分かり易かろう。
   def delete_atom( i )
     #raise "CrystalCell::Atom ID[#{i}] not exist" if @atoms[i] == nil
     @atoms.delete_at( i )
   end
 
-  # 全ての原子の元素情報のリストを返す。
-  # unique なものを抽出したりはしない。
-  # unique なものが必要なら返り値に .uniq をつければ良い。
-  # e.g., #=> ['Li', 'N', 'Li']
-  # e.g., #=> [0, 1, 2, 1]
+  #全ての原子の元素情報のリストを返す。
+  #unique なものを抽出したりはしない。
+  #unique なものが必要なら返り値に .uniq をつければ良い。
+  #e.g., #=> ['Li', 'N', 'Li']
+  #e.g., #=> [0, 1, 2, 1]
   def elements
     @atoms.collect{ |i| i.element }
   end
 
-  # 全ての原子の位置情報のリストを返す。
+  #全ての原子の位置情報のリストを返す。
   def positions
     @atoms.collect{ |i| i.position }
   end
 
-  # 元素情報が elem の原子の index を配列にまとめて返す。
-  # index は原子の永続的な id ではない。
-  # Array#select は index ではなく要素そのものを配列にして返すので、少し違う。
+  #元素情報が elem の原子の index を配列にまとめて返す。
+  #index は原子の永続的な id ではない。
+  #Array#select は index ではなく要素そのものを配列にして返すので、少し違う。
   def select_indices( &block )
     return @atoms.select_indices( &block )
   end
 
-  # Set element name to each atom in self.
-  # Argument 'elems' is a list of new names, which has [] method. e.g., 
-  #   1. Array, [ 'Li', 'O' ]
-  #   2. Hash , { 0 => 'Li', 1 => 'O' ]
-  #   3. Hash , { 'Li' => 'Na' }
-  # 1. and 2. of the above examples induce the same result.
-  # Case 1. can be convenient for element names of array from POTCAR.
+  #Set element name to each atom in self.
+  #Argument 'elems' is a list of new names, which has [] method. e.g., 
+  #  1. Array, [ 'Li', 'O' ]
+  #  2. Hash , { 0 => 'Li', 1 => 'O' ]
+  #  3. Hash , { 'Li' => 'Na' }
+  #1. and 2. of the above examples induce the same result.
+  #Case 1. can be convenient for element names of array from POTCAR.
   #
-  # The atoms with the name which is not included the hash key do not change their names.
+  #The atoms with the name which is not included the hash key do not change their names.
   def set_elements( elems )
     @atoms.each do |atom|
       begin
@@ -169,17 +169,17 @@ class CrystalCell::Cell
     return true
   end
 
-  # 等価判定。
-  # 格子定数の長さの比率の許容値、格子定数の角度の許容値、原子座標の許容値。
+  #等価判定。
+  #格子定数の長さの比率の許容値、格子定数の角度の許容値、原子座標の許容値。
   def equal_in_delta?( other, length_ratio, angle_tolerance, position_tolerance )
     return false unless equal_lattice_in_delta?(other, length_ratio, angle_tolerance)
     return false unless equal_atoms_in_delta?(other, position_tolerance)
     return true
   end
 
-  # 等価判定。
-  # 「==」による等価判定は実数の等価判定と同じく、基本的には使うべきではない。
-  # しかし、これを定義しておくとテストが楽になることが多い。
+  #等価判定。
+  #「==」による等価判定は実数の等価判定と同じく、基本的には使うべきではない。
+  #しかし、これを定義しておくとテストが楽になることが多い。
   def ==( other )
     #pp axes;
     #pp other.axes;
@@ -188,12 +188,12 @@ class CrystalCell::Cell
     equal_atoms_in_delta?( other, 0.0 )
   end
 
-  # 2つの地点間の距離を返す。
-  # それぞれ、内部座標 Vector3DInternal クラスインスタンスなら絶対座標に変換される。
-  # 絶対座標ならばそのまま計算する。
-  # Vector3D か Vector3DInternal 以外のクラスなら例外 Cell::TypeError を投げる。
-  # 周期性を考慮したりはしない。
-  # 周期性を考慮した距離は PeriodicCell#nearest_distance で行うべき。
+  #2つの地点間の距離を返す。
+  #それぞれ、内部座標 Vector3DInternal クラスインスタンスなら絶対座標に変換される。
+  #絶対座標ならばそのまま計算する。
+  #Vector3D か Vector3DInternal 以外のクラスなら例外 Cell::TypeError を投げる。
+  #周期性を考慮したりはしない。
+  #周期性を考慮した距離は PeriodicCell#nearest_distance で行うべき。
   def distance( pos0, pos1 )
     if ((pos0.class != Vector3DInternal) && (pos0.class != Vector3D))
       raise CrystalCell::Cell::TypeError
@@ -208,17 +208,17 @@ class CrystalCell::Cell
     (v0 - v1).r
   end
 
-  # Dump string in POSCAR format.
-  # Argument <io> can be a file handle or nil.
-  # POSCAR を作るには、元素の順番を指定する必要があるので
-  # それを element_order で指定している。
-  # element_order の要素と == で一致する CrystalCell::Atom instance を
-  # それぞれ全て出力する。
-  # e.g.,
-  #   cell.dump_poscar( STDOUT ) #=> output to stdout.
-  #   cell.dump_poscar( fileIo ) #=> output to file.
-  #   cell.dump_poscar( nil ) #=> return in String instance.
-  #   cell.dump_poscar        #=> return in String instance.
+  #Dump string in POSCAR format.
+  #Argument <io> can be a file handle or nil.
+  #POSCAR を作るには、元素の順番を指定する必要があるので
+  #それを element_order で指定している。
+  #element_order の要素と == で一致する CrystalCell::Atom instance を
+  #それぞれ全て出力する。
+  #e.g.,
+  #  cell.dump_poscar( STDOUT ) #=> output to stdout.
+  #  cell.dump_poscar( fileIo ) #=> output to file.
+  #  cell.dump_poscar( nil ) #=> return in String instance.
+  #  cell.dump_poscar        #=> return in String instance.
   def dump_poscar( element_order, io = nil )
     if (io == nil)
       return create_poscar( element_order )
@@ -227,10 +227,10 @@ class CrystalCell::Cell
     end
   end
 
-  # Cell rotation.( Destructive method)
-  # Argument 'matrix' is 3x3 Array of float.
-  # This method does not modify the position to the range between 0 and 1,
-  # even if it was out of range.
+  #Cell rotation.( Destructive method)
+  #Argument 'matrix' is 3x3 Array of float.
+  #This method does not modify the position to the range between 0 and 1,
+  #even if it was out of range.
   def rotate!( matrix )
     @atoms.each { |atom|
       old_pos = atom.position
@@ -244,10 +244,10 @@ class CrystalCell::Cell
     }
   end
 
-  # Cell rotation.( Nondestructive method)
-  # Argument 'matrix' is 3x3 Array of float.
-  # This method does not modify the position to the range between 0 and 1,
-  # even if it was out of range.
+  #Cell rotation.( Nondestructive method)
+  #Argument 'matrix' is 3x3 Array of float.
+  #This method does not modify the position to the range between 0 and 1,
+  #even if it was out of range.
   def rotate( matrix )
     t = Marshal.load( Marshal.dump( self ) )
     t.rotate!( matrix )
@@ -268,8 +268,8 @@ class CrystalCell::Cell
     return t
   end
 
-  # Return arithmetic mean of atomic positions in an internal coordinates.
-  # Raise 'Cell::NoAtomError' if no atoms included in self.
+  #Return arithmetic mean of atomic positions in an internal coordinates.
+  #Raise 'Cell::NoAtomError' if no atoms included in self.
   def center_of_atoms
     raise CrystalCell::Cell::NoAtomError if @atoms.size == 0
 
@@ -280,20 +280,20 @@ class CrystalCell::Cell
     vec *= 1.0/ @atoms.size
   end
 
-  # Calculate volume.
+  #Calculate volume.
   def calc_volume
     axes = @axes.to_a.map { |i| Vector3D[*i] }
     vA, vB, vC = axes[0..2]
     Vector3D.scalar_triple_product( vA, vB, vC ).abs
   end
 
-  # Generate a new cell with the same lattice consants,
-  # containing atoms of indicated elements.
-  # Argument 'elems' must be an array of element names.
-  # 含まれる @atoms の順序は、保存される。元素ごとに並び換えたりしない。
-  # CrystalCell::Atom.element が elems の要素のどれかと完全一致しているもののみ対象となる。
-  # サブクラスのインスタンスで実行した場合には、
-  # サブクラスのインスタンスとして生成する。
+  #Generate a new cell with the same lattice consants,
+  #containing atoms of indicated elements.
+  #Argument 'elems' must be an array of element names.
+  #含まれる @atoms の順序は、保存される。元素ごとに並び換えたりしない。
+  #CrystalCell::Atom.element が elems の要素のどれかと完全一致しているもののみ対象となる。
+  #サブクラスのインスタンスで実行した場合には、
+  #サブクラスのインスタンスとして生成する。
   def cell_of_elements( elems )
     result = self.class.new( @axes )
     @atoms.each do |atom|
@@ -302,12 +302,12 @@ class CrystalCell::Cell
     return result
   end
 
-  # 格子定数の同じ2つのセルを合わせて、全ての原子が含まれる1つのセルを返す
-  # 非破壊的メソッド。
-  # 2つのセルの格子定数が異なれば例外 Cell::AxesMismatchError を発生させる。
-  # 内部的には @atoms はレシーバの @atoms のあとに引数の @atoms を追加した形になる。
-  # comment は空文字になる。
-  # 原子座標の重複チェックなどは行わない。
+  #格子定数の同じ2つのセルを合わせて、全ての原子が含まれる1つのセルを返す
+  #非破壊的メソッド。
+  #2つのセルの格子定数が異なれば例外 Cell::AxesMismatchError を発生させる。
+  #内部的には @atoms はレシーバの @atoms のあとに引数の @atoms を追加した形になる。
+  #comment は空文字になる。
+  #原子座標の重複チェックなどは行わない。
   def unite( cell )
     #raise Cell::AxesMismatchError unless @axes == cell.axes
     result = Marshal.load( Marshal.dump( self ) )
@@ -317,16 +317,16 @@ class CrystalCell::Cell
     return result
   end
 
-  # 任意の格子軸のベクトルを反転する破壊的メソッド。
-  # 大まかなイメージとしては、
-  # 格子軸の原点をセルを構成する8つの頂点のどれかに移動する操作と考えれば良い。
-  #   ただし厳密には、格子ベクトルは LatticeAxes.new によって triangulate されるため、
-  #   b 軸を反転させた時は a 軸も反転する。( b 軸の y成分を正にするため)
-  #   c 軸を反転させた時は a, b 軸も反転する。( c 軸の z成分を正にするため)
-  # セルの形状、内部のモチーフは保存する。
-  # 原子の絶対座標は移動せず、内部座標の表現が変わる。
-  # 引数 axis_id は 0, 1, 2 のいずれかの値を取り、それぞれ x, y, z軸を表す。
-  # x, y, z軸の関係は、右手系と左手系が入れ替わる。
+  #任意の格子軸のベクトルを反転する破壊的メソッド。
+  #大まかなイメージとしては、
+  #格子軸の原点をセルを構成する8つの頂点のどれかに移動する操作と考えれば良い。
+  #  ただし厳密には、格子ベクトルは LatticeAxes.new によって triangulate されるため、
+  #  b 軸を反転させた時は a 軸も反転する。( b 軸の y成分を正にするため)
+  #  c 軸を反転させた時は a, b 軸も反転する。( c 軸の z成分を正にするため)
+  #セルの形状、内部のモチーフは保存する。
+  #原子の絶対座標は移動せず、内部座標の表現が変わる。
+  #引数 axis_id は 0, 1, 2 のいずれかの値を取り、それぞれ x, y, z軸を表す。
+  #x, y, z軸の関係は、右手系と左手系が入れ替わる。
   def inverse_axis!( axis_id )
     axis_id = axis_id.to_i
     raise CrystalCell::Cell::AxesRangeError if ( axis_id < 0 || 2 < axis_id )
@@ -356,59 +356,59 @@ class CrystalCell::Cell
   end
 
   #def inverse_axis!( axis_id )
-  # axis_id = axis_id.to_i
-  # raise Cell::AxesRangeError if ( axis_id < 0 || 2 < axis_id )
+  #axis_id = axis_id.to_i
+  #raise Cell::AxesRangeError if ( axis_id < 0 || 2 < axis_id )
 
-  # axes = []
-  # 3.times do |i|
-  #   if ( i == axis_id )
-  #     axes << @axes[ i ] * (-1.0)
-  #   else
-  #     axes << @axes[ i ]
-  #   end
-  # end
-  # @axes = CrystalCell::LatticeAxes.new( axes ) 
+  #axes = []
+  #3.times do |i|
+  #  if ( i == axis_id )
+  #    axes << @axes[ i ] * (-1.0)
+  #  else
+  #    axes << @axes[ i ]
+  #  end
+  #end
+  #@axes = CrystalCell::LatticeAxes.new( axes ) 
 
-  # atoms = []
-  # @atoms.each do |atom|
-  #   position = []
-  #   3.times do |i|
-  #     if i == axis_id
-  #       position[i] = atom.position[i] * (-1)
-  #     else
-  #       position[i] = atom.position[i]
-  #     end
-  #   end
-  #   atom.position
-  #   atoms << CrystalCell::Atom.new( atom.element, position, atom.name, atom.movable_flags )
-  # end
-  # @atoms = atoms
+  #atoms = []
+  #@atoms.each do |atom|
+  #  position = []
+  #  3.times do |i|
+  #    if i == axis_id
+  #      position[i] = atom.position[i] * (-1)
+  #    else
+  #      position[i] = atom.position[i]
+  #    end
+  #  end
+  #  atom.position
+  #  atoms << CrystalCell::Atom.new( atom.element, position, atom.name, atom.movable_flags )
+  #end
+  #@atoms = atoms
   #end
 
-  # inverse_axis! の非破壊版。
+  #inverse_axis! の非破壊版。
   def inverse_axis( axis_id )
     result = Marshal.load( Marshal.dump( self ) )
     result.inverse_axis!( axis_id )
     return result
   end
 
-  # 2つの格子ベクトルを交換する破壊的メソッド。
-  # Argument 'axis_ids' must have 2 items of integer.
-  # 0, 1, and 2 mean x, y, and z axes, respectively.
-  # この範囲の整数でなければ例外 Cell::AxesRangeError.
-  # axis_ids に含まれる 2つの数字が同じならば
-  # 例外 Cell::SameAxesError.
+  #2つの格子ベクトルを交換する破壊的メソッド。
+  #Argument 'axis_ids' must have 2 items of integer.
+  #0, 1, and 2 mean x, y, and z axes, respectively.
+  #この範囲の整数でなければ例外 Cell::AxesRangeError.
+  #axis_ids に含まれる 2つの数字が同じならば
+  #例外 Cell::SameAxesError.
   def exchange_axes!( axis_ids )
     raise ArgumentError if axis_ids.size != 2
     axis_ids.each{ |i| raise AxesRangeError if ( i < 0 || 2 < i ) }
     raise CrystalCell::Cell::SameAxesError if ( axis_ids[0] == axis_ids[1] )
 
-    # 格子定数を交換。
+    #格子定数を交換。
     axes = @axes.axes
     axes[ axis_ids[0]], axes[ axis_ids[1]] = axes[ axis_ids[1]], axes[ axis_ids[0]]
     @axes = CrystalCell::LatticeAxes.new( axes )
 
-    # 内部座標を交換。
+    #内部座標を交換。
     new_atoms = []
     @atoms.each do |atom|
       new_pos = atom.position
@@ -418,29 +418,29 @@ class CrystalCell::Cell
     end
   end
 
-  # exchange_axes! の非破壊版。
+  #exchange_axes! の非破壊版。
   def exchange_axes( axis_ids )
     result = Marshal.load( Marshal.dump( self ) )
     result.exchange_axes!( axis_ids )
     return result
   end
 
-  # 鏡像となるセルに変換する破壊的メソッド。
+  #鏡像となるセルに変換する破壊的メソッド。
   def reflect!
     axes = @axes.to_a
     axes[0][0] *= -1
     @axes = CrystalCell::LatticeAxes.new( axes )
   end
 
-  # 鏡像となるセルに変換する非破壊的メソッド。
+  #鏡像となるセルに変換する非破壊的メソッド。
   def reflect
     result = Marshal.load( Marshal.dump( self ) )
     result.reflect!
     return result
   end
 
-  # rotation と translation からなる操作(e.g., 対称操作)
-  # を加えたセルを返す。
+  #rotation と translation からなる操作(e.g., 対称操作)
+  #を加えたセルを返す。
   def operate(rotation, translation)
     rotation = Matrix[*rotation]
     translation = translation.to_v3d
@@ -454,27 +454,37 @@ class CrystalCell::Cell
     CrystalCell::Cell.new(@axes, new_atoms)
   end
 
+  #Return information of axes symmetry.
+  #E.g., 
+  # [true , true , true ] when  a = b  = c, like cubic
+  # [true , false, false] when  a = b != c, like hexagonal, trigonal, tetragonal
+  # [false, true , false] (same as above)
+  # [false, false, true ] (same as above)
+  # [false, false, false] when  a != b != c, like triclinic, monoclinic, orthorhombic
+  def independent_axes
+  end
+
   private
 
-  # POSCAR の内容の文字列を生成。
-  # 文字列の配列ではなく、改行文字を含む1つの文字列である点に注意。
-  # 
-  # VASP の挙動として、Selective dynamics 指定ありの時に
-  # 原子に T or F 指定していなかったり 3要素に足りなかったりすれば、
-  # error となって実行されない。
-  # なので dump_poscar では Selective dynamics 指定が必要な時には
-  # 全ての原子に T/F を記述する。
-  # POSCAR から生成された Cell の場合は Selective dynamics がついていれば
-  # 全ての原子に 3つの T/F が付いていることを前提としても良いだろう。
-  # 原子を追加するとかで、一部の原子の movable_flags が nil になっているときは、
-  # デフォルト値として [ true, true, true ] を入れることにする。
-  # nil ならば false を連想すると思うが、敢えて true で埋めている理由は、
-  # Selective dynamics をつけていない状態で VASP は全方向に緩和する、
-  # すなわち T T T と指定したことと同じになっているから。
-  # 換言すればこのデフォルト値の設定は VASP に合わせた仕様ということになる。
-  # VASP に由来する仕様が Cell クラスに持ち込まれていることになるが、
-  # VASP へのインターフェイスである POSCAR ファイルへの書き出しに限定されるので
-  # 他への影響はほとんどなく、気にしなくて良いだろう。
+  #POSCAR の内容の文字列を生成。
+  #文字列の配列ではなく、改行文字を含む1つの文字列である点に注意。
+  #
+  #VASP の挙動として、Selective dynamics 指定ありの時に
+  #原子に T or F 指定していなかったり 3要素に足りなかったりすれば、
+  #error となって実行されない。
+  #なので dump_poscar では Selective dynamics 指定が必要な時には
+  #全ての原子に T/F を記述する。
+  #POSCAR から生成された Cell の場合は Selective dynamics がついていれば
+  #全ての原子に 3つの T/F が付いていることを前提としても良いだろう。
+  #原子を追加するとかで、一部の原子の movable_flags が nil になっているときは、
+  #デフォルト値として [ true, true, true ] を入れることにする。
+  #nil ならば false を連想すると思うが、敢えて true で埋めている理由は、
+  #Selective dynamics をつけていない状態で VASP は全方向に緩和する、
+  #すなわち T T T と指定したことと同じになっているから。
+  #換言すればこのデフォルト値の設定は VASP に合わせた仕様ということになる。
+  #VASP に由来する仕様が Cell クラスに持ち込まれていることになるが、
+  #VASP へのインターフェイスである POSCAR ファイルへの書き出しに限定されるので
+  #他への影響はほとんどなく、気にしなくて良いだろう。
   def create_poscar( element_order )
     #element_order と elements が一対一対応していなければ raise 
     raise "Cell::create_poscar, element_order mismatches to elements." if (! Mapping::map?( elements.uniq, element_order ){ |i, j| i == j } )
