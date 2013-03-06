@@ -3,7 +3,6 @@ raise "Atom class need ruby version later than 1.9." if RUBY_VERSION.to_f < 1.9
 
 
 require "rubygems"
-gem "mageo"
 require "mageo/vector3dinternal.rb"
 
 # Class for an atom in a cell.
