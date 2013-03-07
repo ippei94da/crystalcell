@@ -9,7 +9,7 @@ require "rubygems"
 gem "builtinextension"
 require "array_select_indices.rb"
 
-require "mageo"
+#require "mageo"
 #gem "mageo"
 #require "mageo"
 #require "mageo/vector3d.rb"

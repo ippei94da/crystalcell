@@ -2,10 +2,10 @@
 
 require "test/unit"
 require "crystalcell"
-require "rubygems"
+#require "rubygems"
 #gem "mageo"
 #require "mageo/vector3d.rb"
-require "mageo"
+#require "mageo"
 
 class TC_Atom < Test::Unit::TestCase
   $tolerance = 10.0 ** (-10)

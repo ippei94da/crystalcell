@@ -3,10 +3,10 @@
 require 'test/unit'
 require 'stringio'
 require 'crystalcell/cell.rb'
-require "rubygems"
+#require "rubygems"
 #gem "mageo"
 #require "mageo/vector3dinternal.rb"
-require "mageo"
+#require "mageo"
 
 class FooCell < CrystalCell::Cell; end
 
@@ -1166,7 +1166,7 @@ class TC_Cell < Test::Unit::TestCase
   end
 
   def test_independent_axes
-    TODO
+    #TODO
   end
 
 end
