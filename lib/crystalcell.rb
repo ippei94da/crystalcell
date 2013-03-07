@@ -1,6 +1,10 @@
 require "rubygems"
 require "mageo"
-include Mageo
+
+module CrystalCell
+  include Mageo
+end
+
 
 module CrystalCell; end
 

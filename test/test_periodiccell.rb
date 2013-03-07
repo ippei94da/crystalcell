@@ -4,6 +4,8 @@ require "pp"
 require 'test/unit'
 require 'stringio'
 require "crystalcell"
+require "rubygems"
+require "mageo"
 
 class CrystalCell::PeriodicCell
   public :reset_positions_inside
@@ -12,16 +14,16 @@ end
 class TC_PeriodicCell < Test::Unit::TestCase
   $tolerance = 10 ** (-10)
 
-  V_000 = Vector3DInternal[0.0, 0.0, 0.0]
-  V_666 = Vector3DInternal[0.6, 0.6, 0.6]
-  V_111 = Vector3DInternal[0.1, 0.1, 0.1]
-  V_119 = Vector3DInternal[0.1, 0.1, 0.9]
-  V_191 = Vector3DInternal[0.1, 0.9, 0.1]
-  V_199 = Vector3DInternal[0.1, 0.9, 0.9]
-  V_911 = Vector3DInternal[0.9, 0.1, 0.1]
-  V_919 = Vector3DInternal[0.9, 0.1, 0.9]
-  V_991 = Vector3DInternal[0.9, 0.9, 0.1]
-  V_999 = Vector3DInternal[0.9, 0.9, 0.9]
+  V_000 = Mageo::Vecotr3DInternal[0.0, 0.0, 0.0]
+  V_666 = Mageo::Vecotr3DInternal[0.6, 0.6, 0.6]
+  V_111 = Mageo::Vecotr3DInternal[0.1, 0.1, 0.1]
+  V_119 = Mageo::Vecotr3DInternal[0.1, 0.1, 0.9]
+  V_191 = Mageo::Vecotr3DInternal[0.1, 0.9, 0.1]
+  V_199 = Mageo::Vecotr3DInternal[0.1, 0.9, 0.9]
+  V_911 = Mageo::Vecotr3DInternal[0.9, 0.1, 0.1]
+  V_919 = Mageo::Vecotr3DInternal[0.9, 0.1, 0.9]
+  V_991 = Mageo::Vecotr3DInternal[0.9, 0.9, 0.1]
+  V_999 = Mageo::Vecotr3DInternal[0.9, 0.9, 0.9]
 
   def setup
     #原子のないセル。
@@ -157,29 +159,29 @@ class TC_PeriodicCell < Test::Unit::TestCase
 
   def test_nearest_direction
     assert_equal(
-      Vector3DInternal[ 0,  0,  0],
-      @c00.nearest_direction(Vector3DInternal[-0.9, -0.9, -0.9],  V_111)
+      Mageo::Vecotr3DInternal[ 0,  0,  0],
+      @c00.nearest_direction(Mageo::Vecotr3DInternal[-0.9, -0.9, -0.9],  V_111)
     )
 
-    assert_equal(Vector3DInternal[-1, -1,  0], @c00.nearest_direction(V_111, V_999))
-    assert_equal(Vector3DInternal[-1, -1,  0], @c00.nearest_direction(V_119, V_999))
-    assert_equal(Vector3DInternal[-1,  0, -1], @c00.nearest_direction(V_191, V_999))
-    assert_equal(Vector3DInternal[-1,  0,  0], @c00.nearest_direction(V_199, V_999))
-    assert_equal(Vector3DInternal[ 0, -1, -1], @c00.nearest_direction(V_911, V_999))
-    assert_equal(Vector3DInternal[ 0, -1,  0], @c00.nearest_direction(V_919, V_999))
-    assert_equal(Vector3DInternal[ 0,  0, -1], @c00.nearest_direction(V_991, V_999))
-    assert_equal(Vector3DInternal[ 0,  0,  0], @c00.nearest_direction(V_999, V_999))
-    assert_equal(Vector3DInternal[ 1,  1,  0], @c00.nearest_direction(V_999, V_111))
-    assert_equal(Vector3DInternal[ 1,  1,  0], @c00.nearest_direction(V_999, V_119))
-    assert_equal(Vector3DInternal[ 1,  0,  1], @c00.nearest_direction(V_999, V_191))
-    assert_equal(Vector3DInternal[ 1,  0,  0], @c00.nearest_direction(V_999, V_199))
-    assert_equal(Vector3DInternal[ 0,  1,  1], @c00.nearest_direction(V_999, V_911))
-    assert_equal(Vector3DInternal[ 0,  1,  0], @c00.nearest_direction(V_999, V_919))
-    assert_equal(Vector3DInternal[ 0,  0,  1], @c00.nearest_direction(V_999, V_991))
-    assert_equal(Vector3DInternal[ 0,  0,  0], @c00.nearest_direction(V_999, V_999))
+    assert_equal(Mageo::Vecotr3DInternal[-1, -1,  0], @c00.nearest_direction(V_111, V_999))
+    assert_equal(Mageo::Vecotr3DInternal[-1, -1,  0], @c00.nearest_direction(V_119, V_999))
+    assert_equal(Mageo::Vecotr3DInternal[-1,  0, -1], @c00.nearest_direction(V_191, V_999))
+    assert_equal(Mageo::Vecotr3DInternal[-1,  0,  0], @c00.nearest_direction(V_199, V_999))
+    assert_equal(Mageo::Vecotr3DInternal[ 0, -1, -1], @c00.nearest_direction(V_911, V_999))
+    assert_equal(Mageo::Vecotr3DInternal[ 0, -1,  0], @c00.nearest_direction(V_919, V_999))
+    assert_equal(Mageo::Vecotr3DInternal[ 0,  0, -1], @c00.nearest_direction(V_991, V_999))
+    assert_equal(Mageo::Vecotr3DInternal[ 0,  0,  0], @c00.nearest_direction(V_999, V_999))
+    assert_equal(Mageo::Vecotr3DInternal[ 1,  1,  0], @c00.nearest_direction(V_999, V_111))
+    assert_equal(Mageo::Vecotr3DInternal[ 1,  1,  0], @c00.nearest_direction(V_999, V_119))
+    assert_equal(Mageo::Vecotr3DInternal[ 1,  0,  1], @c00.nearest_direction(V_999, V_191))
+    assert_equal(Mageo::Vecotr3DInternal[ 1,  0,  0], @c00.nearest_direction(V_999, V_199))
+    assert_equal(Mageo::Vecotr3DInternal[ 0,  1,  1], @c00.nearest_direction(V_999, V_911))
+    assert_equal(Mageo::Vecotr3DInternal[ 0,  1,  0], @c00.nearest_direction(V_999, V_919))
+    assert_equal(Mageo::Vecotr3DInternal[ 0,  0,  1], @c00.nearest_direction(V_999, V_991))
+    assert_equal(Mageo::Vecotr3DInternal[ 0,  0,  0], @c00.nearest_direction(V_999, V_999))
 
-    assert_equal(Vector3DInternal[ 1,  0,  1], @c00.nearest_direction(V_666, V_000))
-    assert_equal(Vector3DInternal[-1,  0, -1], @c00.nearest_direction(V_000, V_666))
+    assert_equal(Mageo::Vecotr3DInternal[ 1,  0,  1], @c00.nearest_direction(V_666, V_000))
+    assert_equal(Mageo::Vecotr3DInternal[-1,  0, -1], @c00.nearest_direction(V_000, V_666))
 
     assert_raise(CrystalCell::PeriodicCell::TypeError){
       @c00.nearest_direction([ 0.1, 0.1, 0.1 ], [ 0.9, 0.9, 0.9 ])
@@ -187,8 +189,8 @@ class TC_PeriodicCell < Test::Unit::TestCase
   end
 
   def test_nearest_distance
-    assert_in_delta(Math::sqrt(0.56), @c00.nearest_distance(V_000, Vector3DInternal[0.1, 0.1, 0.1]), $tolerance)
-    assert_in_delta(Math::sqrt(0.88), @c00.nearest_distance(V_000, Vector3DInternal[0.8, 0.9, 1.0]), $tolerance)
+    assert_in_delta(Math::sqrt(0.56), @c00.nearest_distance(V_000, Mageo::Vecotr3DInternal[0.1, 0.1, 0.1]), $tolerance)
+    assert_in_delta(Math::sqrt(0.88), @c00.nearest_distance(V_000, Mageo::Vecotr3DInternal[0.8, 0.9, 1.0]), $tolerance)
 
     assert_raise(CrystalCell::PeriodicCell::TypeError){@c00.nearest_distance([0.0, 0.0, 0.0], [0.1, 0.1, 0.1])}
     assert_raise(CrystalCell::PeriodicCell::TypeError){@c00.nearest_distance([0.0, 0.0, 0.0], [0.8, 0.9, 1.0])}
@@ -251,35 +253,35 @@ class TC_PeriodicCell < Test::Unit::TestCase
     #Li-Li、元素の区別
     t = pc01.find_bonds('Li', 'Li' , 0.0, 0.30)
     assert_equal(
-      [ [Vector3DInternal[0.5, 0.5, 0.4], Vector3DInternal[0.5, 0.5, 0.5 ] ] ],
+      [ [Mageo::Vecotr3DInternal[0.5, 0.5, 0.4], Mageo::Vecotr3DInternal[0.5, 0.5, 0.5 ] ] ],
       t
     )
 
     #O-O、元素の区別
     t = pc01.find_bonds('O', 'O' , 0.0, 0.30)
     assert_equal(
-      [ [ Vector3DInternal[0.5, 0.5, 0.6], Vector3DInternal[0.5, 0.5, 0.7]]],
+      [ [ Mageo::Vecotr3DInternal[0.5, 0.5, 0.6], Mageo::Vecotr3DInternal[0.5, 0.5, 0.7]]],
       t
     )
 
     #Li-O、元素の区別
     t = pc01.find_bonds('Li', 'O' , 0.0, 0.30)
     assert_equal(
-      [ [ Vector3DInternal[0.5, 0.5, 0.5], Vector3DInternal[0.5, 0.5, 0.6] ] ],
+      [ [ Mageo::Vecotr3DInternal[0.5, 0.5, 0.5], Mageo::Vecotr3DInternal[0.5, 0.5, 0.6] ] ],
       t
     )
 
     #O-Li, 逆順でも等価
     t = pc01.find_bonds('O' , 'Li', 0.0, 0.30)
     assert_equal(
-      [[ Vector3DInternal[0.5, 0.5, 0.5], Vector3DInternal[0.5, 0.5, 0.6]]],
+      [[ Mageo::Vecotr3DInternal[0.5, 0.5, 0.5], Mageo::Vecotr3DInternal[0.5, 0.5, 0.6]]],
       t
     )
 
     #距離の下限
     t = pc01.find_bonds('Li', 'O' , 0.5, 0.7)
     assert_equal(
-      [ [ Vector3DInternal[0.5, 0.5, 0.4], Vector3DInternal[0.5, 0.5, 0.7]]],
+      [ [ Mageo::Vecotr3DInternal[0.5, 0.5, 0.4], Mageo::Vecotr3DInternal[0.5, 0.5, 0.7]]],
       t
     )
 
@@ -469,7 +471,7 @@ class TC_PeriodicCell < Test::Unit::TestCase
     tmp = Marshal.load(Marshal.dump(@c00))
     tmp.add_atom(CrystalCell::Atom.new(0, [1.0, 2.3, -2.3]))
     assert_equal(1, tmp.positions.size)
-    assert_equal(Vector3DInternal, tmp.positions[0].class)
+    assert_equal(Mageo::Vecotr3DInternal, tmp.positions[0].class)
     assert_in_delta(0.0, tmp.positions[0][0], $tolerance)
     assert_in_delta(0.3, tmp.positions[0][1], $tolerance)
     assert_in_delta(0.7, tmp.positions[0][2], $tolerance)
@@ -480,9 +482,9 @@ class TC_PeriodicCell < Test::Unit::TestCase
 
     # Check new instance.
     assert_equal(3, @c02.rotate([[-1, 0, 0],[0, -1, 0],[0, 0, -1]]).positions.size)
-    assert_equal(Vector3DInternal, @c02.rotate([[-1, 0, 0],[0, -1, 0],[0, 0, -1]]).positions[0].class)
-    assert_equal(Vector3DInternal, @c02.rotate([[-1, 0, 0],[0, -1, 0],[0, 0, -1]]).positions[1].class)
-    assert_equal(Vector3DInternal, @c02.rotate([[-1, 0, 0],[0, -1, 0],[0, 0, -1]]).positions[2].class)
+    assert_equal(Mageo::Vecotr3DInternal, @c02.rotate([[-1, 0, 0],[0, -1, 0],[0, 0, -1]]).positions[0].class)
+    assert_equal(Mageo::Vecotr3DInternal, @c02.rotate([[-1, 0, 0],[0, -1, 0],[0, 0, -1]]).positions[1].class)
+    assert_equal(Mageo::Vecotr3DInternal, @c02.rotate([[-1, 0, 0],[0, -1, 0],[0, 0, -1]]).positions[2].class)
     assert_in_delta(0.0,  @c02.rotate([[-1, 0, 0],[0, -1, 0],[0, 0, -1]]).positions[0][0], $tolerance)
     assert_in_delta(0.0,  @c02.rotate([[-1, 0, 0],[0, -1, 0],[0, 0, -1]]).positions[0][1], $tolerance)
     assert_in_delta(0.0,  @c02.rotate([[-1, 0, 0],[0, -1, 0],[0, 0, -1]]).positions[0][2], $tolerance)
@@ -495,9 +497,9 @@ class TC_PeriodicCell < Test::Unit::TestCase
 
     # Check not destructed.
     assert_equal(3, @c02.positions.size)
-    assert_equal(Vector3DInternal, @c02.positions[0].class)
-    assert_equal(Vector3DInternal, @c02.positions[1].class)
-    assert_equal(Vector3DInternal, @c02.positions[2].class)
+    assert_equal(Mageo::Vecotr3DInternal, @c02.positions[0].class)
+    assert_equal(Mageo::Vecotr3DInternal, @c02.positions[1].class)
+    assert_equal(Mageo::Vecotr3DInternal, @c02.positions[2].class)
     assert_in_delta(0.0          , @c02.positions[0][0], $tolerance)
     assert_in_delta(0.0          , @c02.positions[0][1], $tolerance)
     assert_in_delta(0.0          , @c02.positions[0][2], $tolerance)
@@ -513,9 +515,9 @@ class TC_PeriodicCell < Test::Unit::TestCase
     @c02.add_atom(CrystalCell::Atom.new('Li', [0.1, 0.2, 0.3]))
     @c02.rotate!([[-1, 0, 0],[0, -1, 0],[0, 0, -1]])
     assert_equal(
-      [ Vector3DInternal[  0.0,  0.0,  0.0 ],
-        Vector3DInternal[  0.8,  0.8,  0.8 ],
-        Vector3DInternal[  0.9,  0.8,  0.7 ]
+      [ Mageo::Vecotr3DInternal[  0.0,  0.0,  0.0 ],
+        Mageo::Vecotr3DInternal[  0.8,  0.8,  0.8 ],
+        Mageo::Vecotr3DInternal[  0.9,  0.8,  0.7 ]
       ],
       @c02.positions
     )
@@ -540,8 +542,8 @@ class TC_PeriodicCell < Test::Unit::TestCase
 
     # Check not destructed.
     assert_equal(
-      [ Vector3DInternal[ 0.0, 0.0, 0.0 ],
-        Vector3DInternal[ 0.2, 0.2, 0.2 ]
+      [ Mageo::Vecotr3DInternal[ 0.0, 0.0, 0.0 ],
+        Mageo::Vecotr3DInternal[ 0.2, 0.2, 0.2 ]
       ],
       @c02.positions
     )
@@ -603,11 +605,11 @@ class TC_PeriodicCell < Test::Unit::TestCase
     assert_equal(2, t.atoms.size)
     # checking atom 0
     assert_equal('Li'           , t.atoms[0].element)
-    assert_equal(Vector3DInternal[0.0, 0.0, 0.0], t.atoms[0].position)
+    assert_equal(Mageo::Vecotr3DInternal[0.0, 0.0, 0.0], t.atoms[0].position)
     assert_equal(nil            , t.atoms[0].name)
     # checking atom 1
     assert_equal('O'            , t.atoms[1].element)
-    assert_equal(Vector3DInternal[ 0.8, 0.2, 0.2], t.atoms[1].position)
+    assert_equal(Mageo::Vecotr3DInternal[ 0.8, 0.2, 0.2], t.atoms[1].position)
     assert_equal(nil            , t.atoms[1].name)
   end
 
@@ -628,11 +630,11 @@ class TC_PeriodicCell < Test::Unit::TestCase
     assert_equal(2, t.atoms.size)
     # checking atom 0
     assert_equal('Li'           , t.atoms[0].element)
-    assert_equal(Vector3DInternal[0.0, 0.0, 0.0], t.atoms[0].position)
+    assert_equal(Mageo::Vecotr3DInternal[0.0, 0.0, 0.0], t.atoms[0].position)
     assert_equal(nil            , t.atoms[0].name)
     # checking atom 1
     assert_equal('O'            , t.atoms[1].element)
-    assert_equal(Vector3DInternal[ 0.8, 0.2, 0.2], t.atoms[1].position)
+    assert_equal(Mageo::Vecotr3DInternal[ 0.8, 0.2, 0.2], t.atoms[1].position)
     assert_equal(nil            , t.atoms[1].name)
 
     # y 軸反転
@@ -656,11 +658,11 @@ class TC_PeriodicCell < Test::Unit::TestCase
     assert_equal(2, t.atoms.size)
     # checking atom 0
     assert_equal('Li'           , t.atoms[0].element)
-    assert_equal(Vector3DInternal[0.0, 0.0, 0.0], t.atoms[0].position)
+    assert_equal(Mageo::Vecotr3DInternal[0.0, 0.0, 0.0], t.atoms[0].position)
     assert_equal(nil            , t.atoms[0].name)
     # checking atom 1
     assert_equal('O'            , t.atoms[1].element)
-    assert_equal(Vector3DInternal[ 0.2, 0.8, 0.2], t.atoms[1].position)
+    assert_equal(Mageo::Vecotr3DInternal[ 0.2, 0.8, 0.2], t.atoms[1].position)
     assert_equal(nil            , t.atoms[1].name)
 
     # z 軸反転
@@ -685,11 +687,11 @@ class TC_PeriodicCell < Test::Unit::TestCase
     assert_equal(2, t.atoms.size)
     # checking atom 0
     assert_equal('Li'           , t.atoms[0].element)
-    assert_equal(Vector3DInternal[0.0, 0.0, 0.0], t.atoms[0].position)
+    assert_equal(Mageo::Vecotr3DInternal[0.0, 0.0, 0.0], t.atoms[0].position)
     assert_equal(nil            , t.atoms[0].name)
     # checking atom 1
     assert_equal('O'            , t.atoms[1].element)
-    assert_equal(Vector3DInternal[ 0.2, 0.2, 0.8], t.atoms[1].position)
+    assert_equal(Mageo::Vecotr3DInternal[ 0.2, 0.2, 0.8], t.atoms[1].position)
     assert_equal(nil            , t.atoms[1].name)
   end
 
@@ -709,7 +711,7 @@ class TC_PeriodicCell < Test::Unit::TestCase
     assert_equal(2, t.atoms.size)
     # checking atom 0
     assert_equal('Li'           , t.atoms[0].element)
-    assert_equal(Vector3DInternal, t.atoms[0].position.class)
+    assert_equal(Mageo::Vecotr3DInternal, t.atoms[0].position.class)
     assert_in_delta(0.2, t.atoms[0].position[0], $tolerance)
     assert_in_delta(0.6, t.atoms[0].position[1], $tolerance)
     assert_in_delta(0.4, t.atoms[0].position[2], $tolerance)
@@ -717,7 +719,7 @@ class TC_PeriodicCell < Test::Unit::TestCase
     assert_equal([ false, false, true] , t.atoms[0].movable_flags)
     # checking atom 1
     assert_equal('O'            , t.atoms[1].element)
-    assert_equal(Vector3DInternal, t.atoms[1].position.class)
+    assert_equal(Mageo::Vecotr3DInternal, t.atoms[1].position.class)
     assert_in_delta(0.8, t.atoms[1].position[0], $tolerance)
     assert_in_delta(0.4, t.atoms[1].position[1], $tolerance)
     assert_in_delta(0.6, t.atoms[1].position[2], $tolerance)
@@ -745,14 +747,14 @@ class TC_PeriodicCell < Test::Unit::TestCase
     assert_equal(2, t.atoms.size)
     # checking atom 0
     assert_equal('Li'           , t.atoms[0].element)
-    assert_equal(Vector3DInternal, t.atoms[0].position.class)
+    assert_equal(Mageo::Vecotr3DInternal, t.atoms[0].position.class)
     assert_in_delta(0.2, t.atoms[0].position[0], $tolerance)
     assert_in_delta(0.6, t.atoms[0].position[1], $tolerance)
     assert_in_delta(0.4, t.atoms[0].position[2], $tolerance)
     assert_equal('atom0'        , t.atoms[0].name)
     # checking atom 1
     assert_equal('O'            , t.atoms[1].element)
-    assert_equal(Vector3DInternal, t.atoms[1].position.class)
+    assert_equal(Mageo::Vecotr3DInternal, t.atoms[1].position.class)
     assert_in_delta(0.8, t.atoms[1].position[0], $tolerance)
     assert_in_delta(0.4, t.atoms[1].position[1], $tolerance)
     assert_in_delta(0.6, t.atoms[1].position[2], $tolerance)
@@ -772,14 +774,14 @@ class TC_PeriodicCell < Test::Unit::TestCase
     assert_equal(2, t.atoms.size)
     # checking atom 0
     assert_equal('Li'           , t.atoms[0].element)
-    assert_equal(Vector3DInternal, t.atoms[0].position.class)
+    assert_equal(Mageo::Vecotr3DInternal, t.atoms[0].position.class)
     assert_in_delta(0.2, t.atoms[0].position[0], $tolerance)
     assert_in_delta(0.4, t.atoms[0].position[1], $tolerance)
     assert_in_delta(0.6, t.atoms[0].position[2], $tolerance)
     assert_equal('atom0'        , t.atoms[0].name)
     # checking atom 1
     assert_equal('O'            , t.atoms[1].element)
-    assert_equal(Vector3DInternal, t.atoms[1].position.class)
+    assert_equal(Mageo::Vecotr3DInternal, t.atoms[1].position.class)
     assert_in_delta(0.8, t.atoms[1].position[0], $tolerance)
     assert_in_delta(0.6, t.atoms[1].position[1], $tolerance)
     assert_in_delta(0.4, t.atoms[1].position[2], $tolerance)
@@ -801,14 +803,14 @@ class TC_PeriodicCell < Test::Unit::TestCase
     assert_equal(2, t.atoms.size)
     # checking atom 0
     assert_equal('Li'           , t.atoms[0].element)
-    assert_equal(Vector3DInternal, t.atoms[0].position.class)
+    assert_equal(Mageo::Vecotr3DInternal, t.atoms[0].position.class)
     assert_in_delta(0.2, t.atoms[0].position[0], $tolerance)
     assert_in_delta(0.4, t.atoms[0].position[1], $tolerance)
     assert_in_delta(0.6, t.atoms[0].position[2], $tolerance)
     assert_equal('atom0'        , t.atoms[0].name)
     # checking atom 1
     assert_equal('O'            , t.atoms[1].element)
-    assert_equal(Vector3DInternal, t.atoms[1].position.class)
+    assert_equal(Mageo::Vecotr3DInternal, t.atoms[1].position.class)
     assert_in_delta(0.8, t.atoms[1].position[0], $tolerance)
     assert_in_delta(0.6, t.atoms[1].position[1], $tolerance)
     assert_in_delta(0.4, t.atoms[1].position[2], $tolerance)
@@ -829,14 +831,14 @@ class TC_PeriodicCell < Test::Unit::TestCase
     assert_equal(2, t.atoms.size)
     # checking atom 0
     assert_equal('Li'           , t.atoms[0].element)
-    assert_equal(Vector3DInternal, t.atoms[0].position.class)
+    assert_equal(Mageo::Vecotr3DInternal, t.atoms[0].position.class)
     assert_in_delta(0.2, t.atoms[0].position[0], $tolerance)
     assert_in_delta(0.4, t.atoms[0].position[1], $tolerance)
     assert_in_delta(0.6, t.atoms[0].position[2], $tolerance)
     assert_equal('atom0'        , t.atoms[0].name)
     # checking atom 1
     assert_equal('O'            , t.atoms[1].element)
-    assert_equal(Vector3DInternal, t.atoms[1].position.class)
+    assert_equal(Mageo::Vecotr3DInternal, t.atoms[1].position.class)
     assert_in_delta(0.8, t.atoms[1].position[0], $tolerance)
     assert_in_delta(0.6, t.atoms[1].position[1], $tolerance)
     assert_in_delta(0.4, t.atoms[1].position[2], $tolerance)
@@ -856,14 +858,14 @@ class TC_PeriodicCell < Test::Unit::TestCase
     assert_equal(2, t.atoms.size)
     # checking atom 0
     assert_equal('Li'           , t.atoms[0].element)
-    assert_equal(Vector3DInternal, t.atoms[0].position.class)
+    assert_equal(Mageo::Vecotr3DInternal, t.atoms[0].position.class)
     assert_in_delta(0.2, t.atoms[0].position[0], $tolerance)
     assert_in_delta(0.4, t.atoms[0].position[1], $tolerance)
     assert_in_delta(0.6, t.atoms[0].position[2], $tolerance)
     assert_equal('atom0'        , t.atoms[0].name)
     # checking atom 1
     assert_equal('O'            , t.atoms[1].element)
-    assert_equal(Vector3DInternal, t.atoms[1].position.class)
+    assert_equal(Mageo::Vecotr3DInternal, t.atoms[1].position.class)
     assert_in_delta(0.8, t.atoms[1].position[0], $tolerance)
     assert_in_delta(0.6, t.atoms[1].position[1], $tolerance)
     assert_in_delta(0.4, t.atoms[1].position[2], $tolerance)
@@ -879,7 +881,7 @@ class TC_PeriodicCell < Test::Unit::TestCase
     tmp.atoms[0].set_position([1.0, 2.3, -2.3])
     tmp.reset_positions_inside
     assert_equal(1, tmp.positions.size)
-    assert_equal(Vector3DInternal, tmp.positions[0].class)
+    assert_equal(Mageo::Vecotr3DInternal, tmp.positions[0].class)
     assert_in_delta(0.0, tmp.positions[0][0], $tolerance)
     assert_in_delta(0.3, tmp.positions[0][1], $tolerance)
     assert_in_delta(0.7, tmp.positions[0][2], $tolerance)

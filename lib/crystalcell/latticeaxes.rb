@@ -22,7 +22,7 @@ require "malge/simultaneousequations.rb"
 #     [ [0.57735, 0.20412, 0.35355],
 #       [0.00000, 0.61237, 0.35355],
 #       [0.00000, 0.00000, 0.70710]]
-class CrystalCell::LatticeAxes < Axes
+class CrystalCell::LatticeAxes < Mageo::Axes
 
   class InitializeError < Exception; end
   class ArgumentError < Exception; end

@@ -31,11 +31,11 @@ class TC_LatticeAxes < Test::Unit::TestCase
     @lc5 = CrystalCell::LatticeAxes.new([ [1.0, 1.0, 1.0], [0.0, 1.0, 1.0], [0.0, 0.0, 1.0] ])
     @lc6 = CrystalCell::LatticeAxes.new([ [1.0, 1.0, 1.0], [0.0,-1.0,-1.0], [0.0, 0.0, 1.0] ])
 
-    @vec_x = Vector3D[ 1.0, 0.0, 0.0 ]
-    @vec_y = Vector3D[ 0.0, 1.0, 0.0 ]
-    @vec_z = Vector3D[ 0.0, 0.0, 1.0 ]
-    @vec_0 = Vector3D[ 0.0, 0.0, 0.0 ]
-    @vec_1 = Vector3D[ 1.0, 1.0, 0.0 ]
+    @vec_x = Mageo::Vecotr3D[ 1.0, 0.0, 0.0 ]
+    @vec_y = Mageo::Vecotr3D[ 0.0, 1.0, 0.0 ]
+    @vec_z = Mageo::Vecotr3D[ 0.0, 0.0, 1.0 ]
+    @vec_0 = Mageo::Vecotr3D[ 0.0, 0.0, 0.0 ]
+    @vec_1 = Mageo::Vecotr3D[ 1.0, 1.0, 0.0 ]
   end
 
   def test_initialize
