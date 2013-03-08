@@ -29,6 +29,7 @@ class CrystalCell::LatticeAxes < Mageo::Axes
   class TypeError < Exception; end
 
   include Math
+  include Mageo
 
   # Argument 'vectors' is three vectors with the order of a, b, c.
   # If you want to make LatticeAxes instances from lattice constants,

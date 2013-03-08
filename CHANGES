@@ -3,6 +3,7 @@
 == Master (for 0.0.1)
 * Change indent char from tab char to two spaces.
 * Introduce module CrystalCell as new namespace.
+* Adjust to mageo-0.0.2.
 
 == Version 0.0.0
 * Initial release.

@@ -115,36 +115,36 @@ class TC_Atom < Test::Unit::TestCase
   end
 
   def test_internal_coordinates
-    assert_equal(Mageo::Vecotr3DInternal[ 0.0, 0.0, 0.0 ], @a0.internal_coordinates)
-    assert_equal(Mageo::Vecotr3DInternal[ 0.0, 0.0, 0.0 ], @a1.internal_coordinates)
-    assert_equal(Mageo::Vecotr3DInternal[ 0.0, 0.0, 0.0 ], @a2.internal_coordinates)
-    assert_equal(Mageo::Vecotr3DInternal[ 0.0, 0.0, 0.0 ], @a3.internal_coordinates)
+    assert_equal(Mageo::Vector3DInternal[ 0.0, 0.0, 0.0 ], @a0.internal_coordinates)
+    assert_equal(Mageo::Vector3DInternal[ 0.0, 0.0, 0.0 ], @a1.internal_coordinates)
+    assert_equal(Mageo::Vector3DInternal[ 0.0, 0.0, 0.0 ], @a2.internal_coordinates)
+    assert_equal(Mageo::Vector3DInternal[ 0.0, 0.0, 0.0 ], @a3.internal_coordinates)
 
-    assert_equal(Mageo::Vecotr3DInternal, @a4.internal_coordinates.class)
+    assert_equal(Mageo::Vector3DInternal, @a4.internal_coordinates.class)
     assert_in_delta(0.0, @a4.internal_coordinates[0], $tolerance)
     assert_in_delta(0.3, @a4.internal_coordinates[1], $tolerance)
     assert_in_delta(0.5, @a4.internal_coordinates[2], $tolerance)
 
-    assert_equal(Mageo::Vecotr3DInternal, @a5.internal_coordinates.class)
+    assert_equal(Mageo::Vector3DInternal, @a5.internal_coordinates.class)
     assert_in_delta(0.0, @a5.internal_coordinates[0], $tolerance)
     assert_in_delta(0.7, @a5.internal_coordinates[1], $tolerance)
     assert_in_delta(0.5, @a5.internal_coordinates[2], $tolerance)
   end
 
   def test_translation_symmetry_operation
-    assert_equal(Mageo::Vecotr3DInternal[ 0, 0, 0 ], @a0.translation_symmetry_operation)
-    assert_equal(Mageo::Vecotr3DInternal[ 1, 1, 1 ], @a1.translation_symmetry_operation)
-    assert_equal(Mageo::Vecotr3DInternal[ 0, 0, 0 ], @a2.translation_symmetry_operation)
-    assert_equal(Mageo::Vecotr3DInternal[ 0, 0, 0 ], @a3.translation_symmetry_operation)
-    assert_equal(Mageo::Vecotr3DInternal[ 1, 2, 4 ], @a4.translation_symmetry_operation)
-    assert_equal(Mageo::Vecotr3DInternal[-1,-3,-5 ], @a5.translation_symmetry_operation)
+    assert_equal(Mageo::Vector3DInternal[ 0, 0, 0 ], @a0.translation_symmetry_operation)
+    assert_equal(Mageo::Vector3DInternal[ 1, 1, 1 ], @a1.translation_symmetry_operation)
+    assert_equal(Mageo::Vector3DInternal[ 0, 0, 0 ], @a2.translation_symmetry_operation)
+    assert_equal(Mageo::Vector3DInternal[ 0, 0, 0 ], @a3.translation_symmetry_operation)
+    assert_equal(Mageo::Vector3DInternal[ 1, 2, 4 ], @a4.translation_symmetry_operation)
+    assert_equal(Mageo::Vector3DInternal[-1,-3,-5 ], @a5.translation_symmetry_operation)
   end
 
   def test_set_position
-    assert_equal(Mageo::Vecotr3DInternal[ 1.2, 2.3, 3.4 ], @a3.set_position([ 1.2, 2.3, 3.4 ]))
-    assert_equal(Mageo::Vecotr3DInternal[ 2.3, 3.4, 4.5 ], @a4.set_position([ 2.3, 3.4, 4.5 ]))
+    assert_equal(Mageo::Vector3DInternal[ 1.2, 2.3, 3.4 ], @a3.set_position([ 1.2, 2.3, 3.4 ]))
+    assert_equal(Mageo::Vector3DInternal[ 2.3, 3.4, 4.5 ], @a4.set_position([ 2.3, 3.4, 4.5 ]))
     assert_raise(CrystalCell::Atom::TypeError){
-      @a4.set_position(Mageo::Vecotr3D[ 2.3, 3.4, 4.5 ])
+      @a4.set_position(Mageo::Vector3D[ 2.3, 3.4, 4.5 ])
     }
   end
 
@@ -173,8 +173,8 @@ class TC_Atom < Test::Unit::TestCase
     assert_in_delta(-1.3 , @a5.position[1], $tolerance)
     assert_in_delta(-3.5 , @a5.position[2], $tolerance)
     
-    # Mageo::Vecotr3D なら例外
-    assert_raise(CrystalCell::Atom::TypeError){ @a0.translate!(Mageo::Vecotr3D[ 0.0, 0.0, 0.0 ]) }
+    # Mageo::Vector3D なら例外
+    assert_raise(CrystalCell::Atom::TypeError){ @a0.translate!(Mageo::Vector3D[ 0.0, 0.0, 0.0 ]) }
 
     # 3次元でなければ例外
     assert_raise(CrystalCell::Atom::TypeError){ @a0.translate!([ 0.0, 0.0 ]) }
@@ -200,8 +200,8 @@ class TC_Atom < Test::Unit::TestCase
     assert_in_delta(-1.3, t.position[1], $tolerance)
     assert_in_delta(-3.5, t.position[2], $tolerance)
     
-    # Mageo::Vecotr3D なら例外
-    assert_raise(CrystalCell::Atom::TypeError){ @a0.translate(Mageo::Vecotr3D[ 0.0, 0.0, 0.0 ]) }
+    # Mageo::Vector3D なら例外
+    assert_raise(CrystalCell::Atom::TypeError){ @a0.translate(Mageo::Vector3D[ 0.0, 0.0, 0.0 ]) }
 
     # 3次元でなければ例外
     assert_raise(CrystalCell::Atom::TypeError){ @a0.translate([ 0.0, 0.0 ]) }

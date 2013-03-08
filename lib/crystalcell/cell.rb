@@ -43,6 +43,8 @@ require "maset/mapping.rb"
 #  疑問が生じる。
 class CrystalCell::Cell
 
+  include Mageo
+
   class NoAtomError < Exception; end
   class AxesMismatchError < Exception; end
   class AxesRangeError < Exception; end

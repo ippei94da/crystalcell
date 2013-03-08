@@ -7,6 +7,7 @@ require "pp"
 # Class for crystal cell with periodic boundary.
 # Coordinates of atoms are kept in the region of 0 <= x_i < 1 of internal coordinate.
 class CrystalCell::PeriodicCell < CrystalCell::Cell
+
   class TypeError < Exception; end
 
   def initialize( *args )

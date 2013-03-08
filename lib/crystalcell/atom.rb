@@ -10,6 +10,9 @@ raise "Atom class need ruby version later than 1.9." if RUBY_VERSION.to_f < 1.9
 # Forbid changes in internal information. When you want to change, you can make a new instance.
 # This class is not assumeed in a periodic condition.
 class CrystalCell::Atom
+
+  include Mageo
+
   class TypeError < Exception ; end
 
   # Do not change :position to attr_accessor.
