@@ -1,11 +1,7 @@
 require "rubygems"
 require "mageo"
 
-module CrystalCell
-  include Mageo
-end
-
-
+#include Mageo
 module CrystalCell; end
 
 require "crystalcell/latticeaxes.rb"

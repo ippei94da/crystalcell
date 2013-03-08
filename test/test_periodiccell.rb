@@ -1,11 +1,12 @@
 #! /usr/bin/ruby -w
 
 require "pp"
-require 'test/unit'
+require "helper"
+#require 'test/unit'
 require 'stringio'
-require "crystalcell"
-require "rubygems"
-require "mageo"
+#require "crystalcell"
+#require "rubygems"
+#require "mageo"
 
 class CrystalCell::PeriodicCell
   public :reset_positions_inside

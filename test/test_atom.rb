@@ -1,7 +1,8 @@
 #! /usr/bin/ruby
 
-require "test/unit"
-require "crystalcell"
+require "helper"
+#require "test/unit"
+#require "crystalcell"
 #require "rubygems"
 #gem "mageo"
 #require "mageo/vector3d.rb"

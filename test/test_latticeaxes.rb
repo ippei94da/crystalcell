@@ -1,11 +1,12 @@
 #! /usr/bin/ruby
 
-require "test/unit"
+require "helper"
+#require "test/unit"
 require "rubygems"
 #gem "mageo"
 #require "mageo/vector3d.rb"
 #require "mageo"
-require "crystalcell/latticeaxes.rb"
+#require "crystalcell/latticeaxes.rb"
 
 class CrystalCell::LatticeAxes
   #public :triangulate, :rotate
