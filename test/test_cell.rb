@@ -3,10 +3,16 @@
 require "helper"
 require 'stringio'
 
+class CrystalCell::Cell
+  public :symmetry_operations
+end
+
 class FooCell < CrystalCell::Cell; end
 
 class TC_Cell < Test::Unit::TestCase
   $tolerance = 10 ** (-10)
+  $symprec   = 1.0e-05
+  $angle_tolerance = -1.0
 
   def setup
     # 原子のないセル。
@@ -79,6 +85,118 @@ class TC_Cell < Test::Unit::TestCase
     ]
     @c08 = CrystalCell::Cell.new(vectors00, atoms)
     @c08.comment = 'c08'
+
+    #cubic
+    axes = CrystalCell::LatticeAxes.new(
+      [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
+    )
+    atoms = [
+      CrystalCell::Atom.new( 0, [0.0, 0.0, 0.0] )
+    ]
+    @c10 = CrystalCell::Cell.new( axes, atoms)
+    @c10.comment = 'cubic'
+
+    #hexagonal
+    axes = CrystalCell::LatticeAxes.new(
+      [
+        [0.86602540378443864676, 0.5, 0.0],
+        [0.0, 1.0, 0.0],
+        [0.0, 0.0, 1.0],
+      ]
+    )
+    atoms = [
+      CrystalCell::Atom.new( 0, [0.0, 0.0, 0.0] )
+    ]
+    @c11 = CrystalCell::Cell.new( axes, atoms)
+    @c11.comment = 'hexagonal'
+
+    #monoclinic
+    axes = CrystalCell::LatticeAxes.new(
+      [ [1.5, 1.4, 0.0],
+        [0.0, 1.2, 0.0],
+        [0.0, 0.0, 1.0],
+      ]
+    )
+    atoms = [
+      CrystalCell::Atom.new( 0, [0.0, 0.0, 0.0]),
+      #CrystalCell::Atom.new( 0, [0.1, 0.2, 0.3]),
+      #CrystalCell::Atom.new( 0, [0.2, 0.3, 0.4]),
+    ]
+    @c12 = CrystalCell::Cell.new( axes, atoms)
+    @c12.comment = 'monoclinic'
+
+    #orthorhombic
+    axes = CrystalCell::LatticeAxes.new(
+      [
+        [3.0, 0.0, 0.0],
+        [0.0, 2.0, 0.0],
+        [0.0, 0.0, 1.0],
+      ]
+    )
+    atoms = [
+      CrystalCell::Atom.new( 0, [0.0, 0.0, 0.0])
+    ]
+    @c13 = CrystalCell::Cell.new( axes, atoms)
+    @c13.comment = 'orthorhombic'
+
+    #tetragonal
+    axes = CrystalCell::LatticeAxes.new(
+      [
+        [2.0, 0.0, 0.0],
+        [0.0, 2.0, 0.0],
+        [0.0, 0.0, 1.0],
+      ]
+    )
+    atoms = [
+      CrystalCell::Atom.new( 0, [0.0, 0.0, 0.0], )
+    ]
+    @c14 = CrystalCell::Cell.new( axes, atoms)
+    @c14.comment = 'tetragonal'
+
+    #tetragonal-b
+    axes = CrystalCell::LatticeAxes.new(
+      [
+        [2.0, 0.0, 0.0],
+        [0.0, 1.0, 0.0],
+        [0.0, 0.0, 2.0],
+      ]
+    )
+    atoms = [
+      CrystalCell::Atom.new( 0, [0.0, 0.0, 0.0], )
+    ]
+    @c14b = CrystalCell::Cell.new( axes, atoms)
+    @c14b.comment = 'tetragonal-b'
+
+    #triclinic
+    axes = CrystalCell::LatticeAxes.new(
+      [
+        [1.5, 1.4, 1.3],
+        [0.0, 1.2, 1.1],
+        [0.0, 0.0, 1.0],
+      ]
+    )
+    atoms = [
+      CrystalCell::Atom.new( 0, [0.0, 0.0, 0.0] ),
+      CrystalCell::Atom.new( 0, [0.1, 0.2, 0.3] ),
+      CrystalCell::Atom.new( 0, [0.2, 0.3, 0.4] ),
+    ]
+    @c15 = CrystalCell::Cell.new( axes, atoms)
+    @c15.comment = 'triclinic'
+
+    #trigonal
+    axes = CrystalCell::LatticeAxes.new(
+      [
+        [0.86602540378443864676, 0.5, 0.0],
+        [0.0, 1.0, 0.0],
+        [0.0, 0.0, 1.0],
+      ]
+    )
+    atoms = [
+      CrystalCell::Atom.new( 0, [0.0, 0.0, 0.0]),
+      CrystalCell::Atom.new( 0, [0.333333333333333, 0.333333333333333, 0.333333333333333] ),
+    ]
+    @c16 = CrystalCell::Cell.new( axes, atoms)
+    @c16.comment = 'trigonal'
   end
 
   def test_initialize
@@ -399,7 +517,7 @@ class TC_Cell < Test::Unit::TestCase
     cell = CrystalCell::Cell.new( CrystalCell::LatticeAxes.new([ [2.0, 2.0, 2.0], [0.0, 2.0, 2.0], [0.0, 0.0, 2.0]]))
     assert_equal( true , @c00 == cell )
     assert_equal( false, @c01 == cell )
-    
+
     cell = CrystalCell::Cell.new( CrystalCell::LatticeAxes.new([ [2.0, 2.0, 2.0], [0.0, 2.0, 2.0], [0.0, 0.0, 2.0]]))
     cell.add_atom(CrystalCell::Atom.new( 0, [0.0, 0.0, 0.0] ))
     cell.add_atom(CrystalCell::Atom.new( 1, [0.1, 0.2, 0.3] ))
@@ -540,32 +658,32 @@ class TC_Cell < Test::Unit::TestCase
 
     #
     StringIO.new do |io|
-      @c00.dump_poscar( [], io ) 
+      @c00.dump_poscar( [], io )
       assert_equal( c00_str, io.read )
     end
 
     StringIO.new do |io|
-      @c02.dump_poscar( [ 'Li', 'O' ], io ) 
+      @c02.dump_poscar( [ 'Li', 'O' ], io )
       assert_equal( c02, io.read )
     end
 
     StringIO.new do |io|
-      @c01.dump_poscar( [ 0, 1 ], io ) 
+      @c01.dump_poscar( [ 0, 1 ], io )
       assert_equal( c01, io.read )
     end
 
     StringIO.new do |io|
-      @c03.dump_poscar( [ 'Li', 'O' ], io ) 
+      @c03.dump_poscar( [ 'Li', 'O' ], io )
       assert_equal( c03, io.read )
     end
 
     StringIO.new do |io|
-      @c04.dump_poscar( [ 'Li', 'O' ], io ) 
+      @c04.dump_poscar( [ 'Li', 'O' ], io )
       assert_equal( c04, io.read )
     end
 
     StringIO.new do |io|
-      @c05.dump_poscar( [ 'Li', 'O' ], io ) 
+      @c05.dump_poscar( [ 'Li', 'O' ], io )
       assert_equal( c05, io.read )
     end
 
@@ -1159,126 +1277,211 @@ class TC_Cell < Test::Unit::TestCase
   end
 
   def test_independent_axes
-    #cubic
-    axes = CrystalCell::LatticeAxes.new(
-      [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
-    )
-    atoms = [
-      CrystalCell::Atom.new( 0, [0.0, 0.0, 0.0] )
-    ]
-    c00 = CrystalCell::Cell.new( axes, atoms)
-    c00.comment = 'cubic'
-    assert_equal([false, false, false], c00.independent_axes)
+    assert_equal([false, false, false], @c10.independent_axes)
+    assert_equal([false, false, true ], @c11.independent_axes)
+    assert_equal([true , true , true ], @c12.independent_axes)
+    assert_equal([true , true , true ], @c13.independent_axes)
+    assert_equal([false, false, true ], @c14.independent_axes)
+    assert_equal([false, true , false], @c14b.independent_axes)
+    assert_equal([true , true , true ], @c15.independent_axes)
+    assert_equal([false, false, true ], @c16.independent_axes)
+  end
 
-    #hexagonal
-    axes = CrystalCell::LatticeAxes.new(
-      [
-        [0.86602540378443864676, 0.5, 0.0],
-        [0.0, 1.0, 0.0],
-        [0.0, 0.0, 1.0],
-      ]
-    )
-    atoms = [
-      CrystalCell::Atom.new( 0, [0.0, 0.0, 0.0] )
-    ]
-    c01 = CrystalCell::Cell.new( axes, atoms)
-    c01.comment = 'hexagonal'
-    assert_equal([false, false, true ], c01.independent_axes)
+  def test_symmetry_operations
+    f13 = 1.0/3.0
 
-    #monoclinic
-    axes = CrystalCell::LatticeAxes.new(
-      [ [1.5, 1.4, 1.0],
-        [0.0, 1.2, 1.0],
-        [0.0, 0.0, 1.0],
-      ]
-    )
-    atoms = [
-      CrystalCell::Atom.new( 0, [0.0, 0.0, 0.0]),
-      CrystalCell::Atom.new( 0, [0.1, 0.2, 0.3]),
-      CrystalCell::Atom.new( 0, [0.2, 0.3, 0.4]),
+    #cubic/POSCAR #Pm-3m (221) / m-3m / -P 4 2 3 (517)
+    corrects = [
+      {:rotation => [[ 1,  0,  0], [ 0,  1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----01----
+      {:rotation => [[-1,  0,  0], [ 0, -1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----02----
+      {:rotation => [[ 0, -1,  0], [ 1,  0,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----03----
+      {:rotation => [[ 0,  1,  0], [-1,  0,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----04----
+      {:rotation => [[-1,  0,  0], [ 0, -1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----05----
+      {:rotation => [[ 1,  0,  0], [ 0,  1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----06----
+      {:rotation => [[ 0,  1,  0], [-1,  0,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----07----
+      {:rotation => [[ 0, -1,  0], [ 1,  0,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----08----
+      {:rotation => [[ 1,  0,  0], [ 0, -1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----09----
+      {:rotation => [[-1,  0,  0], [ 0,  1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----10----
+      {:rotation => [[ 0, -1,  0], [-1,  0,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----11----
+      {:rotation => [[ 0,  1,  0], [ 1,  0,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----12----
+      {:rotation => [[-1,  0,  0], [ 0,  1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----13----
+      {:rotation => [[ 1,  0,  0], [ 0, -1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----14----
+      {:rotation => [[ 0,  1,  0], [ 1,  0,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----15----
+      {:rotation => [[ 0, -1,  0], [-1,  0,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----16----
+      {:rotation => [[ 0,  0,  1], [ 1,  0,  0], [ 0,  1,  0]], :translation => [0.0, 0.0, 0.0]}, #----17----
+      {:rotation => [[ 0,  0, -1], [-1,  0,  0], [ 0, -1,  0]], :translation => [0.0, 0.0, 0.0]}, #----18----
+      {:rotation => [[ 0,  0,  1], [ 0, -1,  0], [ 1,  0,  0]], :translation => [0.0, 0.0, 0.0]}, #----19----
+      {:rotation => [[ 0,  0, -1], [ 0,  1,  0], [-1,  0,  0]], :translation => [0.0, 0.0, 0.0]}, #----20----
+      {:rotation => [[ 0,  0,  1], [-1,  0,  0], [ 0, -1,  0]], :translation => [0.0, 0.0, 0.0]}, #----21----
+      {:rotation => [[ 0,  0, -1], [ 1,  0,  0], [ 0,  1,  0]], :translation => [0.0, 0.0, 0.0]}, #----22----
+      {:rotation => [[ 0,  0,  1], [ 0,  1,  0], [-1,  0,  0]], :translation => [0.0, 0.0, 0.0]}, #----23----
+      {:rotation => [[ 0,  0, -1], [ 0, -1,  0], [ 1,  0,  0]], :translation => [0.0, 0.0, 0.0]}, #----24----
+      {:rotation => [[ 0,  0, -1], [ 1,  0,  0], [ 0, -1,  0]], :translation => [0.0, 0.0, 0.0]}, #----25----
+      {:rotation => [[ 0,  0,  1], [-1,  0,  0], [ 0,  1,  0]], :translation => [0.0, 0.0, 0.0]}, #----26----
+      {:rotation => [[ 0,  0, -1], [ 0, -1,  0], [-1,  0,  0]], :translation => [0.0, 0.0, 0.0]}, #----27----
+      {:rotation => [[ 0,  0,  1], [ 0,  1,  0], [ 1,  0,  0]], :translation => [0.0, 0.0, 0.0]}, #----28----
+      {:rotation => [[ 0,  0, -1], [-1,  0,  0], [ 0,  1,  0]], :translation => [0.0, 0.0, 0.0]}, #----29----
+      {:rotation => [[ 0,  0,  1], [ 1,  0,  0], [ 0, -1,  0]], :translation => [0.0, 0.0, 0.0]}, #----30----
+      {:rotation => [[ 0,  0, -1], [ 0,  1,  0], [ 1,  0,  0]], :translation => [0.0, 0.0, 0.0]}, #----31----
+      {:rotation => [[ 0,  0,  1], [ 0, -1,  0], [-1,  0,  0]], :translation => [0.0, 0.0, 0.0]}, #----32----
+      {:rotation => [[ 0,  1,  0], [ 0,  0,  1], [ 1,  0,  0]], :translation => [0.0, 0.0, 0.0]}, #----33----
+      {:rotation => [[ 0, -1,  0], [ 0,  0, -1], [-1,  0,  0]], :translation => [0.0, 0.0, 0.0]}, #----34----
+      {:rotation => [[ 1,  0,  0], [ 0,  0,  1], [ 0, -1,  0]], :translation => [0.0, 0.0, 0.0]}, #----35----
+      {:rotation => [[-1,  0,  0], [ 0,  0, -1], [ 0,  1,  0]], :translation => [0.0, 0.0, 0.0]}, #----36----
+      {:rotation => [[ 0, -1,  0], [ 0,  0,  1], [-1,  0,  0]], :translation => [0.0, 0.0, 0.0]}, #----37----
+      {:rotation => [[ 0,  1,  0], [ 0,  0, -1], [ 1,  0,  0]], :translation => [0.0, 0.0, 0.0]}, #----38----
+      {:rotation => [[-1,  0,  0], [ 0,  0,  1], [ 0,  1,  0]], :translation => [0.0, 0.0, 0.0]}, #----39----
+      {:rotation => [[ 1,  0,  0], [ 0,  0, -1], [ 0, -1,  0]], :translation => [0.0, 0.0, 0.0]}, #----40----
+      {:rotation => [[ 0, -1,  0], [ 0,  0, -1], [ 1,  0,  0]], :translation => [0.0, 0.0, 0.0]}, #----41----
+      {:rotation => [[ 0,  1,  0], [ 0,  0,  1], [-1,  0,  0]], :translation => [0.0, 0.0, 0.0]}, #----42----
+      {:rotation => [[-1,  0,  0], [ 0,  0, -1], [ 0, -1,  0]], :translation => [0.0, 0.0, 0.0]}, #----43----
+      {:rotation => [[ 1,  0,  0], [ 0,  0,  1], [ 0,  1,  0]], :translation => [0.0, 0.0, 0.0]}, #----44----
+      {:rotation => [[ 0,  1,  0], [ 0,  0, -1], [-1,  0,  0]], :translation => [0.0, 0.0, 0.0]}, #----45----
+      {:rotation => [[ 0, -1,  0], [ 0,  0,  1], [ 1,  0,  0]], :translation => [0.0, 0.0, 0.0]}, #----46----
+      {:rotation => [[ 1,  0,  0], [ 0,  0, -1], [ 0,  1,  0]], :translation => [0.0, 0.0, 0.0]}, #----47----
+      {:rotation => [[-1,  0,  0], [ 0,  0,  1], [ 0, -1,  0]], :translation => [0.0, 0.0, 0.0]}, #----48----
     ]
-    c02 = CrystalCell::Cell.new( axes, atoms)
-    c02.comment = 'monoclinic'
-    assert_equal([true , true , true ], c02.independent_axes)
+    results = @c10 .symmetry_operations($symprec, $angle_tolerance)
+    assert_equal(corrects.size, results.size)
+    corrects.size.times do |index|
+      assert_equal(corrects[index], results[index])
+    end
 
-    #orthorhombic
-    axes = CrystalCell::LatticeAxes.new(
-      [
-        [3.0, 0.0, 0.0],
-        [0.0, 2.0, 0.0],
-        [0.0, 0.0, 1.0],
-      ]
-    )
-    atoms = [
-      CrystalCell::Atom.new( 0, [0.0, 0.0, 0.0])
+    #hexagonal/POSCAR #P6/mmm (191) / 6/mmm/ -P 6 2 (485)
+    corrects = [
+      {:rotation => [[ 1,  0,  0], [ 0,  1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----01----
+      {:rotation => [[-1,  0,  0], [ 0, -1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----02----
+      {:rotation => [[ 0, -1,  0], [ 1,  1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----03----
+      {:rotation => [[ 0,  1,  0], [-1, -1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----04----
+      {:rotation => [[-1, -1,  0], [ 1,  0,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----05----
+      {:rotation => [[ 1,  1,  0], [-1,  0,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----06----
+      {:rotation => [[-1,  0,  0], [ 0, -1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----07----
+      {:rotation => [[ 1,  0,  0], [ 0,  1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----08----
+      {:rotation => [[ 0,  1,  0], [-1, -1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----09----
+      {:rotation => [[ 0, -1,  0], [ 1,  1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----10----
+      {:rotation => [[ 1,  1,  0], [-1,  0,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----11----
+      {:rotation => [[-1, -1,  0], [ 1,  0,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----12----
+      {:rotation => [[ 0,  1,  0], [ 1,  0,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----13----
+      {:rotation => [[ 0, -1,  0], [-1,  0,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----14----
+      {:rotation => [[ 1,  1,  0], [ 0, -1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----15----
+      {:rotation => [[-1, -1,  0], [ 0,  1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----16----
+      {:rotation => [[ 1,  0,  0], [-1, -1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----17----
+      {:rotation => [[-1,  0,  0], [ 1,  1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----18----
+      {:rotation => [[ 0, -1,  0], [-1,  0,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----19----
+      {:rotation => [[ 0,  1,  0], [ 1,  0,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----20----
+      {:rotation => [[-1, -1,  0], [ 0,  1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----21----
+      {:rotation => [[ 1,  1,  0], [ 0, -1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----22----
+      {:rotation => [[-1,  0,  0], [ 1,  1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----23----
+      {:rotation => [[ 1,  0,  0], [-1, -1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----24----
     ]
-    c03 = CrystalCell::Cell.new( axes, atoms)
-    c03.comment = 'orthorhombic'
-    assert_equal([true , true , true ], c03.independent_axes)
+    assert_equal(corrects, @c11 .symmetry_operations($symprec, $angle_tolerance)) #hexagonal
 
-    #tetragonal
-    axes = CrystalCell::LatticeAxes.new(
-      [
-        [2.0, 0.0, 0.0],
-        [0.0, 2.0, 0.0],
-        [0.0, 0.0, 1.0],
-      ]
-    )
-    atoms = [
-      CrystalCell::Atom.new( 0, [0.0, 0.0, 0.0], )
+    #monoclinic/POSCAR #P2/m (10) / 2/m  / -P 2y (57)
+    corrects = [
+      {:rotation => [[ 1,  0,  0], [ 0,  1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----01----
+      {:rotation => [[-1,  0,  0], [ 0, -1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----02----
+      {:rotation => [[-1,  0,  0], [ 0, -1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----03----
+      {:rotation => [[ 1,  0,  0], [ 0,  1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----04----
     ]
-    c04 = CrystalCell::Cell.new( axes, atoms)
-    c04.comment = 'tetragonal'
-    assert_equal([false, false, true ], c04.independent_axes)
+    #pp @c12
+    assert_equal(corrects, @c12 .symmetry_operations($symprec, $angle_tolerance)) #monoclinic
 
-    #tetragonal-b
-    axes = CrystalCell::LatticeAxes.new(
-      [
-        [2.0, 0.0, 0.0],
-        [0.0, 1.0, 0.0],
-        [0.0, 0.0, 2.0],
-      ]
-    )
-    atoms = [
-      CrystalCell::Atom.new( 0, [0.0, 0.0, 0.0], )
+    #orthorhombic/POSCAR #Pmmm (47) / mmm  / -P 2 2 (227)
+    corrects = [
+      {:rotation => [[ 1,  0,  0], [ 0,  1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----01----
+      {:rotation => [[-1,  0,  0], [ 0, -1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----02----
+      {:rotation => [[-1,  0,  0], [ 0, -1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----03----
+      {:rotation => [[ 1,  0,  0], [ 0,  1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----04----
+      {:rotation => [[ 1,  0,  0], [ 0, -1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----05----
+      {:rotation => [[-1,  0,  0], [ 0,  1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----06----
+      {:rotation => [[-1,  0,  0], [ 0,  1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----07----
+      {:rotation => [[ 1,  0,  0], [ 0, -1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----08----
     ]
-    c04b = CrystalCell::Cell.new( axes, atoms)
-    c04b.comment = 'tetragonal-b'
-    assert_equal([false, true , false], c04b.independent_axes)
-   
+    assert_equal(corrects, @c13 .symmetry_operations($symprec, $angle_tolerance)) #orthorhombic
 
-    #triclinic
-    axes = CrystalCell::LatticeAxes.new(
-      [
-        [1.5, 1.4, 1.3],
-        [0.0, 1.2, 1.1],
-        [0.0, 0.0, 1.0],
-      ]
-    )
-    atoms = [
-      CrystalCell::Atom.new( 0, [0.0, 0.0, 0.0] ),
-      CrystalCell::Atom.new( 0, [0.1, 0.2, 0.3] ),
-      CrystalCell::Atom.new( 0, [0.2, 0.3, 0.4] ),
+    #tetragonal-b/POSCAR #P4/mmm (123) / 4/mmm/ -P 4 2 (400)
+    corrects = [
+      {:rotation => [[ 1,  0,  0], [ 0,  1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----01----
+      {:rotation => [[-1,  0,  0], [ 0, -1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----02----
+      {:rotation => [[ 0,  0,  1], [ 0,  1,  0], [-1,  0,  0]], :translation => [0.0, 0.0, 0.0]}, #----03----
+      {:rotation => [[ 0,  0, -1], [ 0, -1,  0], [ 1,  0,  0]], :translation => [0.0, 0.0, 0.0]}, #----04----
+      {:rotation => [[-1,  0,  0], [ 0,  1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----05----
+      {:rotation => [[ 1,  0,  0], [ 0, -1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----06----
+      {:rotation => [[ 0,  0, -1], [ 0,  1,  0], [ 1,  0,  0]], :translation => [0.0, 0.0, 0.0]}, #----07----
+      {:rotation => [[ 0,  0,  1], [ 0, -1,  0], [-1,  0,  0]], :translation => [0.0, 0.0, 0.0]}, #----08----
+      {:rotation => [[-1,  0,  0], [ 0, -1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----09----
+      {:rotation => [[ 1,  0,  0], [ 0,  1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----10----
+      {:rotation => [[ 0,  0, -1], [ 0, -1,  0], [-1,  0,  0]], :translation => [0.0, 0.0, 0.0]}, #----11----
+      {:rotation => [[ 0,  0,  1], [ 0,  1,  0], [ 1,  0,  0]], :translation => [0.0, 0.0, 0.0]}, #----12----
+      {:rotation => [[ 1,  0,  0], [ 0, -1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----13----
+      {:rotation => [[-1,  0,  0], [ 0,  1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----14----
+      {:rotation => [[ 0,  0,  1], [ 0, -1,  0], [ 1,  0,  0]], :translation => [0.0, 0.0, 0.0]}, #----15----
+      {:rotation => [[ 0,  0, -1], [ 0,  1,  0], [-1,  0,  0]], :translation => [0.0, 0.0, 0.0]}, #----16----
     ]
-    c05 = CrystalCell::Cell.new( axes, atoms)
-    c05.comment = 'triclinic'
-    assert_equal([true , true , true ], c05.independent_axes)
+    assert_equal(corrects, @c14b .symmetry_operations($symprec, $angle_tolerance)) #tetragonal
 
-    #trigonal
-    axes = CrystalCell::LatticeAxes.new(
-      [
-        [0.86602540378443864676, 0.5, 0.0],
-        [0.0, 1.0, 0.0],
-        [0.0, 0.0, 1.0],
-      ]
-    )
-    atoms = [
-      CrystalCell::Atom.new( 0, [0.0, 0.0, 0.0]),
-      CrystalCell::Atom.new( 0, [0.333333333333333, 0.333333333333333, 0.333333333333333] ),
+    #tetragonal/POSCAR #P4/mmm (123) / 4/mmm/ -P 4 2 (400)
+    corrects = [
+      {:rotation => [[ 1,  0,  0], [ 0,  1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----01----
+      {:rotation => [[-1,  0,  0], [ 0, -1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----02----
+      {:rotation => [[ 0, -1,  0], [ 1,  0,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----03----
+      {:rotation => [[ 0,  1,  0], [-1,  0,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----04----
+      {:rotation => [[-1,  0,  0], [ 0, -1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----05----
+      {:rotation => [[ 1,  0,  0], [ 0,  1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----06----
+      {:rotation => [[ 0,  1,  0], [-1,  0,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----07----
+      {:rotation => [[ 0, -1,  0], [ 1,  0,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----08----
+      {:rotation => [[ 1,  0,  0], [ 0, -1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----09----
+      {:rotation => [[-1,  0,  0], [ 0,  1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----10----
+      {:rotation => [[ 0, -1,  0], [-1,  0,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----11----
+      {:rotation => [[ 0,  1,  0], [ 1,  0,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----12----
+      {:rotation => [[-1,  0,  0], [ 0,  1,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----13----
+      {:rotation => [[ 1,  0,  0], [ 0, -1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----14----
+      {:rotation => [[ 0,  1,  0], [ 1,  0,  0], [ 0,  0, -1]], :translation => [0.0, 0.0, 0.0]}, #----15----
+      {:rotation => [[ 0, -1,  0], [-1,  0,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----16----
     ]
-    c06 = CrystalCell::Cell.new( axes, atoms)
-    c06.comment = 'trigonal'
-    assert_equal([false, false, true ], c05.independent_axes)
+    assert_equal(corrects, @c14.symmetry_operations($symprec, $angle_tolerance)) #tetragonal-b
+
+    #triclinic/POSCAR #P1 (1) / 1    / P 1 (1)
+    corrects = [
+      {:rotation => [[ 1,  0,  0], [ 0,  1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----01----
+    ]
+    assert_equal(corrects, @c15 .symmetry_operations($symprec, $angle_tolerance)) #triclinic
+
+    #trigonal/POSCAR #P-3m1 (164) / -3m  / -P 3 2= (456)
+    corrects = [
+      {:rotation => [[ 1,  0,  0], [ 0,  1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 0.0]}, #----01----
+      {:rotation => [[-1,  0,  0], [ 0, -1,  0], [ 0,  0, -1]], :translation => [f13, f13, f13]}, #----02----
+      {:rotation => [[-1, -1,  0], [ 1,  0,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 1.0]}, #----03----
+      {:rotation => [[ 1,  1,  0], [-1,  0,  0], [ 0,  0, -1]], :translation => [f13, f13, f13]}, #----04----
+      {:rotation => [[ 0,  1,  0], [-1, -1,  0], [ 0,  0,  1]], :translation => [1.0, 0.0, 1.0]}, #----05----
+      {:rotation => [[ 0, -1,  0], [ 1,  1,  0], [ 0,  0, -1]], :translation => [f13, f13, f13]}, #----06----
+      {:rotation => [[ 0, -1,  0], [-1,  0,  0], [ 0,  0, -1]], :translation => [f13, f13, f13]}, #----07----
+      {:rotation => [[ 0,  1,  0], [ 1,  0,  0], [ 0,  0,  1]], :translation => [1.0, 0.0, 1.0]}, #----08----
+      {:rotation => [[-1,  0,  0], [ 1,  1,  0], [ 0,  0, -1]], :translation => [f13, f13, f13]}, #----09----
+      {:rotation => [[ 1,  0,  0], [-1, -1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 1.0]}, #----10----
+      {:rotation => [[ 1,  1,  0], [ 0, -1,  0], [ 0,  0, -1]], :translation => [f13, f13, f13]}, #----11----
+      {:rotation => [[-1, -1,  0], [ 0,  1,  0], [ 0,  0,  1]], :translation => [0.0, 0.0, 1.0]}, #----12----
+    ]
+    results =  @c16.symmetry_operations($symprec, $angle_tolerance)
+    corrects.size.times do |index|
+      3.times do |i|
+        3.times do |j|
+          assert_in_delta(
+            corrects[index][:rotation][i][j], 
+            results[index][:rotation][i][j], 
+            $tolerance
+          )
+        end
+      end
+
+      3.times do |i|
+        assert_in_delta(
+          corrects[index][:translation][i],
+          results[index][:translation][i],
+          $tolerance
+        )
+      end
+    end
   end
 
 end

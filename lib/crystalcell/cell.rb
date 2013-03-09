@@ -10,6 +10,14 @@ require "array_select_indices.rb"
 gem "maset"
 require "maset/mapping.rb"
 
+begin
+  require "getspg.so"
+rescue LoadError
+  raise LoadError,
+    "LoadError: 'spglib' seems not to be installed into the system."
+end
+include Getspg
+
 #Class for crystal cell with lattice axes and atoms.
 #Symmetry operations are not considered in this class.
 #A sub class SymmetricCell can do, which overrides equal_in_delta methods.
@@ -104,7 +112,7 @@ class CrystalCell::Cell
   end
 
   #Set element name to each atom in self.
-  #Argument 'elems' is a list of new names, which has [] method. e.g., 
+  #Argument 'elems' is a list of new names, which has [] method. e.g.,
   #  1. Array, [ 'Li', 'O' ]
   #  2. Hash , { 0 => 'Li', 1 => 'O' ]
   #  3. Hash , { 'Li' => 'Na' }
@@ -335,7 +343,7 @@ class CrystalCell::Cell
         axes << @axes[ i ]
       end
     end
-    @axes = CrystalCell::LatticeAxes.new( axes ) 
+    @axes = CrystalCell::LatticeAxes.new( axes )
 
     atoms = []
     @atoms.each do |atom|
@@ -363,7 +371,7 @@ class CrystalCell::Cell
   #    axes << @axes[ i ]
   #  end
   #end
-  #@axes = CrystalCell::LatticeAxes.new( axes ) 
+  #@axes = CrystalCell::LatticeAxes.new( axes )
 
   #atoms = []
   #@atoms.each do |atom|
@@ -451,23 +459,60 @@ class CrystalCell::Cell
   end
 
   #Return information of axes symmetry.
-  #E.g., 
+  #E.g.,
   # [true , true , true ] when  a = b  = c, like cubic
   # [true , false, false] when  a = b != c, like hexagonal, trigonal, tetragonal
   # [false, true , false] (same as above)
   # [false, false, true ] (same as above)
   # [false, false, false] when  a != b != c, like triclinic, monoclinic, orthorhombic
   def independent_axes
-    begin
-      require "getspg.so"
-    rescue LoadError
-      raise LoadError,
-        "LoadError: 'spglib' seems not to be installed into the system."
-    end
-
+    symmetry_operations
   end
 
   private
+
+  #Return rotations of symmetry operations.
+  def symmetry_operations(symprec, angle_tolerance)
+    #begin
+    #  require "getspg.so"
+    #rescue LoadError
+    #  raise LoadError,
+    #    "LoadError: 'spglib' seems not to be installed into the system."
+    #end
+
+    #pp lattice           # => [[2.0, 0.0, 0.0], [1.2246063538223773e-16, 2.0, 0.0], [1.2246063538223773e-16, 1.2246063538223773e-16, 2.0]]
+    ##vasp の lattice 行と比べて転置しているのに注意。
+    #pp position          #=>[[0.0, 0.0, 0.0], [0.5, 0.0, 0.0], [0.5, 0.5, 0.0], [0.5, 0.5, 0.5]]
+    #pp types             #=>[1, 2, 3, 3]
+    #pp symprec           #=>1.0e-05
+    #pp angle_tolerance   #=>-1.0
+    axes_t = @axes.to_a.transpose
+
+    poss = positions.map {|pos| pos.to_a}
+
+    table = {}
+    types = elements.map do |elem|
+      table[elem] = ((table.size) +1) unless table.keys.include? elem
+      table[elem]
+    end
+
+    #pp axes_t, poss, types, symprec, angle_tolerance
+
+    spgnum, spg, hallnum, hall_symbol, t_mat, o_shift,
+    rotations, translations, wyckoffs =
+      #pp Getspg.methods.sort
+      #Getspg::get_dataset(axes_t, poss, types, symprec, angle_tolerance)
+      get_dataset(axes_t, poss, types, symprec, angle_tolerance)
+
+    results = []
+    rotations.size.times do |index|
+      results << {
+        :rotation => rotations[index],
+        :translation => translations[index]
+      }
+    end
+    return results
+  end
 
   #POSCAR の内容の文字列を生成。
   #文字列の配列ではなく、改行文字を含む1つの文字列である点に注意。
@@ -489,7 +534,7 @@ class CrystalCell::Cell
   #VASP へのインターフェイスである POSCAR ファイルへの書き出しに限定されるので
   #他への影響はほとんどなく、気にしなくて良いだろう。
   def create_poscar( element_order )
-    #element_order と elements が一対一対応していなければ raise 
+    #element_order と elements が一対一対応していなければ raise
     raise "Cell::create_poscar, element_order mismatches to elements." if (! Mapping::map?( elements.uniq, element_order ){ |i, j| i == j } )
 
     results = []
