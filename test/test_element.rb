@@ -1,8 +1,6 @@
 #! /usr/bin/ruby
 
 require "helper"
-#require 'test/unit'
-#require 'crystalcell/element.rb'
 
 class TC_Element < Test::Unit::TestCase
   def setup

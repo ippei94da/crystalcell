@@ -1,8 +1,6 @@
 #! /usr/bin/env ruby
 
 require "pp"
-#require "crystalcell/cell"
-#require "crystalcell"
 
 # Class for crystal cell with periodic boundary.
 # Coordinates of atoms are kept in the region of 0 <= x_i < 1 of internal coordinate.

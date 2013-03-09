@@ -3,17 +3,9 @@
 require "pp"
 require "matrix"
 
-#require "crystalcell"
-
 require "rubygems"
 gem "builtinextension"
 require "array_select_indices.rb"
-
-#require "mageo"
-#gem "mageo"
-#require "mageo"
-#require "mageo/vector3d.rb"
-#require "mageo/vector3dinternal.rb"
 
 gem "maset"
 require "maset/mapping.rb"
@@ -466,6 +458,13 @@ class CrystalCell::Cell
   # [false, false, true ] (same as above)
   # [false, false, false] when  a != b != c, like triclinic, monoclinic, orthorhombic
   def independent_axes
+    begin
+      require "getspg.so"
+    rescue LoadError
+      raise LoadError,
+        "LoadError: 'spglib' seems not to be installed into the system."
+    end
+
   end
 
   private

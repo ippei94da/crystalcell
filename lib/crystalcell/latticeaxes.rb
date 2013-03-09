@@ -1,9 +1,4 @@
 require "rubygems"
-#gem "mageo"
-#require "mageo"
-#require "mageo/vector3d.rb"
-#require "mageo/vector3dinternal.rb"
-#require "mageo/axes.rb"
 gem "malge"
 require "malge/simultaneousequations.rb"
 

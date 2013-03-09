@@ -1,9 +1,4 @@
-
 raise "Atom class need ruby version later than 1.9." if RUBY_VERSION.to_f < 1.9
-
-
-#require "rubygems"
-#require "mageo"
 
 # Class for an atom in a cell.
 # This class doesn't have lattice information.

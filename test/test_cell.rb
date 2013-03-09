@@ -1,13 +1,7 @@
 #! /usr/bin/ruby1.9 -W
 
 require "helper"
-#require 'test/unit'
 require 'stringio'
-#require 'crystalcell/cell.rb'
-#require "rubygems"
-#gem "mageo"
-#require "mageo/vector3dinternal.rb"
-#require "mageo"
 
 class FooCell < CrystalCell::Cell; end
 
