@@ -465,8 +465,21 @@ class CrystalCell::Cell
   # [false, true , false] (same as above)
   # [false, false, true ] (same as above)
   # [false, false, false] when  a != b != c, like triclinic, monoclinic, orthorhombic
-  def independent_axes
-    symmetry_operations
+  def axis_independencies(symprec, angle_tolerance)
+    rotations = symmetry_operations(symprec, angle_tolerance).map {|oper| oper[:rotation]}
+
+    results = [true, true, true]
+    rotations.each do |rot|
+      3.times do |i|
+        3.times do |j|
+          next if rot[i][j] == 0
+          next if i == j
+          results[i] = false
+          results[j] = false
+        end
+      end
+    end
+    return results
   end
 
   private

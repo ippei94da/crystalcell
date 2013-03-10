@@ -1276,15 +1276,23 @@ class TC_Cell < Test::Unit::TestCase
     assert_in_delta(0.0, result.atoms[1].position[2], $tolerance)
   end
 
-  def test_independent_axes
-    assert_equal([false, false, false], @c10.independent_axes)
-    assert_equal([false, false, true ], @c11.independent_axes)
-    assert_equal([true , true , true ], @c12.independent_axes)
-    assert_equal([true , true , true ], @c13.independent_axes)
-    assert_equal([false, false, true ], @c14.independent_axes)
-    assert_equal([false, true , false], @c14b.independent_axes)
-    assert_equal([true , true , true ], @c15.independent_axes)
-    assert_equal([false, false, true ], @c16.independent_axes)
+  def test_axis_independencies
+    assert_equal([false, false, false],
+                 @c10 .axis_independencies($symprec, $angle_tolerance))
+    assert_equal([false, false, true ],
+                 @c11 .axis_independencies($symprec, $angle_tolerance))
+    assert_equal([true , true , true ],
+                 @c12 .axis_independencies($symprec, $angle_tolerance))
+    assert_equal([true , true , true ],
+                 @c13 .axis_independencies($symprec, $angle_tolerance))
+    assert_equal([false, false, true ],
+                 @c14 .axis_independencies($symprec, $angle_tolerance))
+    assert_equal([false, true , false],
+                 @c14b.axis_independencies($symprec, $angle_tolerance))
+    assert_equal([true , true , true ],
+                 @c15 .axis_independencies($symprec, $angle_tolerance))
+    assert_equal([false, false, true ],
+                 @c16 .axis_independencies($symprec, $angle_tolerance))
   end
 
   def test_symmetry_operations
