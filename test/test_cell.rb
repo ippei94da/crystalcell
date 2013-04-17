@@ -1277,6 +1277,12 @@ class TC_Cell < Test::Unit::TestCase
   end
 
   def test_axis_independencies
+    unless defined? Getspg
+      puts
+      puts "test_axis_independencies() is ignored because spglib is not installed."
+      return
+    end
+
     assert_equal([false, false, false],
                  @c10 .axis_independencies($symprec, $angle_tolerance))
     assert_equal([false, false, true ],
@@ -1296,6 +1302,12 @@ class TC_Cell < Test::Unit::TestCase
   end
 
   def test_symmetry_operations
+    unless defined? Getspg
+      puts
+      puts "test_symmetry_operations() is ignored because spglib is not installed."
+      return
+    end
+
     f13 = 1.0/3.0
 
     #cubic/POSCAR #Pm-3m (221) / m-3m / -P 4 2 3 (517)

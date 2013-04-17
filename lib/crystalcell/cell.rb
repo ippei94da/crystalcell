@@ -43,12 +43,10 @@ class CrystalCell::Cell
     require "getspg.so"
     include Getspg
   rescue LoadError
-    raise LoadError,
-      "LoadError: 'spglib' seems not to be installed into the system."
+    #Do nothing.
+    #To use basic functions even in environments without spglib.
   end
 
-  #if true
-  #end
   include Mageo
 
   class NoAtomError < Exception; end
@@ -57,6 +55,7 @@ class CrystalCell::Cell
   class SameAxesError < Exception; end
   class TypeError < Exception; end
   class ArgumentError < Exception; end #その他的エラー
+  class NoSpglibError < Exception; end
 
   attr_reader :element_names, :atoms, :axes
   attr_accessor :comment
@@ -498,6 +497,10 @@ class CrystalCell::Cell
     #  raise LoadError,
     #    "LoadError: 'spglib' seems not to be installed into the system."
     #end
+
+    unless defined? Getspg
+      raise NoSpglibError, "symmetry_operations() is called without spglib."
+    end
 
     #pp lattice           # => [[2.0, 0.0, 0.0], [1.2246063538223773e-16, 2.0, 0.0], [1.2246063538223773e-16, 1.2246063538223773e-16, 2.0]]
     ##vasp の lattice 行と比べて転置しているのに注意。
