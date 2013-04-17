@@ -6,6 +6,7 @@
 * Adjust to mageo-0.0.2.
 * Add Cell#symmetry_operations and Cell#axis_independencies.
   They depends on spglib.
+* Getspg loading is changed.
 
 == Version 0.0.0
 * Initial release.

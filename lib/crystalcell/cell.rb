@@ -10,13 +10,9 @@ require "array_select_indices.rb"
 gem "maset"
 require "maset/mapping.rb"
 
-begin
-  require "getspg.so"
-rescue LoadError
-  raise LoadError,
-    "LoadError: 'spglib' seems not to be installed into the system."
-end
-include Getspg
+#pp Getspg.methods.sort
+#pp Getspg
+#include Getspg
 
 #Class for crystal cell with lattice axes and atoms.
 #Symmetry operations are not considered in this class.
@@ -43,6 +39,16 @@ include Getspg
 #  疑問が生じる。
 class CrystalCell::Cell
 
+  begin
+    require "getspg.so"
+    include Getspg
+  rescue LoadError
+    raise LoadError,
+      "LoadError: 'spglib' seems not to be installed into the system."
+  end
+
+  #if true
+  #end
   include Mageo
 
   class NoAtomError < Exception; end
@@ -513,6 +519,7 @@ class CrystalCell::Cell
 
     spgnum, spg, hallnum, hall_symbol, t_mat, o_shift,
     rotations, translations, wyckoffs =
+      #include Getspg
       #pp Getspg.methods.sort
       #Getspg::get_dataset(axes_t, poss, types, symprec, angle_tolerance)
       get_dataset(axes_t, poss, types, symprec, angle_tolerance)
