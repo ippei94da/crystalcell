@@ -5,7 +5,7 @@ require "matrix"
 
 require "rubygems"
 gem "builtinextension"
-require "array_select_indices.rb"
+require "array/selectindices.rb"
 
 gem "maset"
 require "maset/mapping.rb"

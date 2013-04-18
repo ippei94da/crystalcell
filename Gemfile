@@ -13,6 +13,6 @@ group :development do
   gem "malge", ">= 0.0.6"
   gem "mageo", ">= 0.0.2"
   gem "maset", ">= 0.0.0"
-  gem "builtinextension", ">= 0.0.3"
+  gem "builtinextension", ">= 0.1.0"
   #gem "psych", ">= 0"
 end
