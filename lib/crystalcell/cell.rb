@@ -574,6 +574,9 @@ class CrystalCell::Cell
       elem_list[ elem ] = @atoms.select{ |atom| atom.element == elem }
     end
 
+    ##element symbols
+    results << "  " + element_order.join("  ")
+
     ##numbers of element atoms
     tmp = ''
     element_order.each do |elem|
