@@ -1,7 +1,10 @@
 = crystalcell Changelog
 
-== Master (for 0.0.2)
+== Master (for 0.0.3)
+
+== Version 0.0.2 [2014-08-30] released
 * Change cell.dump_poscar for vasp 5.
+* Update dependency on other gems.
 
 == Version 0.0.1 [2013-04-18] released
 * Change indent char from tab char to two spaces.
