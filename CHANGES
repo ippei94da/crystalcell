@@ -1,6 +1,7 @@
 = crystalcell Changelog
 
 == Master (for 0.0.3)
+* Add CrystalCell::LatticeAxes.new_lc
 
 == Version 0.0.2 [2014-08-30] released
 * Change cell.dump_poscar for vasp 5.
