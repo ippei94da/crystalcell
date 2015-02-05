@@ -1368,40 +1368,12 @@ class TC_Cell < Test::Unit::TestCase
             {:rotation => [[ 1,  0,  0], [ 0,    0, -1], [ 0,    1,  0]], :translation => [0.0, 0.0, 0.0]}, #----47----
             {:rotation => [[-1,  0,  0], [ 0,    0,  1], [ 0, -1,    0]], :translation => [0.0, 0.0, 0.0]}, #----48----
         ]
+        
         results = @c10 .symmetry_operations($symprec, $angle_tolerance)
         assert_equal(corrects.size, results.size)
         corrects.size.times do |index|
             assert_equal(corrects[index], results[index])
         end
-
-        #hexagonal/POSCAR #P6/mmm (191) / 6/mmm/ -P 6 2 (485)
-        corrects = [
-            {:rotation => [[ 1,  0,  0], [ 0,    1,  0], [ 0,    0,  1]], :translation => [0.0, 0.0, 0.0]}, #----01----
-            {:rotation => [[-1,  0,  0], [ 0, -1,    0], [ 0,    0, -1]], :translation => [0.0, 0.0, 0.0]}, #----02----
-            {:rotation => [[ 0, -1,  0], [ 1,    1,  0], [ 0,    0,  1]], :translation => [0.0, 0.0, 0.0]}, #----03----
-            {:rotation => [[ 0,  1,  0], [-1, -1,    0], [ 0,    0, -1]], :translation => [0.0, 0.0, 0.0]}, #----04----
-            {:rotation => [[-1, -1,  0], [ 1,    0,  0], [ 0,    0,  1]], :translation => [0.0, 0.0, 0.0]}, #----05----
-            {:rotation => [[ 1,  1,  0], [-1,    0,  0], [ 0,    0, -1]], :translation => [0.0, 0.0, 0.0]}, #----06----
-            {:rotation => [[-1,  0,  0], [ 0, -1,    0], [ 0,    0,  1]], :translation => [0.0, 0.0, 0.0]}, #----07----
-            {:rotation => [[ 1,  0,  0], [ 0,    1,  0], [ 0,    0, -1]], :translation => [0.0, 0.0, 0.0]}, #----08----
-            {:rotation => [[ 0,  1,  0], [-1, -1,    0], [ 0,    0,  1]], :translation => [0.0, 0.0, 0.0]}, #----09----
-            {:rotation => [[ 0, -1,  0], [ 1,    1,  0], [ 0,    0, -1]], :translation => [0.0, 0.0, 0.0]}, #----10----
-            {:rotation => [[ 1,  1,  0], [-1,    0,  0], [ 0,    0,  1]], :translation => [0.0, 0.0, 0.0]}, #----11----
-            {:rotation => [[-1, -1,  0], [ 1,    0,  0], [ 0,    0, -1]], :translation => [0.0, 0.0, 0.0]}, #----12----
-            {:rotation => [[ 0,  1,  0], [ 1,    0,  0], [ 0,    0, -1]], :translation => [0.0, 0.0, 0.0]}, #----13----
-            {:rotation => [[ 0, -1,  0], [-1,    0,  0], [ 0,    0,  1]], :translation => [0.0, 0.0, 0.0]}, #----14----
-            {:rotation => [[ 1,  1,  0], [ 0, -1,    0], [ 0,    0, -1]], :translation => [0.0, 0.0, 0.0]}, #----15----
-            {:rotation => [[-1, -1,  0], [ 0,    1,  0], [ 0,    0,  1]], :translation => [0.0, 0.0, 0.0]}, #----16----
-            {:rotation => [[ 1,  0,  0], [-1, -1,    0], [ 0,    0, -1]], :translation => [0.0, 0.0, 0.0]}, #----17----
-            {:rotation => [[-1,  0,  0], [ 1,    1,  0], [ 0,    0,  1]], :translation => [0.0, 0.0, 0.0]}, #----18----
-            {:rotation => [[ 0, -1,  0], [-1,    0,  0], [ 0,    0, -1]], :translation => [0.0, 0.0, 0.0]}, #----19----
-            {:rotation => [[ 0,  1,  0], [ 1,    0,  0], [ 0,    0,  1]], :translation => [0.0, 0.0, 0.0]}, #----20----
-            {:rotation => [[-1, -1,  0], [ 0,    1,  0], [ 0,    0, -1]], :translation => [0.0, 0.0, 0.0]}, #----21----
-            {:rotation => [[ 1,  1,  0], [ 0, -1,    0], [ 0,    0,  1]], :translation => [0.0, 0.0, 0.0]}, #----22----
-            {:rotation => [[-1,  0,  0], [ 1,    1,  0], [ 0,    0, -1]], :translation => [0.0, 0.0, 0.0]}, #----23----
-            {:rotation => [[ 1,  0,  0], [-1, -1,    0], [ 0,    0,  1]], :translation => [0.0, 0.0, 0.0]}, #----24----
-        ]
-        assert_equal(corrects, @c11 .symmetry_operations($symprec, $angle_tolerance)) #hexagonal
 
         #monoclinic/POSCAR #P2/m (10) / 2/m  / -P 2y (57)
         corrects = [
@@ -1494,8 +1466,8 @@ class TC_Cell < Test::Unit::TestCase
             3.times do |i|
                 3.times do |j|
                     assert_in_delta(
-                        corrects[index][:rotation][i][j], 
-                        results[index][:rotation][i][j], 
+                        corrects[index][:rotation][i][j] %1.0, 
+                        results[index][:rotation][i][j] %1.0, 
                         $tolerance
                     )
                 end
@@ -1503,8 +1475,8 @@ class TC_Cell < Test::Unit::TestCase
 
             3.times do |i|
                 assert_in_delta(
-                    corrects[index][:translation][i],
-                    results[index][:translation][i],
+                    corrects[index][:translation][i] % 1.0,
+                    results[index][:translation][i] %1.0,
                     $tolerance
                 )
             end

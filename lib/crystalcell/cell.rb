@@ -489,7 +489,7 @@ class CrystalCell::Cell
 
     private
 
-    #Return rotations of symmetry operations.
+    #Return rotations and translation of symmetry operations.
     def symmetry_operations(symprec, angle_tolerance)
         #begin
         #    require "getspg.so"
