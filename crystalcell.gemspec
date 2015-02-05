@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "crystalcell"
-  s.version = "0.0.2"
+  s.version = "0.0.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ippei94da"]
-  s.date = "2014-08-30"
+  s.date = "2015-02-05"
   s.description = "This gem provides Cell, LatticeAxes, Atom classes, and so on.\n    And this provides simple treatment of a periodic boundary condition.\n  "
   s.email = "ippei94da@gmail.com"
   s.extra_rdoc_files = [
@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
+    "crystalcell.gemspec",
     "lib/crystalcell.rb",
     "lib/crystalcell/atom.rb",
     "lib/crystalcell/cell.rb",
