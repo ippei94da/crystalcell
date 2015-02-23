@@ -19,6 +19,8 @@ require "malge/simultaneousequations.rb"
 #               [0.00000, 0.00000, 0.70710]]
 class CrystalCell::LatticeAxes < Mageo::Axes
 
+    attr_reader :axes
+
     class InitializeError < Exception; end
     class ArgumentError < Exception; end
     class TypeError < Exception; end
