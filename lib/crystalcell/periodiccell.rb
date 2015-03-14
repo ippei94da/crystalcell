@@ -118,7 +118,7 @@ class CrystalCell::PeriodicCell < CrystalCell::Cell
 
         pos0 = Vector3DInternal[* pos0.map{ |i| i - i.floor }]
         pos1 = Vector3DInternal[* pos1.map{ |i| i - i.floor }]
-        direction = nearest_direction( pos0, pos1 )
+        direction = self.class.nearest_direction( pos0, pos1 )
         3.times do |i|
             pos1[ i ] += direction[ i ]
         end
