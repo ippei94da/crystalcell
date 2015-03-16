@@ -236,396 +236,396 @@ class CrystalCell::Cell
     ##    end
     ##end
 
-    ##Cell rotation.( Destructive method)
-    ##Argument 'matrix' is 3x3 Array of float.
-    ##This method does not modify the position to the range between 0 and 1,
-    ##even if it was out of range.
-    #def rotate!( matrix )
-    #    @atoms.each { |atom|
-    #        old_pos = atom.position
-    #        new_pos = [0.0, 0.0, 0.0]
-    #        3.times do |y|
-    #            3.times do |x|
-    #                new_pos[y] += (matrix[y][x] * old_pos[x])
-    #            end
-    #        end
-    #        atom.set_position( new_pos )
-    #    }
-    #end
+    #Cell rotation.( Destructive method)
+    #Argument 'matrix' is 3x3 Array of float.
+    #This method does not modify the position to the range between 0 and 1,
+    #even if it was out of range.
+    def rotate!( matrix )
+        @atoms.each { |atom|
+            old_pos = atom.position
+            new_pos = [0.0, 0.0, 0.0]
+            3.times do |y|
+                3.times do |x|
+                    new_pos[y] += (matrix[y][x] * old_pos[x])
+                end
+            end
+            atom.set_position( new_pos )
+        }
+    end
 
-    ##Cell rotation.( Nondestructive method)
-    ##Argument 'matrix' is 3x3 Array of float.
-    ##This method does not modify the position to the range between 0 and 1,
-    ##even if it was out of range.
-    #def rotate( matrix )
-    #    t = Marshal.load( Marshal.dump( self ) )
-    #    t.rotate!( matrix )
-    #    return t
-    #end
+    #Cell rotation.( Nondestructive method)
+    #Argument 'matrix' is 3x3 Array of float.
+    #This method does not modify the position to the range between 0 and 1,
+    #even if it was out of range.
+    def rotate( matrix )
+        t = Marshal.load( Marshal.dump( self ) )
+        t.rotate!( matrix )
+        return t
+    end
 
-    ##並進移動を行う破壊的メソッド。
-    ##ary は Float 3 要素の配列。
-    #def translate!( ary )
-    #    @atoms.each { |atom| atom.translate!( ary ) }
-    #end
+    #並進移動を行う破壊的メソッド。
+    #ary は Float 3 要素の配列。
+    def translate!( ary )
+        @atoms.each { |atom| atom.translate!( ary ) }
+    end
 
-    ##並進移動を行う非破壊的メソッド。
-    ##ary は Float 3 要素の配列。
-    #def translate( ary )
-    #    t = Marshal.load( Marshal.dump( self ) )
-    #    t.translate!( ary )
-    #    return t
-    #end
+    #並進移動を行う非破壊的メソッド。
+    #ary は Float 3 要素の配列。
+    def translate( ary )
+        t = Marshal.load( Marshal.dump( self ) )
+        t.translate!( ary )
+        return t
+    end
 
-    ##Return arithmetic mean of atomic positions in an internal coordinates.
-    ##Raise 'Cell::NoAtomError' if no atoms included in self.
-    #def center_of_atoms
-    #    raise CrystalCell::Cell::NoAtomError if @atoms.size == 0
+    #Return arithmetic mean of atomic positions in an internal coordinates.
+    #Raise 'Cell::NoAtomError' if no atoms included in self.
+    def center_of_atoms
+        raise CrystalCell::Cell::NoAtomError if @atoms.size == 0
 
-    #    vec = Vector3DInternal[ 0.0, 0.0, 0.0 ]
-    #    @atoms.each { |i|
-    #        3.times { |j| vec[j] += i.position[j] }
-    #    }
-    #    vec *= 1.0/ @atoms.size
-    #end
+        vec = Vector3DInternal[ 0.0, 0.0, 0.0 ]
+        @atoms.each { |i|
+            3.times { |j| vec[j] += i.position[j] }
+        }
+        vec *= 1.0/ @atoms.size
+    end
 
-    ##Calculate volume.
-    #def calc_volume
-    #    axes = @axes.to_a.map { |i| Vector3D[*i] }
-    #    vA, vB, vC = axes[0..2]
-    #    Vector3D.scalar_triple_product( vA, vB, vC ).abs
-    #end
+    #Calculate volume.
+    def calc_volume
+        axes = @axes.to_a.map { |i| Vector3D[*i] }
+        vA, vB, vC = axes[0..2]
+        Vector3D.scalar_triple_product( vA, vB, vC ).abs
+    end
 
-    ##Generate a new cell with the same lattice consants,
-    ##containing atoms of indicated elements.
-    ##Argument 'elems' must be an array of element names.
-    ##含まれる @atoms の順序は、保存される。元素ごとに並び換えたりしない。
-    ##CrystalCell::Atom.element が elems の要素のどれかと完全一致しているもののみ対象となる。
-    ##サブクラスのインスタンスで実行した場合には、
-    ##サブクラスのインスタンスとして生成する。
-    #def cell_of_elements( elems )
-    #    result = self.class.new( @axes )
-    #    @atoms.each do |atom|
-    #        result.add_atom(atom) if elems.include?( atom.element )
-    #    end
-    #    return result
-    #end
+    #Generate a new cell with the same lattice consants,
+    #containing atoms of indicated elements.
+    #Argument 'elems' must be an array of element names.
+    #含まれる @atoms の順序は、保存される。元素ごとに並び換えたりしない。
+    #CrystalCell::Atom.element が elems の要素のどれかと完全一致しているもののみ対象となる。
+    #サブクラスのインスタンスで実行した場合には、
+    #サブクラスのインスタンスとして生成する。
+    def cell_of_elements( elems )
+        result = self.class.new( @axes )
+        @atoms.each do |atom|
+            result.add_atom(atom) if elems.include?( atom.element )
+        end
+        return result
+    end
 
-    ##格子定数の同じ2つのセルを合わせて、全ての原子が含まれる1つのセルを返す
-    ##非破壊的メソッド。
-    ##2つのセルの格子定数が異なれば例外 Cell::AxesMismatchError を発生させる。
-    ##内部的には @atoms はレシーバの @atoms のあとに引数の @atoms を追加した形になる。
-    ##comment は空文字になる。
-    ##原子座標の重複チェックなどは行わない。
-    #def unite( cell )
-    #    #raise Cell::AxesMismatchError unless @axes == cell.axes
-    #    result = Marshal.load( Marshal.dump( self ) )
-    #    cell.atoms.each do |atom|
-    #        result.add_atom(atom)
-    #    end
-    #    return result
-    #end
+    #格子定数の同じ2つのセルを合わせて、全ての原子が含まれる1つのセルを返す
+    #非破壊的メソッド。
+    #2つのセルの格子定数が異なれば例外 Cell::AxesMismatchError を発生させる。
+    #内部的には @atoms はレシーバの @atoms のあとに引数の @atoms を追加した形になる。
+    #comment は空文字になる。
+    #原子座標の重複チェックなどは行わない。
+    def unite( cell )
+        #raise Cell::AxesMismatchError unless @axes == cell.axes
+        result = Marshal.load( Marshal.dump( self ) )
+        cell.atoms.each do |atom|
+            result.add_atom(atom)
+        end
+        return result
+    end
 
-    ##任意の格子軸のベクトルを反転する破壊的メソッド。
-    ##大まかなイメージとしては、
-    ##格子軸の原点をセルを構成する8つの頂点のどれかに移動する操作と考えれば良い。
-    ##    ただし厳密には、格子ベクトルは LatticeAxes.new によって triangulate されるため、
-    ##    b 軸を反転させた時は a 軸も反転する。( b 軸の y成分を正にするため)
-    ##    c 軸を反転させた時は a, b 軸も反転する。( c 軸の z成分を正にするため)
-    ##セルの形状、内部のモチーフは保存する。
-    ##原子の絶対座標は移動せず、内部座標の表現が変わる。
-    ##引数 axis_id は 0, 1, 2 のいずれかの値を取り、それぞれ x, y, z軸を表す。
-    ##x, y, z軸の関係は、右手系と左手系が入れ替わる。
+    #任意の格子軸のベクトルを反転する破壊的メソッド。
+    #大まかなイメージとしては、
+    #格子軸の原点をセルを構成する8つの頂点のどれかに移動する操作と考えれば良い。
+    #    ただし厳密には、格子ベクトルは LatticeAxes.new によって triangulate されるため、
+    #    b 軸を反転させた時は a 軸も反転する。( b 軸の y成分を正にするため)
+    #    c 軸を反転させた時は a, b 軸も反転する。( c 軸の z成分を正にするため)
+    #セルの形状、内部のモチーフは保存する。
+    #原子の絶対座標は移動せず、内部座標の表現が変わる。
+    #引数 axis_id は 0, 1, 2 のいずれかの値を取り、それぞれ x, y, z軸を表す。
+    #x, y, z軸の関係は、右手系と左手系が入れ替わる。
+    def inverse_axis!( axis_id )
+        axis_id = axis_id.to_i
+        raise CrystalCell::Cell::AxesRangeError if ( axis_id < 0 || 2 < axis_id )
+
+        axes = []
+        3.times do |i|
+            if ( i == axis_id )
+                axes << @axes[ i ] * (-1.0)
+            else
+                axes << @axes[ i ]
+            end
+        end
+        @axes = CrystalCell::LatticeAxes.new( axes )
+
+        atoms = []
+        @atoms.each do |atom|
+            position = []
+            3.times do |i|
+                if i == axis_id
+                    position[i] = atom.position[i] * (-1)
+                else
+                    position[i] = atom.position[i]
+                end
+            end
+            atom.position = Vector3DInternal[*position]
+        end
+    end
+
     #def inverse_axis!( axis_id )
-    #    axis_id = axis_id.to_i
-    #    raise CrystalCell::Cell::AxesRangeError if ( axis_id < 0 || 2 < axis_id )
+    #axis_id = axis_id.to_i
+    #raise Cell::AxesRangeError if ( axis_id < 0 || 2 < axis_id )
 
-    #    axes = []
+    #axes = []
+    #3.times do |i|
+    #    if ( i == axis_id )
+    #        axes << @axes[ i ] * (-1.0)
+    #    else
+    #        axes << @axes[ i ]
+    #    end
+    #end
+    #@axes = CrystalCell::LatticeAxes.new( axes )
+
+    #atoms = []
+    #@atoms.each do |atom|
+    #    position = []
     #    3.times do |i|
-    #        if ( i == axis_id )
-    #            axes << @axes[ i ] * (-1.0)
+    #        if i == axis_id
+    #            position[i] = atom.position[i] * (-1)
     #        else
-    #            axes << @axes[ i ]
+    #            position[i] = atom.position[i]
     #        end
     #    end
-    #    @axes = CrystalCell::LatticeAxes.new( axes )
-
-    #    atoms = []
-    #    @atoms.each do |atom|
-    #        position = []
-    #        3.times do |i|
-    #            if i == axis_id
-    #                position[i] = atom.position[i] * (-1)
-    #            else
-    #                position[i] = atom.position[i]
-    #            end
-    #        end
-    #        atom.position = Vector3DInternal[*position]
-    #    end
+    #    atom.position
+    #    atoms << CrystalCell::Atom.new( atom.element, position, atom.name, atom.movable_flags )
+    #end
+    #@atoms = atoms
     #end
 
-    ##def inverse_axis!( axis_id )
-    ##axis_id = axis_id.to_i
-    ##raise Cell::AxesRangeError if ( axis_id < 0 || 2 < axis_id )
+    #inverse_axis! の非破壊版。
+    def inverse_axis( axis_id )
+        result = Marshal.load( Marshal.dump( self ) )
+        result.inverse_axis!( axis_id )
+        return result
+    end
 
-    ##axes = []
-    ##3.times do |i|
-    ##    if ( i == axis_id )
-    ##        axes << @axes[ i ] * (-1.0)
-    ##    else
-    ##        axes << @axes[ i ]
-    ##    end
-    ##end
-    ##@axes = CrystalCell::LatticeAxes.new( axes )
+    #2つの格子ベクトルを交換する破壊的メソッド。
+    #Argument 'axis_ids' must have 2 items of integer.
+    #0, 1, and 2 mean x, y, and z axes, respectively.
+    #この範囲の整数でなければ例外 Cell::AxesRangeError.
+    #axis_ids に含まれる 2つの数字が同じならば
+    #例外 Cell::SameAxesError.
+    def exchange_axes!( axis_ids )
+        raise ArgumentError if axis_ids.size != 2
+        axis_ids.each{ |i| raise AxesRangeError if ( i < 0 || 2 < i ) }
+        raise CrystalCell::Cell::SameAxesError if ( axis_ids[0] == axis_ids[1] )
 
-    ##atoms = []
-    ##@atoms.each do |atom|
-    ##    position = []
-    ##    3.times do |i|
-    ##        if i == axis_id
-    ##            position[i] = atom.position[i] * (-1)
-    ##        else
-    ##            position[i] = atom.position[i]
-    ##        end
-    ##    end
-    ##    atom.position
-    ##    atoms << CrystalCell::Atom.new( atom.element, position, atom.name, atom.movable_flags )
-    ##end
-    ##@atoms = atoms
-    ##end
+        #格子定数を交換。
+        axes = @axes.axes
+        axes[ axis_ids[0]], axes[ axis_ids[1]] = axes[ axis_ids[1]], axes[ axis_ids[0]]
+        @axes = CrystalCell::LatticeAxes.new( axes )
 
-    ##inverse_axis! の非破壊版。
-    #def inverse_axis( axis_id )
-    #    result = Marshal.load( Marshal.dump( self ) )
-    #    result.inverse_axis!( axis_id )
-    #    return result
-    #end
+        #内部座標を交換。
+        new_atoms = []
+        @atoms.each do |atom|
+            new_pos = atom.position
+            new_pos[ axis_ids[0]], new_pos[ axis_ids[1]] =
+                new_pos[ axis_ids[1]], new_pos[ axis_ids[0]]
+            new_atoms << CrystalCell::Atom.new( atom.element, new_pos, atom.name, atom.movable_flags )
+        end
+    end
 
-    ##2つの格子ベクトルを交換する破壊的メソッド。
-    ##Argument 'axis_ids' must have 2 items of integer.
-    ##0, 1, and 2 mean x, y, and z axes, respectively.
-    ##この範囲の整数でなければ例外 Cell::AxesRangeError.
-    ##axis_ids に含まれる 2つの数字が同じならば
-    ##例外 Cell::SameAxesError.
-    #def exchange_axes!( axis_ids )
-    #    raise ArgumentError if axis_ids.size != 2
-    #    axis_ids.each{ |i| raise AxesRangeError if ( i < 0 || 2 < i ) }
-    #    raise CrystalCell::Cell::SameAxesError if ( axis_ids[0] == axis_ids[1] )
+    #exchange_axes! の非破壊版。
+    def exchange_axes( axis_ids )
+        result = Marshal.load( Marshal.dump( self ) )
+        result.exchange_axes!( axis_ids )
+        return result
+    end
 
-    #    #格子定数を交換。
-    #    axes = @axes.axes
-    #    axes[ axis_ids[0]], axes[ axis_ids[1]] = axes[ axis_ids[1]], axes[ axis_ids[0]]
-    #    @axes = CrystalCell::LatticeAxes.new( axes )
+    #鏡像となるセルに変換する破壊的メソッド。
+    def reflect!
+        axes = @axes.to_a
+        axes[0][0] *= -1
+        @axes = CrystalCell::LatticeAxes.new( axes )
+    end
 
-    #    #内部座標を交換。
-    #    new_atoms = []
-    #    @atoms.each do |atom|
-    #        new_pos = atom.position
-    #        new_pos[ axis_ids[0]], new_pos[ axis_ids[1]] =
-    #            new_pos[ axis_ids[1]], new_pos[ axis_ids[0]]
-    #        new_atoms << CrystalCell::Atom.new( atom.element, new_pos, atom.name, atom.movable_flags )
-    #    end
-    #end
+    #鏡像となるセルに変換する非破壊的メソッド。
+    def reflect
+        result = Marshal.load( Marshal.dump( self ) )
+        result.reflect!
+        return result
+    end
 
-    ##exchange_axes! の非破壊版。
-    #def exchange_axes( axis_ids )
-    #    result = Marshal.load( Marshal.dump( self ) )
-    #    result.exchange_axes!( axis_ids )
-    #    return result
-    #end
+    #rotation と translation からなる操作(e.g., 対称操作)
+    #を加えたセルを返す。
+    def operate(rotation, translation)
+        rotation = Matrix[*rotation]
+        translation = translation.to_v3d
+        new_atoms = atoms.map do |atom|
+            position = atom.position.to_v3d([
+                [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0],
+            ])
+            new_pos = (rotation * position + translation).to_a.to_v3di
+            CrystalCell::Atom.new(atom.element, new_pos, atom.name)
+        end
+        CrystalCell::Cell.new(@axes, new_atoms)
+    end
 
-    ##鏡像となるセルに変換する破壊的メソッド。
-    #def reflect!
-    #    axes = @axes.to_a
-    #    axes[0][0] *= -1
-    #    @axes = CrystalCell::LatticeAxes.new( axes )
-    #end
+    #Return information of axes symmetry.
+    #E.g.,
+    # [true , true , true ] when    a = b    = c, like cubic
+    # [true , false, false] when    a = b != c, like hexagonal, trigonal, tetragonal
+    # [false, true , false] (same as above)
+    # [false, false, true ] (same as above)
+    # [false, false, false] when    a != b != c, like triclinic, monoclinic, orthorhombic
+    def axis_independencies(symprec, angle_tolerance)
+        rotations = symmetry_operations(symprec, angle_tolerance).map {|oper| oper[:rotation]}
 
-    ##鏡像となるセルに変換する非破壊的メソッド。
-    #def reflect
-    #    result = Marshal.load( Marshal.dump( self ) )
-    #    result.reflect!
-    #    return result
-    #end
+        results = [true, true, true]
+        rotations.each do |rot|
+            3.times do |i|
+                3.times do |j|
+                    next if rot[i][j] == 0
+                    next if i == j
+                    results[i] = false
+                    results[j] = false
+                end
+            end
+        end
+        return results
+    end
 
-    ##rotation と translation からなる操作(e.g., 対称操作)
-    ##を加えたセルを返す。
-    #def operate(rotation, translation)
-    #    rotation = Matrix[*rotation]
-    #    translation = translation.to_v3d
-    #    new_atoms = atoms.map do |atom|
-    #        position = atom.position.to_v3d([
-    #            [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0],
-    #        ])
-    #        new_pos = (rotation * position + translation).to_a.to_v3di
-    #        CrystalCell::Atom.new(atom.element, new_pos, atom.name)
-    #    end
-    #    CrystalCell::Cell.new(@axes, new_atoms)
-    #end
+    private
 
-    ##Return information of axes symmetry.
-    ##E.g.,
-    ## [true , true , true ] when    a = b    = c, like cubic
-    ## [true , false, false] when    a = b != c, like hexagonal, trigonal, tetragonal
-    ## [false, true , false] (same as above)
-    ## [false, false, true ] (same as above)
-    ## [false, false, false] when    a != b != c, like triclinic, monoclinic, orthorhombic
-    #def axis_independencies(symprec, angle_tolerance)
-    #    rotations = symmetry_operations(symprec, angle_tolerance).map {|oper| oper[:rotation]}
+    #Return rotations and translation of symmetry operations.
+    def symmetry_operations(symprec, angle_tolerance)
+        #begin
+        #    require "getspg.so"
+        #rescue LoadError
+        #    raise LoadError,
+        #        "LoadError: 'spglib' seems not to be installed into the system."
+        #end
 
-    #    results = [true, true, true]
-    #    rotations.each do |rot|
-    #        3.times do |i|
-    #            3.times do |j|
-    #                next if rot[i][j] == 0
-    #                next if i == j
-    #                results[i] = false
-    #                results[j] = false
-    #            end
-    #        end
-    #    end
-    #    return results
-    #end
+        unless defined? Getspg
+            raise NoSpglibError, "symmetry_operations() is called without spglib."
+        end
 
-    #private
+        #pp lattice                     # => [[2.0, 0.0, 0.0], [1.2246063538223773e-16, 2.0, 0.0], [1.2246063538223773e-16, 1.2246063538223773e-16, 2.0]]
+        ##vasp の lattice 行と比べて転置しているのに注意。
+        #pp position                    #=>[[0.0, 0.0, 0.0], [0.5, 0.0, 0.0], [0.5, 0.5, 0.0], [0.5, 0.5, 0.5]]
+        #pp types                           #=>[1, 2, 3, 3]
+        #pp symprec                     #=>1.0e-05
+        #pp angle_tolerance     #=>-1.0
+        axes_t = @axes.to_a.transpose
 
-    ##Return rotations and translation of symmetry operations.
-    #def symmetry_operations(symprec, angle_tolerance)
-    #    #begin
-    #    #    require "getspg.so"
-    #    #rescue LoadError
-    #    #    raise LoadError,
-    #    #        "LoadError: 'spglib' seems not to be installed into the system."
-    #    #end
+        poss = positions.map {|pos| pos.to_a}
 
-    #    unless defined? Getspg
-    #        raise NoSpglibError, "symmetry_operations() is called without spglib."
-    #    end
+        table = {}
+        types = elements.map do |elem|
+            table[elem] = ((table.size) +1) unless table.keys.include? elem
+            table[elem]
+        end
 
-    #    #pp lattice                     # => [[2.0, 0.0, 0.0], [1.2246063538223773e-16, 2.0, 0.0], [1.2246063538223773e-16, 1.2246063538223773e-16, 2.0]]
-    #    ##vasp の lattice 行と比べて転置しているのに注意。
-    #    #pp position                    #=>[[0.0, 0.0, 0.0], [0.5, 0.0, 0.0], [0.5, 0.5, 0.0], [0.5, 0.5, 0.5]]
-    #    #pp types                           #=>[1, 2, 3, 3]
-    #    #pp symprec                     #=>1.0e-05
-    #    #pp angle_tolerance     #=>-1.0
-    #    axes_t = @axes.to_a.transpose
+        #pp axes_t, poss, types, symprec, angle_tolerance
 
-    #    poss = positions.map {|pos| pos.to_a}
+        spgnum, spg, hallnum, hall_symbol, t_mat, o_shift,
+        rotations, translations, wyckoffs =
+            #include Getspg
+            #pp Getspg.methods.sort
+            #Getspg::get_dataset(axes_t, poss, types, symprec, angle_tolerance)
+            get_dataset(axes_t, poss, types, symprec, angle_tolerance)
 
-    #    table = {}
-    #    types = elements.map do |elem|
-    #        table[elem] = ((table.size) +1) unless table.keys.include? elem
-    #        table[elem]
-    #    end
+        results = []
+        rotations.size.times do |index|
+            results << {
+                :rotation => rotations[index],
+                :translation => translations[index]
+            }
+        end
+        return results
+    end
 
-    #    #pp axes_t, poss, types, symprec, angle_tolerance
+    #POSCAR の内容の文字列を生成。
+    #文字列の配列ではなく、改行文字を含む1つの文字列である点に注意。
+    #
+    #VASP の挙動として、Selective dynamics 指定ありの時に
+    #原子に T or F 指定していなかったり 3要素に足りなかったりすれば、
+    #error となって実行されない。
+    #なので dump_poscar では Selective dynamics 指定が必要な時には
+    #全ての原子に T/F を記述する。
+    #POSCAR から生成された Cell の場合は Selective dynamics がついていれば
+    #全ての原子に 3つの T/F が付いていることを前提としても良いだろう。
+    #原子を追加するとかで、一部の原子の movable_flags が nil になっているときは、
+    #デフォルト値として [ true, true, true ] を入れることにする。
+    #nil ならば false を連想すると思うが、敢えて true で埋めている理由は、
+    #Selective dynamics をつけていない状態で VASP は全方向に緩和する、
+    #すなわち T T T と指定したことと同じになっているから。
+    #換言すればこのデフォルト値の設定は VASP に合わせた仕様ということになる。
+    #VASP に由来する仕様が Cell クラスに持ち込まれていることになるが、
+    #VASP へのインターフェイスである POSCAR ファイルへの書き出しに限定されるので
+    #他への影響はほとんどなく、気にしなくて良いだろう。
+    def create_poscar( element_order )
+        #element_order と elements が一対一対応していなければ raise
+        raise "Cell::create_poscar, element_order mismatches to elements." if (! Mapping::map?( elements.uniq, element_order ){ |i, j| i == j } )
 
-    #    spgnum, spg, hallnum, hall_symbol, t_mat, o_shift,
-    #    rotations, translations, wyckoffs =
-    #        #include Getspg
-    #        #pp Getspg.methods.sort
-    #        #Getspg::get_dataset(axes_t, poss, types, symprec, angle_tolerance)
-    #        get_dataset(axes_t, poss, types, symprec, angle_tolerance)
+        results = []
+        results << @comment
+        results << "1.0" #scale
+        3.times do |i|
+            results << sprintf( "%20.14f  %20.14f  %20.14f", @axes[i][0], @axes[i][1], @axes[i][2]
+            )
+        end
 
-    #    results = []
-    #    rotations.size.times do |index|
-    #        results << {
-    #            :rotation => rotations[index],
-    #            :translation => translations[index]
-    #        }
-    #    end
-    #    return results
-    #end
+        ##collect information
+        elem_list = Hash.new
+        element_order.each do |elem|
+            elem_list[ elem ] = @atoms.select{ |atom| atom.element == elem }
+        end
 
-    ##POSCAR の内容の文字列を生成。
-    ##文字列の配列ではなく、改行文字を含む1つの文字列である点に注意。
-    ##
-    ##VASP の挙動として、Selective dynamics 指定ありの時に
-    ##原子に T or F 指定していなかったり 3要素に足りなかったりすれば、
-    ##error となって実行されない。
-    ##なので dump_poscar では Selective dynamics 指定が必要な時には
-    ##全ての原子に T/F を記述する。
-    ##POSCAR から生成された Cell の場合は Selective dynamics がついていれば
-    ##全ての原子に 3つの T/F が付いていることを前提としても良いだろう。
-    ##原子を追加するとかで、一部の原子の movable_flags が nil になっているときは、
-    ##デフォルト値として [ true, true, true ] を入れることにする。
-    ##nil ならば false を連想すると思うが、敢えて true で埋めている理由は、
-    ##Selective dynamics をつけていない状態で VASP は全方向に緩和する、
-    ##すなわち T T T と指定したことと同じになっているから。
-    ##換言すればこのデフォルト値の設定は VASP に合わせた仕様ということになる。
-    ##VASP に由来する仕様が Cell クラスに持ち込まれていることになるが、
-    ##VASP へのインターフェイスである POSCAR ファイルへの書き出しに限定されるので
-    ##他への影響はほとんどなく、気にしなくて良いだろう。
-    #def create_poscar( element_order )
-    #    #element_order と elements が一対一対応していなければ raise
-    #    raise "Cell::create_poscar, element_order mismatches to elements." if (! Mapping::map?( elements.uniq, element_order ){ |i, j| i == j } )
+        ##element symbols
+        results << "  " + element_order.join("  ")
 
-    #    results = []
-    #    results << @comment
-    #    results << "1.0" #scale
-    #    3.times do |i|
-    #        results << sprintf( "%20.14f  %20.14f  %20.14f", @axes[i][0], @axes[i][1], @axes[i][2]
-    #        )
-    #    end
+        ##numbers of element atoms
+        tmp = ''
+        element_order.each do |elem|
+            tmp += "  #{elem_list[elem].size.to_s}"
+        end
+        results << tmp
 
-    #    ##collect information
-    #    elem_list = Hash.new
-    #    element_order.each do |elem|
-    #        elem_list[ elem ] = @atoms.select{ |atom| atom.element == elem }
-    #    end
+        ##Selective dynamics
+        ##どれか1つでも getMovableFlag が真であれば Selective dynamics をオンにする
+        selective_dynamics = false
+        @atoms.each do |atom|
+            if atom.movable_flags
+                selective_dynamics = true
+                results << "Selective dynamics"
+                break
+            end
+        end
 
-    #    ##element symbols
-    #    results << "  " + element_order.join("  ")
+        element_order.each do |elem|
+            elem_list[ elem ].each do |atom|
+                if atom.movable_flags
+                    selective_dynamics = true
+                    break
+                end
+            end
+            break if selective_dynamics
+        end
 
-    #    ##numbers of element atoms
-    #    tmp = ''
-    #    element_order.each do |elem|
-    #        tmp += "  #{elem_list[elem].size.to_s}"
-    #    end
-    #    results << tmp
+        results << "Direct"  #now, Direct only
 
-    #    ##Selective dynamics
-    #    ##どれか1つでも getMovableFlag が真であれば Selective dynamics をオンにする
-    #    selective_dynamics = false
-    #    @atoms.each do |atom|
-    #        if atom.movable_flags
-    #            selective_dynamics = true
-    #            results << "Selective dynamics"
-    #            break
-    #        end
-    #    end
+        ##positions of atoms
+        element_order.each do |elem|
+            elem_list[ elem ].each do |atom|
+                tmp =    sprintf( "%20.14f  %20.14f  %20.14f", * atom.position )
+                if selective_dynamics
+                    if atom.movable_flags == nil
+                        tmp += " T T T"
+                    else
+                        atom.movable_flags.each do |mov|
+                            ( mov == true ) ?    tmp += " T" : tmp += " F"
+                        end
+                    end
+                end
+                results << tmp
+            end
+        end
 
-    #    element_order.each do |elem|
-    #        elem_list[ elem ].each do |atom|
-    #            if atom.movable_flags
-    #                selective_dynamics = true
-    #                break
-    #            end
-    #        end
-    #        break if selective_dynamics
-    #    end
-
-    #    results << "Direct"  #now, Direct only
-
-    #    ##positions of atoms
-    #    element_order.each do |elem|
-    #        elem_list[ elem ].each do |atom|
-    #            tmp =    sprintf( "%20.14f  %20.14f  %20.14f", * atom.position )
-    #            if selective_dynamics
-    #                if atom.movable_flags == nil
-    #                    tmp += " T T T"
-    #                else
-    #                    atom.movable_flags.each do |mov|
-    #                        ( mov == true ) ?    tmp += " T" : tmp += " F"
-    #                    end
-    #                end
-    #            end
-    #            results << tmp
-    #        end
-    #    end
-
-    #    results.join("\n")
-    #end
+        results.join("\n")
+    end
 
     #def dump_povray(io)
     #end

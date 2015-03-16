@@ -242,7 +242,7 @@ class CrystalCell::PeriodicCell < CrystalCell::Cell
         return tmp
     end
 
-    undef center_of_atoms
+    #undef center_of_atoms
 
     # superclass の inverse_axis! を行ったあと、
     # 原子の座標をセル内部に移す。

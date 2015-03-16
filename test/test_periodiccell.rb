@@ -585,13 +585,13 @@ class TC_PeriodicCell < Test::Unit::TestCase
         assert_equal("c01", t.comment)
     end
 
-    def test_center_of_atoms
-        # No atoms
-        assert_raise(NoMethodError){ @c00.center_of_atoms }
+    #def test_center_of_atoms
+    #    # No atoms
+    #    assert_raise(NoMethodError){ @c00.center_of_atoms }
 
-        # Including atoms
-        assert_raise(NoMethodError){ @c01.center_of_atoms }
-    end
+    #    # Including atoms
+    #    assert_raise(NoMethodError){ @c01.center_of_atoms }
+    #end
 
     def test_inverse_axis!
         @c02.inverse_axis!(0)
