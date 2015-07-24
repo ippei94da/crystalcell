@@ -162,10 +162,10 @@ class TC_PeriodicCell < Test::Unit::TestCase
     end
 
     def test_nearest_direction
-        assert_equal(
-            Mageo::Vector3DInternal[ 0,  0,  0],
-            CrystalCell::PeriodicCell.nearest_direction(Mageo::Vector3DInternal[-0.9, -0.9, -0.9],    V_111)
-        )
+        #assert_equal(
+        #    Mageo::Vector3DInternal[ 0,  0,  0],
+        #    CrystalCell::PeriodicCell.nearest_direction(Mageo::Vector3DInternal[-0.9, -0.9, -0.9],    V_111)
+        #)
 
         assert_equal(Mageo::Vector3DInternal[-1, -1,  0], @c00.nearest_direction(V_111, V_999))
         assert_equal(Mageo::Vector3DInternal[-1, -1,  0], @c00.nearest_direction(V_119, V_999))

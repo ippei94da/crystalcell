@@ -1,3 +1,4 @@
+#! /usr/bin/env ruby
 #! /usr/bin/ruby1.9 -W
 
 require "helper"

@@ -3,6 +3,12 @@
 == Master (for 0.0.4)
 * LatticeAxes.axes is added.
 
+* CrystalCell::Povray::Cell      is added
+* CrystalCell::Povray::Cylinder  is added
+* CrystalCell::Povray::Element   is added
+* CrystalCell::Povray::Sphere    is added
+* CrystalCell::Povray::Triangle  is added
+
 == Version 0.0.3 [2015-02-05] released
 * Add CrystalCell::LatticeAxes.new_lc
 
