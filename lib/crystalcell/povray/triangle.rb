@@ -1,13 +1,5 @@
 #! /usr/bin/env ruby # coding: utf-8
 
-require "mageo/triangle.rb"
-require "mageo/sphere.rb"
-require "mageo/cylinder.rb"
-#gem "crysna"
-#require "crysna.rb"
-#require "crysna/periodiccell.rb"
-require "povrayutils/elementfeature.rb"
-
 class Mageo::Triangle
   # povray 形式の文字列を返す。
   # color は Float による配列。通常、0〜1の範囲。

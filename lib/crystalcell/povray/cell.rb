@@ -1,12 +1,5 @@
 #! /usr/bin/env ruby # coding: utf-8
 
-require "mageo/triangle.rb"
-require "mageo/sphere.rb"
-require "mageo/cylinder.rb"
-#gem "crysna"
-#require "crysna.rb"
-#require "povrayutils/elementfeature.rb"
-
 class CrystalCell::Povray::Cell < CrystalCell::Cell
   RADIUS_RATIO = 0.3
   

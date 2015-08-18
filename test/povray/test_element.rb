@@ -1,7 +1,6 @@
 #! /usr/bin/ruby
 
 require 'test/unit'
-require 'povrayutils/elementfeature.rb'
 
 class TC_Povray_Element < Test::Unit::TestCase
   def setup
