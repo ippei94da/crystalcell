@@ -8,29 +8,29 @@ class TC_Element < Test::Unit::TestCase
     end
 
     def test_atomicNumber
-        assert_equal(    1, @e.getAtomicNumber( 'H'  ))
-        assert_equal(    2, @e.getAtomicNumber( 'He' ))
-        assert_equal(    3, @e.getAtomicNumber( 'Li' ))
-        assert_equal(    4, @e.getAtomicNumber( 'Be' ))
-        assert_equal(    5, @e.getAtomicNumber( 'B'  ))
-        assert_equal(    6, @e.getAtomicNumber( 'C'  ))
-        assert_equal(    7, @e.getAtomicNumber( 'N'  ))
-        assert_equal(    8, @e.getAtomicNumber( 'O'  ))
-        assert_equal(    9, @e.getAtomicNumber( 'F'  ))
+        assert_equal(  1, @e.getAtomicNumber( 'H'  ))
+        assert_equal(  2, @e.getAtomicNumber( 'He' ))
+        assert_equal(  3, @e.getAtomicNumber( 'Li' ))
+        assert_equal(  4, @e.getAtomicNumber( 'Be' ))
+        assert_equal(  5, @e.getAtomicNumber( 'B'  ))
+        assert_equal(  6, @e.getAtomicNumber( 'C'  ))
+        assert_equal(  7, @e.getAtomicNumber( 'N'  ))
+        assert_equal(  8, @e.getAtomicNumber( 'O'  ))
+        assert_equal(  9, @e.getAtomicNumber( 'F'  ))
         assert_equal( 10, @e.getAtomicNumber( 'Ne' ))
         assert_equal( 11, @e.getAtomicNumber( 'Na' ))
         assert_equal( 12, @e.getAtomicNumber( 'Mg' ))
         assert_equal( 13, @e.getAtomicNumber( 'Al' ))
         assert_equal( 14, @e.getAtomicNumber( 'Si' ))
-        assert_equal( 15, @e.getAtomicNumber( 'P'    ))
-        assert_equal( 16, @e.getAtomicNumber( 'S'    ))
+        assert_equal( 15, @e.getAtomicNumber( 'P'  ))
+        assert_equal( 16, @e.getAtomicNumber( 'S'  ))
         assert_equal( 17, @e.getAtomicNumber( 'Cl' ))
         assert_equal( 18, @e.getAtomicNumber( 'Ar' ))
-        assert_equal( 19, @e.getAtomicNumber( 'K'    ))
+        assert_equal( 19, @e.getAtomicNumber( 'K'  ))
         assert_equal( 20, @e.getAtomicNumber( 'Ca' ))
         assert_equal( 21, @e.getAtomicNumber( 'Sc' ))
         assert_equal( 22, @e.getAtomicNumber( 'Ti' ))
-        assert_equal( 23, @e.getAtomicNumber( 'V'    ))
+        assert_equal( 23, @e.getAtomicNumber( 'V'  ))
         assert_equal( 24, @e.getAtomicNumber( 'Cr' ))
         assert_equal( 25, @e.getAtomicNumber( 'Mn' ))
         assert_equal( 26, @e.getAtomicNumber( 'Fe' ))
@@ -46,7 +46,7 @@ class TC_Element < Test::Unit::TestCase
         assert_equal( 36, @e.getAtomicNumber( 'Kr' ))
         assert_equal( 37, @e.getAtomicNumber( 'Rb' ))
         assert_equal( 38, @e.getAtomicNumber( 'Sr' ))
-        assert_equal( 39, @e.getAtomicNumber( 'Y'    ))
+        assert_equal( 39, @e.getAtomicNumber( 'Y'  ))
         assert_equal( 40, @e.getAtomicNumber( 'Zr' ))
         assert_equal( 41, @e.getAtomicNumber( 'Nb' ))
         assert_equal( 42, @e.getAtomicNumber( 'Mo' ))
@@ -60,7 +60,7 @@ class TC_Element < Test::Unit::TestCase
         assert_equal( 50, @e.getAtomicNumber( 'Sn' ))
         assert_equal( 51, @e.getAtomicNumber( 'Sb' ))
         assert_equal( 52, @e.getAtomicNumber( 'Te' ))
-        assert_equal( 53, @e.getAtomicNumber( 'I'    ))
+        assert_equal( 53, @e.getAtomicNumber( 'I'  ))
         assert_equal( 54, @e.getAtomicNumber( 'Xe' ))
         assert_equal( 55, @e.getAtomicNumber( 'Cs' ))
         assert_equal( 56, @e.getAtomicNumber( 'Ba' ))
@@ -81,7 +81,7 @@ class TC_Element < Test::Unit::TestCase
         assert_equal( 71, @e.getAtomicNumber( 'Lu' ))
         assert_equal( 72, @e.getAtomicNumber( 'Hf' ))
         assert_equal( 73, @e.getAtomicNumber( 'Ta' ))
-        assert_equal( 74, @e.getAtomicNumber( 'W'    ))
+        assert_equal( 74, @e.getAtomicNumber( 'W'  ))
         assert_equal( 75, @e.getAtomicNumber( 'Re' ))
         assert_equal( 76, @e.getAtomicNumber( 'Os' ))
         assert_equal( 77, @e.getAtomicNumber( 'Ir' ))
@@ -99,7 +99,7 @@ class TC_Element < Test::Unit::TestCase
         assert_equal( 89, @e.getAtomicNumber( 'Ac' ))
         assert_equal( 90, @e.getAtomicNumber( 'Th' ))
         assert_equal( 91, @e.getAtomicNumber( 'Pa' ))
-        assert_equal( 92, @e.getAtomicNumber( 'U'    ))
+        assert_equal( 92, @e.getAtomicNumber( 'U'  ))
         assert_equal( 93, @e.getAtomicNumber( 'Np' ))
         assert_equal( 94, @e.getAtomicNumber( 'Pu' ))
         assert_equal( 95, @e.getAtomicNumber( 'Am' ))
@@ -217,35 +217,35 @@ class TC_Element < Test::Unit::TestCase
 
         assert_raise(RuntimeError){@e.getAtomicNumber( nil  )}
         assert_raise(RuntimeError){@e.getAtomicNumber( 'A'  )}
-        assert_raise(RuntimeError){@e.getAtomicNumber( -1       )}
-        assert_raise(RuntimeError){@e.getAtomicNumber(  0       )}
+        assert_raise(RuntimeError){@e.getAtomicNumber( -1   )}
+        assert_raise(RuntimeError){@e.getAtomicNumber(  0   )}
         assert_raise(RuntimeError){@e.getAtomicNumber( 104  )}
     end
 
     def test_getSymbol
-        #assert_equal('H' , @e.getSymbol( 'H'    ))
+        #assert_equal('H' , @e.getSymbol( 'H'  ))
         #assert_equal('He', @e.getSymbol( 'He' ))
         #assert_equal('Li', @e.getSymbol( 'Li' ))
         #assert_equal('Be', @e.getSymbol( 'Be' ))
-        #assert_equal('B' , @e.getSymbol( 'B'    ))
-        #assert_equal('C' , @e.getSymbol( 'C'    ))
-        #assert_equal('N' , @e.getSymbol( 'N'    ))
-        #assert_equal('O' , @e.getSymbol( 'O'    ))
-        #assert_equal('F' , @e.getSymbol( 'F'    ))
+        #assert_equal('B' , @e.getSymbol( 'B'  ))
+        #assert_equal('C' , @e.getSymbol( 'C'  ))
+        #assert_equal('N' , @e.getSymbol( 'N'  ))
+        #assert_equal('O' , @e.getSymbol( 'O'  ))
+        #assert_equal('F' , @e.getSymbol( 'F'  ))
         #assert_equal('Ne', @e.getSymbol( 'Ne' ))
         #assert_equal('Na', @e.getSymbol( 'Na' ))
         #assert_equal('Mg', @e.getSymbol( 'Mg' ))
         #assert_equal('Al', @e.getSymbol( 'Al' ))
         #assert_equal('Si', @e.getSymbol( 'Si' ))
-        #assert_equal('P' , @e.getSymbol( 'P'    ))
-        #assert_equal('S' , @e.getSymbol( 'S'    ))
+        #assert_equal('P' , @e.getSymbol( 'P'  ))
+        #assert_equal('S' , @e.getSymbol( 'S'  ))
         #assert_equal('Cl', @e.getSymbol( 'Cl' ))
         #assert_equal('Ar', @e.getSymbol( 'Ar' ))
-        #assert_equal('K' , @e.getSymbol( 'K'    ))
+        #assert_equal('K' , @e.getSymbol( 'K'  ))
         #assert_equal('Ca', @e.getSymbol( 'Ca' ))
         #assert_equal('Sc', @e.getSymbol( 'Sc' ))
         #assert_equal('Ti', @e.getSymbol( 'Ti' ))
-        #assert_equal('V' , @e.getSymbol( 'V'    ))
+        #assert_equal('V' , @e.getSymbol( 'V'  ))
         #assert_equal('Cr', @e.getSymbol( 'Cr' ))
         #assert_equal('Mn', @e.getSymbol( 'Mn' ))
         #assert_equal('Fe', @e.getSymbol( 'Fe' ))
@@ -261,7 +261,7 @@ class TC_Element < Test::Unit::TestCase
         #assert_equal('Kr', @e.getSymbol( 'Kr' ))
         #assert_equal('Rb', @e.getSymbol( 'Rb' ))
         #assert_equal('Sr', @e.getSymbol( 'Sr' ))
-        #assert_equal('Y' , @e.getSymbol( 'Y'    ))
+        #assert_equal('Y' , @e.getSymbol( 'Y'  ))
         #assert_equal('Zr', @e.getSymbol( 'Zr' ))
         #assert_equal('Nb', @e.getSymbol( 'Nb' ))
         #assert_equal('Mo', @e.getSymbol( 'Mo' ))
@@ -275,7 +275,7 @@ class TC_Element < Test::Unit::TestCase
         #assert_equal('Sn', @e.getSymbol( 'Sn' ))
         #assert_equal('Sb', @e.getSymbol( 'Sb' ))
         #assert_equal('Te', @e.getSymbol( 'Te' ))
-        #assert_equal('I' , @e.getSymbol( 'I'    ))
+        #assert_equal('I' , @e.getSymbol( 'I'  ))
         #assert_equal('Xe', @e.getSymbol( 'Xe' ))
         #assert_equal('Cs', @e.getSymbol( 'Cs' ))
         #assert_equal('Ba', @e.getSymbol( 'Ba' ))
@@ -296,7 +296,7 @@ class TC_Element < Test::Unit::TestCase
         #assert_equal('Lu', @e.getSymbol( 'Lu' ))
         #assert_equal('Hf', @e.getSymbol( 'Hf' ))
         #assert_equal('Ta', @e.getSymbol( 'Ta' ))
-        #assert_equal('W' , @e.getSymbol( 'W'    ))
+        #assert_equal('W' , @e.getSymbol( 'W'  ))
         #assert_equal('Re', @e.getSymbol( 'Re' ))
         #assert_equal('Os', @e.getSymbol( 'Os' ))
         #assert_equal('Ir', @e.getSymbol( 'Ir' ))
@@ -314,7 +314,7 @@ class TC_Element < Test::Unit::TestCase
         #assert_equal('Ac', @e.getSymbol( 'Ac' ))
         #assert_equal('Th', @e.getSymbol( 'Th' ))
         #assert_equal('Pa', @e.getSymbol( 'Pa' ))
-        #assert_equal('U' , @e.getSymbol( 'U'    ))
+        #assert_equal('U' , @e.getSymbol( 'U'  ))
         #assert_equal('Np', @e.getSymbol( 'Np' ))
         #assert_equal('Pu', @e.getSymbol( 'Pu' ))
         #assert_equal('Am', @e.getSymbol( 'Am' ))
@@ -430,11 +430,11 @@ class TC_Element < Test::Unit::TestCase
         assert_equal('No', @e.getSymbol( 102 ))
         assert_equal('Lr', @e.getSymbol( 103 ))
 
-        assert_raise(RuntimeError){@e.getSymbol( nil    )}
-        assert_raise(RuntimeError){@e.getSymbol( 'A'    )}
-        assert_raise(RuntimeError){@e.getSymbol( -1     )}
-        assert_raise(RuntimeError){@e.getSymbol(    0       )}
-        assert_raise(RuntimeError){@e.getSymbol( 104    )}
+        assert_raise(RuntimeError){@e.getSymbol( nil  )}
+        assert_raise(RuntimeError){@e.getSymbol( 'A'  )}
+        assert_raise(RuntimeError){@e.getSymbol( -1   )}
+        assert_raise(RuntimeError){@e.getSymbol(    0     )}
+        assert_raise(RuntimeError){@e.getSymbol( 104  )}
     end
 
     def test_include?
@@ -648,7 +648,7 @@ class TC_Element < Test::Unit::TestCase
         assert_equal(false, @e.include?( nil ))
         assert_equal(false, @e.include?( 'A' ))
         assert_equal(false, @e.include?( -1  ))
-        assert_equal(false, @e.include?(    0    ))
+        assert_equal(false, @e.include?(  0  ))
         assert_equal(false, @e.include?( 104 ))
     end
 end
