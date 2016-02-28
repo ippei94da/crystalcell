@@ -2,6 +2,8 @@
 
 == Master (for 0.0.4)
 * LatticeAxes.axes is added.
+* LatticeAxes.* is added.
+* LatticeAxes.to_a is added.
 
 * CrystalCell::Povray::Cell      is added
 * CrystalCell::Povray::Cylinder  is added
@@ -12,8 +14,9 @@
 * CrystalCell::Element
     * remove get*() methods.
     * remove include? methods.
-    * add Element.symbol_to_num method
-    * add Element.num_to_symbol method
+    * add symbol_to_num method
+    * add num_to_symbol method
+    * rename radius to atomic_radius
 
 == Version 0.0.3 [2015-02-05] released
 * Add CrystalCell::LatticeAxes.new_lc

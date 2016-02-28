@@ -53,7 +53,7 @@ class CrystalCell::Povray::Element < CrystalCell::Element
       [  76,  76,  76], 
   ]
 
-  def self.radius(id)
+  def self.draw_radius(id)
     id = self.symbol_to_num(id) if id.class == String
     IONIC_RADII[id]
   end

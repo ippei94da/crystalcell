@@ -49,7 +49,7 @@ class CrystalCell::Element
 
   # Return atomic radius.
   # 'id' can be indicated by number and elemet symbol.
-  def self.radius(id)
+  def self.atomic_radius(id)
     id = self.symbol_to_num(id) if id.class == String
     ATOMIC_RADII[id]
   end
