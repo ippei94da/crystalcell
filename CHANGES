@@ -9,7 +9,11 @@
 * CrystalCell::Povray::Sphere    is added
 * CrystalCell::Povray::Triangle  is added
 
-* CrystalCell::Element 仕様変更
+* CrystalCell::Element
+    * remove get*() methods.
+    * remove include? methods.
+    * add Element.symbol_to_num method
+    * add Element.num_to_symbol method
 
 == Version 0.0.3 [2015-02-05] released
 * Add CrystalCell::LatticeAxes.new_lc
