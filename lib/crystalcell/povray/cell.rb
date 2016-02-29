@@ -87,10 +87,9 @@ class CrystalCell::Povray::Cell < CrystalCell::Cell
 
   private
 
-
   def atom_to_pov(atom)
     color  = CrystalCell::Povray::Element.color( atom.element)
-    radius = CrystalCell::Povray::Element.radius(atom.element) * RADIUS_RATIO
+    radius = CrystalCell::Povray::Element.draw_radius(atom.element) * RADIUS_RATIO
     Mageo::Sphere.new(atom.position.to_v3d(axes), radius).to_pov(color) +
     " // #{atom.element}" + "\n"
   end
