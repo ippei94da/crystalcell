@@ -14,5 +14,5 @@ group :development do
   gem "malge", ">= 0.0.8"
   gem "mageo", ">= 0.0.3"
   gem "maset", ">= 0.0.0"
-  gem "builtinextension", ">= 0.1.2"
+  gem "builtinextension", ">= 0.1.4"
 end
