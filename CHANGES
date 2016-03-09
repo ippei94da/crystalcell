@@ -18,6 +18,8 @@
     * add num_to_symbol method
     * rename radius to atomic_radius
 
+* CrystalCell::PeriodicCell.find_bonds returns preserved order of elements
+
 == Version 0.0.3 [2015-02-05] released
 * Add CrystalCell::LatticeAxes.new_lc
 

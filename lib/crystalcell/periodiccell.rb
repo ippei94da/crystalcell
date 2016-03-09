@@ -163,17 +163,20 @@ class CrystalCell::PeriodicCell < CrystalCell::Cell
         #元素の種類による判定
         ie = inner_atom.element
         oe = outer_atom.element
+
         next unless ( (( ie == elem0 ) && ( oe == elem1 )) || (( ie == elem1 ) && ( oe == elem0 ))) #elem0, elem1 と同じ構成
+        #next unless (( ie == elem0 ) && ( oe == elem1 )) #elem0, elem1 と同じ構成
 
         #距離による判定
         ip = inner_atom.position
         op = outer_atom.position
         next if distance( ip, op ) < d_min.to_f
         next if distance( ip, op ) > d_max.to_f
-        next if distance( ip, op ) == 0.0 #同一サイト判定
+        next if distance( ip, op ) == 0.0 ## Check identical site
 
         #重複判定, 正順か逆順が既に含まれていれば無視。
         next if ( results.include?( [ ip, op ] ) || results.include?( [ op, ip ] ) )
+        #next if results.include?( [ ip, op ] )
 
         results << [ ip, op ]
       end

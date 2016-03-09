@@ -364,36 +364,6 @@ class CrystalCell::Cell
         end
     end
 
-    #def inverse_axis!( axis_id )
-    #axis_id = axis_id.to_i
-    #raise Cell::AxesRangeError if ( axis_id < 0 || 2 < axis_id )
-
-    #axes = []
-    #3.times do |i|
-    #    if ( i == axis_id )
-    #        axes << @axes[ i ] * (-1.0)
-    #    else
-    #        axes << @axes[ i ]
-    #    end
-    #end
-    #@axes = CrystalCell::LatticeAxes.new( axes )
-
-    #atoms = []
-    #@atoms.each do |atom|
-    #    position = []
-    #    3.times do |i|
-    #        if i == axis_id
-    #            position[i] = atom.position[i] * (-1)
-    #        else
-    #            position[i] = atom.position[i]
-    #        end
-    #    end
-    #    atom.position
-    #    atoms << CrystalCell::Atom.new( atom.element, position, atom.name, atom.movable_flags )
-    #end
-    #@atoms = atoms
-    #end
-
     #inverse_axis! の非破壊版。
     def inverse_axis( axis_id )
         result = Marshal.load( Marshal.dump( self ) )
@@ -626,9 +596,5 @@ class CrystalCell::Cell
 
         results.join("\n")
     end
-
-    #def dump_povray(io)
-    #end
-
 
 end
