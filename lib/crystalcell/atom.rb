@@ -8,7 +8,7 @@ class CrystalCell::Atom
 
     include Mageo
 
-    class TypeError < Exception ; end
+    class TypeError < StandardError ; end
 
     # Do not change :position to attr_accessor.
     # This must be Vector3DInternal instance.
@@ -34,8 +34,6 @@ class CrystalCell::Atom
     #       movable_flags: 
     #           Movable flags of an atom in each of three directions as a Array of three items.
     def initialize(element, position, name = nil, movable_flags = nil)
-        #p position
-        #p position.methods.sort
         raise TypeError, "Position doesn't have []: (#{position.inspect})" unless position.methods.include?(:[])
         raise TypeError, "Number of items in position is not 3: (#{position})" if position.size != 3
         raise TypeError, "Coordinate is not a Float: (#{position})" if position[0].class != Float
