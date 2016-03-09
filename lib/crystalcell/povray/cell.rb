@@ -47,9 +47,6 @@ class CrystalCell::Povray::Cell < CrystalCell::Cell
   def bonds_to_povs(elems, min_distance, max_distance)
     results = []
     cell = self.to_pcell
-    #pp elems
-    #pp min_distance
-    #pp max_distance
     cell.find_bonds(*elems, min_distance, max_distance).each do |pair|
       cart0 = pair[0].to_v3d(self.axes)
       cart1 = pair[1].to_v3d(self.axes)
