@@ -38,7 +38,6 @@ class CrystalCell::Povray::Cell < CrystalCell::Cell
   def bonds_to_povs(elem0, elem1, min_distance, max_distance)
     results = []
     cell = self.to_pcell
-    #pp elem0, elem1, min_distance, max_distance
     cell.find_bonds(elem0, elem1, min_distance, max_distance).each do |pair|
       cart0 = pair[0].to_v3d(self.axes)
       cart1 = pair[1].to_v3d(self.axes)
@@ -83,7 +82,6 @@ class CrystalCell::Povray::Cell < CrystalCell::Cell
   private
 
   def atom_to_pov(atom)
-    #pp atom
     color  = CrystalCell::Povray::Element.color( atom.element)
     radius = CrystalCell::Povray::Element.draw_radius(atom.element) * RADIUS_RATIO
     Mageo::Sphere.new(atom.position.to_v3d(axes), radius).to_pov(color) +
@@ -99,8 +97,6 @@ class CrystalCell::Povray::Cell < CrystalCell::Cell
         translation = Vector3DInternal[0.0, 0.0, 0.0]
         translation[axis] += 1.0
         tmp.each {|vec| results << vec + translation }
-        #pp translation
-        #pp results
       end
       if (1.0 - tolerance < pos[axis])
         translation = Vector3DInternal[0.0, 0.0, 0.0]

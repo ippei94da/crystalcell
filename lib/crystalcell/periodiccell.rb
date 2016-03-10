@@ -1,7 +1,5 @@
 #! /usr/bin/env ruby
 
-require "pp"
-
 # Class for crystal cell with periodic boundary.
 # Coordinates of atoms are kept in the region of 0 <= x_i < 1 of internal coordinate.
 class CrystalCell::PeriodicCell < CrystalCell::Cell
@@ -36,8 +34,6 @@ class CrystalCell::PeriodicCell < CrystalCell::Cell
 
     pos0 = pos0.map{ |i| i - i.floor }.to_a.to_v3di
     pos1 = pos1.map{ |i| i - i.floor }.to_a.to_v3di
-
-    #pp pos0
 
     results = []
     (-1).upto(1) do |x|
@@ -157,7 +153,6 @@ class CrystalCell::PeriodicCell < CrystalCell::Cell
   #       論理的に距離の上限なしってのは無限のセルを対象にすることになり、整合性がとれない。
   def find_bonds( elem0, elem1, d_min, d_max )
     results = []
-    #pp atoms; exit
     atoms.each do |inner_atom|
       atoms_in_supercell( -1, 1, -1, 1, -1, 1 ).each do |outer_atom|
         #元素の種類による判定
@@ -176,9 +171,12 @@ class CrystalCell::PeriodicCell < CrystalCell::Cell
 
         #重複判定, 正順か逆順が既に含まれていれば無視。
         next if ( results.include?( [ ip, op ] ) || results.include?( [ op, ip ] ) )
-        #next if results.include?( [ ip, op ] )
+        if (ie == elem0)
+          results << [ ip, op ]
+        else
+          results << [ op, ip ]
+        end
 
-        results << [ ip, op ]
       end
     end
     return results

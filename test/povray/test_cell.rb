@@ -2,9 +2,6 @@
 # coding: utf-8
 
 require "helper"
-#require "test/unit"
-#require "povrayutils/povrayobject.rb"
-#require "crystal/atom2.rb"
 
 class TC_Povray_Sphere < Test::Unit::TestCase
   def setup
@@ -144,7 +141,6 @@ class TC_Povray_Cell < Test::Unit::TestCase
   def test_atom_to_pov
     assert_equal(
       "object { sphere{< 0.2000,  0.4000,  0.6000>,  0.1770} pigment {color rgb <0.53, 0.88, 0.45>} } // Li\n",
-      #pp @c00
       @c00.atom_to_pov( CrystalCell::Atom.new("Li", [0.1, 0.2, 0.3]))
     )
   end
