@@ -1,6 +1,8 @@
 = crystalcell Changelog
 
-== Master (for 0.0.4)
+== Master (for 0.0.5)
+
+== Version 0.0.4 [2016-03-11] released
 * LatticeAxes.axes is added.
 * LatticeAxes.* is added.
 * LatticeAxes.to_a is added.

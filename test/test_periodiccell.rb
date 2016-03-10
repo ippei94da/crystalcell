@@ -886,26 +886,6 @@ class TC_PeriodicCell < Test::Unit::TestCase
     assert_in_delta(0.7, tmp.positions[0][2], $tolerance)
   end
 
-  #undef test_directions_within_distance
-  #undef test_nearest_direction
-  #undef test_nearest_distance
-  #undef test_find_bonds
-  #undef test_pairs_within_distance
-  #undef test_add_atom
-  #undef test_rotate
-  #undef test_rotate!
-  #undef test_translate
-  #undef test_translate!
-  #undef test_to_cell
-  #undef test_center_of_atoms
-  #undef test_inverse_axis!
-  #undef test_inverse_axis
-  #undef test_exchange_axes!
-  #undef test_exchange_axes
-  #undef test_reflect!
-  #undef test_reflect
-  #undef test_reset_positions_inside
-
 end
 
 class TC_Cell_EXTENSION < Test::Unit::TestCase
