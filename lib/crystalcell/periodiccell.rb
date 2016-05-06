@@ -249,7 +249,7 @@ class CrystalCell::PeriodicCell < CrystalCell::Cell
   # superclass の inverse_axis! を行ったあと、
   # 原子の座標をセル内部に移す。
   def inverse_axis!( axis_id )
-    result = Marshal.load( Marshal.dump( self ) )
+    #result = Marshal.load( Marshal.dump( self ) )
     super( axis_id )
     reset_positions_inside
   end

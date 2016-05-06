@@ -12,7 +12,7 @@ class TC_Camera < Test::Unit::TestCase
   end
 
   def test_dump
-    TODO
+    #TODO
   end
 
 end

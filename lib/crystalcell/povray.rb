@@ -1,5 +1,6 @@
 module CrystalCell::Povray; end
 
+require 'crystalcell/povray/camera.rb'
 require 'crystalcell/povray/cell.rb'
 require 'crystalcell/povray/cylinder.rb'
 require 'crystalcell/povray/element.rb'

@@ -336,7 +336,7 @@ class CrystalCell::Cell
     end
     @axes = CrystalCell::LatticeAxes.new( axes )
 
-    atoms = []
+    #atoms = []
     @atoms.each do |atom|
       position = []
       3.times do |i|
@@ -476,12 +476,12 @@ class CrystalCell::Cell
 
     #pp axes_t, poss, types, symprec, angle_tolerance
 
-    spgnum, spg, hallnum, hall_symbol, t_mat, o_shift,
-    rotations, translations, wyckoffs =
-      #include Getspg
-      #pp Getspg.methods.sort
-      #Getspg::get_dataset(axes_t, poss, types, symprec, angle_tolerance)
-      get_dataset(axes_t, poss, types, symprec, angle_tolerance)
+    #spgnum, spg, hallnum, hall_symbol, t_mat, o_shift,
+    #rotations, translations, wyckoffs =
+    #  get_dataset(axes_t, poss, types, symprec, angle_tolerance)
+    dataset = get_dataset(axes_t, poss, types, symprec, angle_tolerance)
+    rotations = dataset[6]
+    translations = dataset[7]
 
     results = []
     rotations.size.times do |index|
