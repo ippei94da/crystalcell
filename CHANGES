@@ -1,9 +1,11 @@
 = crystalcell Changelog
 
-== Master (for 0.0.5)
+== Master (for 0.0.6)
 
-* CrystalCell::Povray::Camera      is added
+== Version 0.0.5 [2016-05-09] released
 
+* Add CrystalCell::Povray::Camera
+* Delete meaningless codes
 
 == Version 0.0.4 [2016-03-11] released
 * LatticeAxes.axes is added.
