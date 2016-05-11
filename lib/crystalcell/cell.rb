@@ -56,7 +56,6 @@ class CrystalCell::Cell
     end
 
     atoms.each do |atom|
-      #pp atom
       unless atom.is_a?(CrystalCell::Atom)
         raise CellTypeError,
           "#{atom} is not a kind of CrystalCell::Atom."
