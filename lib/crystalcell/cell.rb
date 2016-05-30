@@ -418,29 +418,29 @@ class CrystalCell::Cell
     CrystalCell::Cell.new(@axes, new_atoms)
   end
 
-  #Return information of axes symmetry.
-  #E.g.,
-  # [true , true , true ] when    a = b    = c, like cubic
-  # [true , false, false] when    a = b != c, like hexagonal, trigonal, tetragonal
-  # [false, true , false] (same as above)
-  # [false, false, true ] (same as above)
-  # [false, false, false] when    a != b != c, like triclinic, monoclinic, orthorhombic
-  def axis_independencies(symprec, angle_tolerance)
-    rotations = symmetry_operations(symprec, angle_tolerance).map {|oper| oper[:rotation]}
+  ##Return information of axes symmetry.
+  ##E.g.,
+  ## [true , true , true ] when    a = b    = c, like cubic
+  ## [true , false, false] when    a = b != c, like hexagonal, trigonal, tetragonal
+  ## [false, true , false] (same as above)
+  ## [false, false, true ] (same as above)
+  ## [false, false, false] when    a != b != c, like triclinic, monoclinic, orthorhombic
+  #def axis_independencies(symprec, angle_tolerance)
+  #  rotations = symmetry_operations(symprec, angle_tolerance).map {|oper| oper[:rotation]}
 
-    results = [true, true, true]
-    rotations.each do |rot|
-      3.times do |i|
-        3.times do |j|
-          next if rot[i][j] == 0
-          next if i == j
-          results[i] = false
-          results[j] = false
-        end
-      end
-    end
-    return results
-  end
+  #  results = [true, true, true]
+  #  rotations.each do |rot|
+  #    3.times do |i|
+  #      3.times do |j|
+  #        next if rot[i][j] == 0
+  #        next if i == j
+  #        results[i] = false
+  #        results[j] = false
+  #      end
+  #    end
+  #  end
+  #  return results
+  #end
 
   private
 
@@ -453,9 +453,9 @@ class CrystalCell::Cell
     #        "LoadError: 'spglib' seems not to be installed into the system."
     #end
 
-    unless defined? Getspg
-      raise NoSpglibError, "symmetry_operations() is called without spglib."
-    end
+    #unless defined? Getspg
+    #  raise NoSpglibError, "symmetry_operations() is called without spglib."
+    #end
 
     #pp lattice                     # => [[2.0, 0.0, 0.0], [1.2246063538223773e-16, 2.0, 0.0], [1.2246063538223773e-16, 1.2246063538223773e-16, 2.0]]
     ##vasp の lattice 行と比べて転置しているのに注意。
@@ -478,7 +478,7 @@ class CrystalCell::Cell
     #spgnum, spg, hallnum, hall_symbol, t_mat, o_shift,
     #rotations, translations, wyckoffs =
     #  get_dataset(axes_t, poss, types, symprec, angle_tolerance)
-    dataset = get_dataset(axes_t, poss, types, symprec, angle_tolerance)
+    dataset = get_dataset(axes_t, poss, types, hall_number, symprec, angle_tolerance)
     rotations = dataset[6]
     translations = dataset[7]
 
