@@ -1,6 +1,23 @@
 = crystalcell Changelog
 
-== Master (for 0.0.6)
+== Master (for 0.0.7)
+
+== Version 0.0.6 [2016-05-31] released
+
+* Add methods to CrystalCell::Cell 
+    * spgnum
+    * spg
+    * hallnum
+    * hall_symbol
+    * setting
+    * t_mat
+    * o_shift
+    * rotations
+    * translations
+    * wyckoffs
+    * brv_lattice
+    * brv_types
+    * brv_positions
 
 == Version 0.0.5 [2016-05-09] released
 
@@ -8,6 +25,7 @@
 * Delete meaningless codes
 
 == Version 0.0.4 [2016-03-11] released
+
 * LatticeAxes.axes is added.
 * LatticeAxes.* is added.
 * LatticeAxes.to_a is added.
@@ -28,13 +46,16 @@
 * CrystalCell::PeriodicCell.find_bonds returns preserved order of elements
 
 == Version 0.0.3 [2015-02-05] released
+
 * Add CrystalCell::LatticeAxes.new_lc
 
 == Version 0.0.2 [2014-08-30] released
+
 * Change cell.dump_poscar for vasp 5.
 * Update dependency on other gems.
 
 == Version 0.0.1 [2013-04-18] released
+
 * Change indent char from tab char to two spaces.
 * Introduce module CrystalCell as new namespace.
 * Add Cell#symmetry_operations and Cell#axis_independencies.
@@ -44,4 +65,5 @@
 * Adjust to builtinextension-0.1.0.
 
 == Version 0.0.0
+
 * Initial release.

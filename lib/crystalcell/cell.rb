@@ -44,7 +44,10 @@ class CrystalCell::Cell
   class NoSpglibError < Exception; end
 
   attr_reader :element_names, :atoms, :axes
-  attr_accessor :comment
+  attr_accessor :comment, :symprec, :angle_tolerance
+
+  # @symprec indicates precision for symmetry check.
+  # @angle_tolerance indicates tolerance for angle to check symmetry.
 
   #Argument 'axes' must have :to_a method and expressed in 3x3 Array.
   def initialize(axes, atoms = [])
@@ -62,6 +65,8 @@ class CrystalCell::Cell
       end
     end
     @atoms = atoms
+    @symprec = 1.0E-10
+    @angle_tolerance = -1.0
   end
 
   #セルに原子を追加する。
@@ -149,9 +154,10 @@ class CrystalCell::Cell
   #other: 他のセル
   #length_ratio: 長さ(a, b, c) の許容値を比で指定
   #angle_tolerance: 角度(alpha, beta, gamma) の許容値を角度の値で指定
-  def equal_lattice_in_delta?( other, length_ratio, angle_tolerance )
+  #def equal_lattice_in_delta?( other, length_ratio, angle_tolerance )
+  def equal_lattice_in_delta?( other, length_ratio)
     @axes.equal_in_delta?(
-      CrystalCell::LatticeAxes.new( other.axes.to_a ), length_ratio, angle_tolerance
+      CrystalCell::LatticeAxes.new( other.axes.to_a ), length_ratio, -@angle_tolerance
     )
   end
 
@@ -165,8 +171,9 @@ class CrystalCell::Cell
 
   #等価判定。
   #格子定数の長さの比率の許容値、格子定数の角度の許容値、原子座標の許容値。
-  def equal_in_delta?( other, length_ratio, angle_tolerance, position_tolerance )
-    return false unless equal_lattice_in_delta?(other, length_ratio, angle_tolerance)
+  #def equal_in_delta?( other, length_ratio, angle_tolerance, position_tolerance )
+  def equal_in_delta?( other, length_ratio, position_tolerance )
+    return false unless equal_lattice_in_delta?(other, length_ratio)
     return false unless equal_atoms_in_delta?(other, position_tolerance)
     return true
   end
@@ -442,45 +449,11 @@ class CrystalCell::Cell
   #  return results
   #end
 
-  private
-
   #Return rotations and translation of symmetry operations.
-  def symmetry_operations(symprec, angle_tolerance)
-    #begin
-    #    require "getspg.so"
-    #rescue LoadError
-    #    raise LoadError,
-    #        "LoadError: 'spglib' seems not to be installed into the system."
-    #end
+  def symmetry_operations
+    #dataset = get_spg_dataset(symprec, angle_tolerance)
 
-    #unless defined? Getspg
-    #  raise NoSpglibError, "symmetry_operations() is called without spglib."
-    #end
-
-    #pp lattice                     # => [[2.0, 0.0, 0.0], [1.2246063538223773e-16, 2.0, 0.0], [1.2246063538223773e-16, 1.2246063538223773e-16, 2.0]]
-    ##vasp の lattice 行と比べて転置しているのに注意。
-    #pp position                    #=>[[0.0, 0.0, 0.0], [0.5, 0.0, 0.0], [0.5, 0.5, 0.0], [0.5, 0.5, 0.5]]
-    #pp types                           #=>[1, 2, 3, 3]
-    #pp symprec                     #=>1.0e-05
-    #pp angle_tolerance     #=>-1.0
-    axes_t = @axes.to_a.transpose
-
-    poss = positions.map {|pos| pos.to_a}
-
-    table = {}
-    types = elements.map do |elem|
-      table[elem] = ((table.size) +1) unless table.keys.include? elem
-      table[elem]
-    end
-
-    #pp axes_t, poss, types, symprec, angle_tolerance
-
-    #spgnum, spg, hallnum, hall_symbol, t_mat, o_shift,
-    #rotations, translations, wyckoffs =
-    #  get_dataset(axes_t, poss, types, symprec, angle_tolerance)
-    dataset = get_dataset(axes_t, poss, types, hall_number, symprec, angle_tolerance)
-    rotations = dataset[6]
-    translations = dataset[7]
+    #pp dataset;exit
 
     results = []
     rotations.size.times do |index|
@@ -490,6 +463,74 @@ class CrystalCell::Cell
       }
     end
     return results
+  end
+
+  def spgnum
+    get_spg_dataset[0]
+  end
+
+  def spg
+    get_spg_dataset[1]
+  end
+
+  def hallnum
+    get_spg_dataset[2]
+  end
+
+  def hall_symbol
+    get_spg_dataset[3]
+  end
+
+  def setting
+    get_spg_dataset[4]
+  end
+
+  def t_mat
+    get_spg_dataset[5]
+  end
+
+  def o_shift
+    get_spg_dataset[6]
+  end
+
+  def rotations
+    get_spg_dataset[7]
+  end
+
+  def translations
+    get_spg_dataset[8]
+  end
+
+  def wyckoffs
+    get_spg_dataset[9]
+  end
+
+  def brv_lattice
+    get_spg_dataset[10]
+  end
+
+  def brv_types
+    get_spg_dataset[11]
+  end
+
+  def brv_positions
+    get_spg_dataset[12]
+  end
+
+  #ptg_symbol, ptg_num, trans_mat = getptg(rotations)
+
+  private
+
+  def get_spg_dataset
+    axes_t = @axes.to_a.transpose
+    poss = positions.map {|pos| pos.to_a}
+    table = {}
+    types = elements.map do |elem|
+      table[elem] = ((table.size) +1) unless table.keys.include? elem
+      table[elem]
+    end
+    hall_num= 0
+    dataset = get_dataset(axes_t, poss, types, hall_num, @symprec, @angle_tolerance)
   end
 
   #POSCAR の内容の文字列を生成。
