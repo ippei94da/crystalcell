@@ -530,7 +530,7 @@ class CrystalCell::Cell
       table[elem]
     end
     hall_num= 0
-    dataset = get_dataset(axes_t, poss, types, hall_num, @symprec, @angle_tolerance)
+    get_dataset(axes_t, poss, types, hall_num, @symprec, @angle_tolerance)
   end
 
   #POSCAR の内容の文字列を生成。
