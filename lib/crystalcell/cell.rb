@@ -519,6 +519,11 @@ class CrystalCell::Cell
 
   #ptg_symbol, ptg_num, trans_mat = getptg(rotations)
 
+  def to_povcell
+    #pp @axes
+    CrystalCell::Povray::Cell.new(@axes, @atoms)
+  end
+
   private
 
   def get_spg_dataset

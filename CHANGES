@@ -2,6 +2,8 @@
 
 == Master (for 0.0.7)
 
+* Add Cell.to_povcell
+
 == Version 0.0.6 [2016-05-31] released
 
 * Add methods to CrystalCell::Cell 

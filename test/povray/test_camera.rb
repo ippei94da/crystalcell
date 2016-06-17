@@ -9,28 +9,28 @@ require "helper"
 class TC_Camera < Test::Unit::TestCase
   def setup
     @c00 = CrystalCell::Povray::Camera.new(
-      orthographic: true,
+      camera_type: 'orthographic',
       location:     [   3.0, 3.0, 3.0 ],
-      look_at:      [   0.0, 0.0, 0.0 ],
       sky:          [   0.0, 0.0, 1.0 ],
       right:        [ -1.00, 0.0, 0.0 ],
       up:           [   0.0, 1.0, 0.0 ],
-      angle:        68
+      angle:        68,
+      look_at:      [   0.0, 0.0, 0.0 ],
     )
   end
 
   def test_initialize
     hash = {
-      orthographic: true,
+      camera_type: 'orthographic',
       location:     [   3.0, 3.0, 3.0 ],
-      look_at:      [   0.0, 0.0, 0.0 ],
       sky:          [   0.0, 0.0, 1.0 ],
       right:        [ -1.00, 0.0, 0.0 ],
       up:           [   0.0, 1.0, 0.0 ],
-      angle:        68
+      angle:        68,
+      look_at:      [   0.0, 0.0, 0.0 ],
     }
     @c01 = CrystalCell::Povray::Camera.new(hash)
-    assert_equal( true               , @c01.orthographic)
+    assert_equal( 'orthographic'     , @c01.camera_type)
     assert_equal( [   3.0, 3.0, 3.0 ], @c01.location    )
     assert_equal( [   0.0, 0.0, 0.0 ], @c01.look_at     )
     assert_equal( [   0.0, 0.0, 1.0 ], @c01.sky         )
@@ -40,7 +40,7 @@ class TC_Camera < Test::Unit::TestCase
   end
 
   def test_accessor
-    assert_equal( true               , @c00.orthographic)
+    assert_equal( 'orthographic'     , @c00.camera_type)
     assert_equal( [   3.0, 3.0, 3.0 ], @c00.location    )
     assert_equal( [   0.0, 0.0, 0.0 ], @c00.look_at     )
     assert_equal( [   0.0, 0.0, 1.0 ], @c00.sky         )
@@ -48,13 +48,13 @@ class TC_Camera < Test::Unit::TestCase
     assert_equal( [   0.0, 1.0, 0.0 ], @c00.up          )
     assert_equal( 68                 , @c00.angle       )
 
-    @c00.orthographic = false
-    assert_equal( false              , @c00.orthographic)
+    @c00.camera_type = 'orthographic'
+    assert_equal( 'orthographic'              , @c00.camera_type)
   end
 
   def test_additional
     c10 = CrystalCell::Povray::Camera.new(
-      orthographic: true,
+      camera_type: 'orthographic',
       location:     [   3.0, 3.0, 3.0 ],
       look_at:      [   0.0, 0.0, 0.0 ],
       sky:          [   0.0, 0.0, 1.0 ],
@@ -70,11 +70,11 @@ class TC_Camera < Test::Unit::TestCase
 camera {
   orthographic
   location <3.000000, 3.000000, 3.000000 >
-  look_at  <0.000000, 0.000000, 0.000000 >
   sky      <0.000000, 0.000000, 1.000000 >
   right    <-1.000000, 0.000000, 0.000000 >
   up       <0.000000, 1.000000, 0.000000 >
   angle    68.000000
+  look_at  <0.000000, 0.000000, 0.000000 >
 }
 background {color rgb<1,1,1>}
 light_source{ < 4, 1, 4 > color <1,1,1> parallel point_at 0 }
@@ -88,22 +88,81 @@ HERE
   end
 
   def test_dump
+    ############################################################
+    c10 = CrystalCell::Povray::Camera.new(
+      camera_type: 'orthographic',
+      location:     [   3.0, 3.0, 3.0 ],
+      sky:          [   0.0, 0.0, 1.0 ],
+      right:        [ -1.00, 0.0, 0.0 ],
+      up:           [   0.0, 1.0, 0.0 ],
+      angle:        68,
+      look_at:      [   0.0, 0.0, 0.0 ],
+    )
     correct = <<HERE
 camera {
   orthographic
   location <3.000000, 3.000000, 3.000000 >
-  look_at  <0.000000, 0.000000, 0.000000 >
   sky      <0.000000, 0.000000, 1.000000 >
   right    <-1.000000, 0.000000, 0.000000 >
   up       <0.000000, 1.000000, 0.000000 >
   angle    68.000000
+  look_at  <0.000000, 0.000000, 0.000000 >
 }
 HERE
     io = StringIO.new
-    @c00.dump(io)
+    c10.dump(io)
     io.rewind
     result = io.read
     assert_equal(correct, result)
+
+    ## no angle ##########################################################
+    c10 = CrystalCell::Povray::Camera.new(
+      camera_type: 'orthographic',
+      location:     [   3.0, 3.0, 3.0 ],
+      sky:          [   0.0, 0.0, 1.0 ],
+      right:        [ -1.00, 0.0, 0.0 ],
+      up:           [   0.0, 1.0, 0.0 ],
+      look_at:      [   0.0, 0.0, 0.0 ],
+    )
+    correct = <<HERE
+camera {
+  orthographic
+  location <3.000000, 3.000000, 3.000000 >
+  sky      <0.000000, 0.000000, 1.000000 >
+  right    <-1.000000, 0.000000, 0.000000 >
+  up       <0.000000, 1.000000, 0.000000 >
+  look_at  <0.000000, 0.000000, 0.000000 >
+}
+HERE
+    io = StringIO.new
+    c10.dump(io)
+    io.rewind
+    result = io.read
+    assert_equal(correct, result)
+
+    ## no ortho ##########################################################
+    c10 = CrystalCell::Povray::Camera.new(
+      location:     [   3.0, 3.0, 3.0 ],
+      sky:          [   0.0, 0.0, 1.0 ],
+      right:        [ -1.00, 0.0, 0.0 ],
+      up:           [   0.0, 1.0, 0.0 ],
+      look_at:      [   0.0, 0.0, 0.0 ],
+    )
+    correct = <<HERE
+camera {
+  location <3.000000, 3.000000, 3.000000 >
+  sky      <0.000000, 0.000000, 1.000000 >
+  right    <-1.000000, 0.000000, 0.000000 >
+  up       <0.000000, 1.000000, 0.000000 >
+  look_at  <0.000000, 0.000000, 0.000000 >
+}
+HERE
+    io = StringIO.new
+    c10.dump(io)
+    io.rewind
+    result = io.read
+    assert_equal(correct, result)
+    ############################################################
   end
 
 end

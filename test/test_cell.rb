@@ -1549,8 +1549,13 @@ class TC_Cell < Test::Unit::TestCase
     assert_in_delta(0.0, result[0][2], $tolerance)
   end
 
-  #def dump_povray
-  # #pp @c01
-  # ##TODO
-  #end
+  def test_to_povcell
+    povcell = @c01.to_povcell
+    assert_equal(CrystalCell::Povray::Cell, povcell.class)
+    assert_equal(
+      CrystalCell::LatticeAxes.new(
+        [[2.0, 2.0, 2.0], [0.0, 2.0, 2.0], [0.0, 0.0, 2.0]]),
+      povcell.axes
+    )
+  end
 end
