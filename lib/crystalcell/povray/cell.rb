@@ -10,7 +10,7 @@ class CrystalCell::Povray::Cell < CrystalCell::Cell
 
   # povray 形式の文字列を返す。
   def to_pov
-   return atoms_to_pov + bonds_to_pov + lattice_to_pov
+    return atoms_to_pov + bonds_to_pov + lattice_to_pov
   end
 
   # indicate camera position as polar coordinate)

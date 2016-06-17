@@ -43,11 +43,11 @@ class CrystalCell::Povray::Camera
                  location:         nil, # <0,0,0>
                  right:            [-1.33, 0.0, 0.0],
                  up:               [  0.0, 1.0, 0.0],
-                 direction:        nil
+                 direction:        nil,
                  sky:              [  0.0, 0.0, 1.0],
                  angle:            nil,
-                 camera_modifiers: []
-                 look_at:          [  0.0, 0.0, 0.0],
+                 camera_modifiers: [],
+                 look_at:          [  0.0, 0.0, 0.0]
                  )
     @camera_type  = camera_type
     @location     = location    
@@ -69,13 +69,12 @@ class CrystalCell::Povray::Camera
     io.printf("  direction <%f, %f, %f >\n", *@direction) if @direction
     io.printf("  sky       <%f, %f, %f >\n", *@sky)
     io.printf("  angle     %f\n"           , @angle)      if @angle
-    io.puts "}"
     @camera_modifiers.each do |i|
       io.puts i
     end
     io.printf("  look_at   <%f, %f, %f >\n", *@look_at) if @look_at
+    io.puts "}"
   end
 
 end
-
 

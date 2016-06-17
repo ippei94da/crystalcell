@@ -175,13 +175,13 @@ class TC_Povray_Cell < Test::Unit::TestCase
     assert_equal(corrects, t)
   end
 
-  def test_gen_image
-    TODO
-  end
-
-  def test_gen_4in1_images
-    TODO
-  end
+#  def test_gen_image
+#    TODO
+#  end
+#
+#  def test_gen_4in1_images
+#    TODO
+#  end
 
 end
 
