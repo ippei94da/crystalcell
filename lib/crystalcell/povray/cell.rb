@@ -13,16 +13,6 @@ class CrystalCell::Povray::Cell < CrystalCell::Cell
     return atoms_to_pov + bonds_to_pov + lattice_to_pov
   end
 
-  # indicate camera position as polar coordinate)
-  def gen_image(r, theta, phi)
-    
-  end
-
-  def gen_4in1_images
-  end
-
-  #private
-
   # 原子を描画するための pov 形式文字列を返す。
   # 周期境界近傍の原子が tolerance 未満ならば、反対側のセル境界にも描画する。
   def atoms_to_povs(tolerance = 0.0)
