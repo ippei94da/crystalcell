@@ -9,14 +9,37 @@ require 'crystalcell/povray/triangle.rb'
 
 class CrystalCell::Povray
 
-  def initialize(camera:, environment:, objects: [])
-    @camera      = camera
-    @environment = environment
-    @objects     = objects
+  # camera_info indicates hash with the keys of camera info,
+  #   e.g., :camera_type, :location, :direction, :right, :sky, :up, :look_at
+  def initialize(cell: )
+    #@camera      = CrystalCell::Povray::Camera.new(camera_info)
+    #@environment = environment
+    #@objects     = objects
+    @cell = cell
+  end
+  
+  def set_camera(r, theta, phi)
+    
   end
 
+  #bond を描くか
+  #def set_bond(cell)
+  #end
+
+  #lattice を描くか
+  def set_lattice(axes)
+  end
+
+  def set_atoms(cell)
+  end
+
+  def dump_pov(io)
+  end
+  
+
   # Indicate camera position as polar coordinate)
-  def gen_image(r, theta, phi)
+  # theta, phi in degree.
+  def gen_image(r, theta, phi) 
     to_pov
   end
 

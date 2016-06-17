@@ -23,7 +23,8 @@ class CrystalCell::Povray::Camera
     #@up       = [   0.0, 1.0, 0.0 ]
     #@angle    = 68
 
-  attr_accessor :camera_type, :location, :look_at, :sky, :right, :up, :angle
+  attr_accessor :camera_type, :location, :right, :up, :direction,
+    :sky, :angle, :look_at
 
   # camera_type: perspectice, orthographic, etc.
   # Note: default values of some setting is modified from original povray
@@ -31,33 +32,33 @@ class CrystalCell::Povray::Camera
   #   This library provide only on right-handed system in crystallography.
   #
   #   ---------------------------------------------
-  #   setting       default_orig default_this
-  #   perspective
-  #   location      <0,0,0>       the same
-  #   direction     <0,0,1>       the same
+  #   setting       default_orig  default_this
+  #   camera_type   perspective   
+  #   location      <0,0,0>       
+  #   direction     <0,0,1>       
   #   right         <1.33,0,0>    [-1.33, 0.0, 0.0],
   #   sky           <0,1,0>       [  0.0, 0.0, 1.0],
-  #   up            <0,1,0>       the same
-  #   look_at       <0,0,1>       
+  #   up            <0,1,0>       
+  #   look_at       <0,0,1>
   def initialize(camera_type:      nil, # perspective
                  location:         nil, # <0,0,0>
-                 right:            [-1.33, 0.0, 0.0],
-                 up:               [  0.0, 1.0, 0.0],
+                 right:            nil,
+                 up:               nil,
                  direction:        nil,
-                 sky:              [  0.0, 0.0, 1.0],
+                 sky:              nil,
                  angle:            nil,
-                 camera_modifiers: [],
-                 look_at:          [  0.0, 0.0, 0.0]
+                 #camera_modifiers: nil,
+                 look_at:          nil
                  )
     @camera_type  = camera_type
-    @location     = location    
-    @right        = right       
-    @up           = up          
-    @direction    = direction   
-    @sky          = sky         
-    @angle        = angle       
-    @camera_modifiers    = camera_modifiers       
-    @look_at      = look_at     
+    @location     = location
+    @right        = right
+    @up           = up
+    @direction    = direction
+    @sky          = sky
+    @angle        = angle
+    #@camera_modifiers    = camera_modifiers
+    @look_at      = look_at
   end
 
   def dump(io)
@@ -67,11 +68,11 @@ class CrystalCell::Povray::Camera
     io.printf("  right     <%f, %f, %f >\n", *@right)     if @right
     io.printf("  up        <%f, %f, %f >\n", *@up)        if @up
     io.printf("  direction <%f, %f, %f >\n", *@direction) if @direction
-    io.printf("  sky       <%f, %f, %f >\n", *@sky)
+    io.printf("  sky       <%f, %f, %f >\n", *@sky)       if @sky
     io.printf("  angle     %f\n"           , @angle)      if @angle
-    @camera_modifiers.each do |i|
-      io.puts i
-    end
+    #@camera_modifiers.each do |i|
+    #  io.puts i
+    #end
     io.printf("  look_at   <%f, %f, %f >\n", *@look_at) if @look_at
     io.puts "}"
   end
