@@ -12,6 +12,9 @@ class Mageo::Triangle
       "pigment { color rgb <1, 0, 0> } }"
     return result
   end
-end
 
+  def dump(io)
+    io.print self.to_pov
+  end
+end
 

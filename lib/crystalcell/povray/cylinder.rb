@@ -7,6 +7,10 @@ class Mageo::Cylinder
     sprintf( "object { cylinder{ <% 7.4f, % 7.4f, % 7.4f>, <% 7.4f, % 7.4f, % 7.4f>, %7.4f } pigment { color rgb <%4.2f, %4.2f, %4.2f> } }",
       *positions[0], *positions[1], radius, *color)
   end
+
+  def dump(io)
+    io.print self.to_pov
+  end
 end
 
 

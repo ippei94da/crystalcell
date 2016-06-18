@@ -14,18 +14,33 @@ DEFAULT_ENVIRONMENTS = [
 ]
 
 class CrystalCell::Povray
-
+  
   # camera_info indicates hash with the keys of camera info,
   #   e.g., :camera_type, :location, :direction, :right, :sky, :up, :look_at
   def initialize(cell: , camera_info: {}, environments: DEFAULT_ENVIRONMENTS)
     @camera      = CrystalCell::Povray::Camera.new(camera_info)
     @environments = environments
-    @cell = cell
+    @cell = cell.to_povcell
     @objects     = []
+
+    ## @camera.look_at
+    center = Mageo::Vector3D[0.0, 0.0, 0.0]
+    @cell.axes.each do |axis|
+      #pp center
+      #pp axis
+      center += axis.to_v3d * 0.5
+    end
+    @camera.look_at = center
   end
 
-  def set_camera(r, theta, phi)
-    
+  # Indicate relative position from center of cell with polar coordinate.
+  def camera_location(r, theta, phi)
+  end
+
+  def camera_location_polar(r, theta, phi)
+    Mageo::Polar3D.to_cartesian(r, theta, phi)
+
+    #@camera.look_at +
   end
 
   #lattice を描くか
@@ -35,11 +50,11 @@ class CrystalCell::Povray
   def set_atoms(cell)
   end
 
-  def dump_pov(io)
+  def dump(io)
     @camera.dump(io)
     @environments.each { |item| io.puts item }
-    @cell.to_pov(io)
-    @objects.each { |obj| io.puts obj.to_pov }
+    @cell.dump(io)
+    @objects.each { |obj| obj.dump(io) }
   end
   
 
@@ -51,17 +66,6 @@ class CrystalCell::Povray
 
   def gen_4in1_images
   end
-
-  #private
-
-  def camera(r, theta, phi)
-
-  end
-
-  def environment()
-
-  end
-
 
 end
 

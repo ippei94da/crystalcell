@@ -7,6 +7,10 @@ class Mageo::Sphere
     sprintf( "object { sphere{<% 7.4f, % 7.4f, % 7.4f>, %7.4f} pigment {color rgb <%4.2f, %4.2f, %4.2f>} }",
       *position, radius, *color)
   end
+
+  def dump(io)
+    io.print self.to_pov
+  end
 end
 
 

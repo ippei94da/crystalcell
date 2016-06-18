@@ -10,7 +10,12 @@ class CrystalCell::Povray::Cell < CrystalCell::Cell
 
   # povray 形式の文字列を返す。
   def to_pov
-    return atoms_to_pov + bonds_to_pov + lattice_to_pov
+    #return atoms_to_povs + bonds_to_povs + lattice_to_povs
+    return atoms_to_povs + lattice_to_povs
+  end
+
+  def dump(io)
+    io.print self.to_pov
   end
 
   # 原子を描画するための pov 形式文字列を返す。
@@ -25,30 +30,30 @@ class CrystalCell::Povray::Cell < CrystalCell::Cell
     results
   end
 
-  # 原子間の連結棒を描画するための pov 形式文字列を返す。
-  # E.g.,
-  #   elem0 = 'O'
-  #   elem1 = 'Li'
-  #   min_distance = 0.0
-  #   max_distance = 1.0
-  # 上記の指定の場合、O-O 間かつ距離が 0.0〜1.0 の原子間のみ
-  # bond を出力する。
-  def bonds_to_povs(elem0, elem1, min_distance, max_distance)
-    results = []
-    cell = self.to_pcell
-    cell.find_bonds(elem0, elem1, min_distance, max_distance).each do |pair|
-      cart0 = pair[0].to_v3d(self.axes)
-      cart1 = pair[1].to_v3d(self.axes)
-      midpoint = Mageo::Vector3D.midpoint(cart0, cart1)
-      results << Mageo::Cylinder.new(
-        [cart0, midpoint], BOND_RADIUS).to_pov(
-          CrystalCell::Povray::Element.color(elem0)) + "\n"
-      results << Mageo::Cylinder.new(
-        [cart1, midpoint], BOND_RADIUS).to_pov(
-          CrystalCell::Povray::Element.color(elem1)) + "\n"
-    end
-    results
-  end
+  ## 原子間の連結棒を描画するための pov 形式文字列を返す。
+  ## E.g.,
+  ##   elem0 = 'O'
+  ##   elem1 = 'Li'
+  ##   min_distance = 0.0
+  ##   max_distance = 1.0
+  ## 上記の指定の場合、O-O 間かつ距離が 0.0〜1.0 の原子間のみ
+  ## bond を出力する。
+  #def bonds_to_povs(elem0, elem1, min_distance, max_distance)
+  #  results = []
+  #  cell = self.to_pcell
+  #  cell.find_bonds(elem0, elem1, min_distance, max_distance).each do |pair|
+  #    cart0 = pair[0].to_v3d(self.axes)
+  #    cart1 = pair[1].to_v3d(self.axes)
+  #    midpoint = Mageo::Vector3D.midpoint(cart0, cart1)
+  #    results << Mageo::Cylinder.new(
+  #      [cart0, midpoint], BOND_RADIUS).to_pov(
+  #        CrystalCell::Povray::Element.color(elem0)) + "\n"
+  #    results << Mageo::Cylinder.new(
+  #      [cart1, midpoint], BOND_RADIUS).to_pov(
+  #        CrystalCell::Povray::Element.color(elem1)) + "\n"
+  #  end
+  #  results
+  #end
 
   # 格子の棒を描画するための pov 形式文字列を返す。
   def lattice_to_povs
