@@ -12,13 +12,12 @@ class TC_Povray < Test::Unit::TestCase
       CrystalCell::Atom.new( 'Li', [0.0, 0.0, 0.0] ),
       CrystalCell::Atom.new( 'O' , [0.2, 0.2, 0.2] ),
     ]
-    @c02 = CrystalCell::Cell.new(
+    cell = CrystalCell::Cell.new(
       [[2.0, 2.0, 2.0], [0.0, 2.0, 2.0], [0.0, 0.0, 2.0]],  
       atoms)
-    @c02.comment = 'c02'
+    cell.comment = 'c02'
 
-
-    @p00 = CrystalCell::Povray.new()
+    @p00 = CrystalCell::Povray.new(cell)
   end
 
   def test_dump_pov
