@@ -7,24 +7,26 @@ require 'crystalcell/povray/element.rb'
 require 'crystalcell/povray/sphere.rb'
 require 'crystalcell/povray/triangle.rb'
 
+DEFAULT_ENVIRONMENTS = [
+  'background {color rgb<1,1,1>}',
+  'light_source{ < 4, 1, 4 > color <1,1,1> parallel point_at 0 }',
+  'default{ texture{ finish{ ambient 0.4 phong 1.0 phong_size 10 } } }',
+]
+
 class CrystalCell::Povray
 
   # camera_info indicates hash with the keys of camera info,
   #   e.g., :camera_type, :location, :direction, :right, :sky, :up, :look_at
-  def initialize(cell: )
-    #@camera      = CrystalCell::Povray::Camera.new(camera_info)
-    #@environment = environment
-    #@objects     = objects
+  def initialize(cell: , camera_info: {}, environments: DEFAULT_ENVIRONMENTS)
+    @camera      = CrystalCell::Povray::Camera.new(camera_info)
+    @environments = environments
     @cell = cell
+    @objects     = []
   end
-  
+
   def set_camera(r, theta, phi)
     
   end
-
-  #bond を描くか
-  #def set_bond(cell)
-  #end
 
   #lattice を描くか
   def set_lattice(axes)
@@ -34,6 +36,10 @@ class CrystalCell::Povray
   end
 
   def dump_pov(io)
+    @camera.dump(io)
+    @environments.each { |item| io.puts item }
+    @cell.to_pov(io)
+    @objects.each { |obj| io.puts obj.to_pov }
   end
   
 
@@ -91,9 +97,6 @@ end
 #  angle    68.000000
 #  look_at  <0.000000, 0.000000, 0.000000 >
 #}
-#background {color rgb<1,1,1>}
-#light_source{ < 4, 1, 4 > color <1,1,1> parallel point_at 0 }
-#default{ texture{ finish{ ambient 0.4 phong 1.0 phong_size 10 } } }
 #HERE
 #    io = StringIO.new
 #    c10.dump(io)
@@ -101,4 +104,8 @@ end
 #    result = io.read
 #    assert_equal(correct, result)
 #  end
+
+  #bond を描くか
+  #def set_bond(cell)
+  #end
 
