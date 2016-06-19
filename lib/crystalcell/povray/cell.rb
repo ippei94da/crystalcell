@@ -15,7 +15,9 @@ class CrystalCell::Povray::Cell < CrystalCell::Cell
   end
 
   def dump(io)
-    io.print self.to_pov
+    self.to_pov.each do |line|
+      io.print line
+    end
   end
 
   # 原子を描画するための pov 形式文字列を返す。

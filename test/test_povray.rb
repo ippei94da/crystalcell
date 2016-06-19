@@ -71,24 +71,33 @@ class TC_Povray < Test::Unit::TestCase
   end
 
   def test_shoot_snap
+    #basename = 'test/povray/tmp'
+    #povfile = basename + '.pov'
+    #pngfile = basename + '.png'
+
+    #FileUtils.rm povfile if File.exist? povfile
+    #FileUtils.rm pngfile if File.exist? pngfile
+
+    #@p00.shoot_snap(basename)
+
+    ##FileUtils.rm povfile if File.exist? povfile
+    ##FileUtils.rm pngfile if File.exist? pngfile
+  end
+
+  def test_shoot_4in1
     basename = 'test/povray/tmp'
-    povfile = basename + '.pov'
-    pngfile = basename + '.png'
-
-    FileUtils.rm povfile if File.exist? povfile
-    FileUtils.rm pngfile if File.exist? pngfile
-
-
+    #povfile = basename + '.pov'
+    #pngfile = basename + '.png'
+    @p00.shoot_4in1(basename)
 
   end
 
-  #def test_dump
-  #  io = StringIO.new
-  #  #@p00.dump(STDOUT)
-  #  @p00.dump(io)
-  #  io.rewind
-  #  pp io.readlines
-  #end
+  def test_dump
+    #io = StringIO.new
+    #@p00.dump(io)
+    #io.rewind
+    #puts io.read
+  end
 
 end
 

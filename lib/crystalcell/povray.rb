@@ -59,9 +59,22 @@ class CrystalCell::Povray
   end
 
   # shoot 4 angles and unite.
-  def shoot_4
+  def shoot_4in1(basename)
+    r = 10.0
     povray = Marshal.load(Marshal.dump(self))
-    povray.camera.
+    povray.camera_location_polar(r, 0, 0)
+    povray.shoot_snap(basename + '-z')
+    povray.camera_location_polar(r, 90, 0)
+    povray.shoot_snap(basename + '-x')
+    povray.camera_location_polar(r, 90, 90)
+    povray.shoot_snap(basename + '-y')
+    povray.camera_location_polar(r, 80, 70)
+    povray.shoot_snap(basename + '-w')
+
+    #unite
+
+
+
   end
 
   ##lattice を描くか
@@ -75,7 +88,10 @@ class CrystalCell::Povray
     @camera.dump(io)
     @environments.each { |item| io.puts item }
     @cell.dump(io)
-    @objects.each { |obj| obj.dump(io) }
+    @objects.each { |obj|
+      #pp obj
+      obj.dump(io)
+    }
   end
   
 

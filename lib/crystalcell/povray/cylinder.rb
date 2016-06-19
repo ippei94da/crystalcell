@@ -9,7 +9,7 @@ class Mageo::Cylinder
   end
 
   def dump(io)
-    io.print self.to_pov
+    io.puts self.to_pov
   end
 end
 
