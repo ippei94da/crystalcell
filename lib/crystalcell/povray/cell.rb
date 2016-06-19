@@ -69,18 +69,18 @@ class CrystalCell::Povray::Cell < CrystalCell::Cell
     v111 = Vector3DInternal[ 1.0, 1.0, 1.0 ].to_v3d(self.axes)
 
     results = []
-    results << Mageo::Cylinder.new([v000, v001], LATTICE_RADIUS).to_pov(LATTICE_COLOR).to_s + "\n"
-    results << Mageo::Cylinder.new([v010, v011], LATTICE_RADIUS).to_pov(LATTICE_COLOR).to_s + "\n"
-    results << Mageo::Cylinder.new([v100, v101], LATTICE_RADIUS).to_pov(LATTICE_COLOR).to_s + "\n"
-    results << Mageo::Cylinder.new([v110, v111], LATTICE_RADIUS).to_pov(LATTICE_COLOR).to_s + "\n"
-    results << Mageo::Cylinder.new([v000, v010], LATTICE_RADIUS).to_pov(LATTICE_COLOR).to_s + "\n"
-    results << Mageo::Cylinder.new([v100, v110], LATTICE_RADIUS).to_pov(LATTICE_COLOR).to_s + "\n"
-    results << Mageo::Cylinder.new([v001, v011], LATTICE_RADIUS).to_pov(LATTICE_COLOR).to_s + "\n"
-    results << Mageo::Cylinder.new([v101, v111], LATTICE_RADIUS).to_pov(LATTICE_COLOR).to_s + "\n"
-    results << Mageo::Cylinder.new([v000, v100], LATTICE_RADIUS).to_pov(LATTICE_COLOR).to_s + "\n"
-    results << Mageo::Cylinder.new([v001, v101], LATTICE_RADIUS).to_pov(LATTICE_COLOR).to_s + "\n"
-    results << Mageo::Cylinder.new([v010, v110], LATTICE_RADIUS).to_pov(LATTICE_COLOR).to_s + "\n"
-    results << Mageo::Cylinder.new([v011, v111], LATTICE_RADIUS).to_pov(LATTICE_COLOR).to_s + "\n"
+    results << CrystalCell::Povray::Cylinder.new(v000, v001, LATTICE_RADIUS, LATTICE_COLOR).to_pov.to_s + "\n"
+    results << CrystalCell::Povray::Cylinder.new(v010, v011, LATTICE_RADIUS, LATTICE_COLOR).to_pov.to_s + "\n"
+    results << CrystalCell::Povray::Cylinder.new(v100, v101, LATTICE_RADIUS, LATTICE_COLOR).to_pov.to_s + "\n"
+    results << CrystalCell::Povray::Cylinder.new(v110, v111, LATTICE_RADIUS, LATTICE_COLOR).to_pov.to_s + "\n"
+    results << CrystalCell::Povray::Cylinder.new(v000, v010, LATTICE_RADIUS, LATTICE_COLOR).to_pov.to_s + "\n"
+    results << CrystalCell::Povray::Cylinder.new(v100, v110, LATTICE_RADIUS, LATTICE_COLOR).to_pov.to_s + "\n"
+    results << CrystalCell::Povray::Cylinder.new(v001, v011, LATTICE_RADIUS, LATTICE_COLOR).to_pov.to_s + "\n"
+    results << CrystalCell::Povray::Cylinder.new(v101, v111, LATTICE_RADIUS, LATTICE_COLOR).to_pov.to_s + "\n"
+    results << CrystalCell::Povray::Cylinder.new(v000, v100, LATTICE_RADIUS, LATTICE_COLOR).to_pov.to_s + "\n"
+    results << CrystalCell::Povray::Cylinder.new(v001, v101, LATTICE_RADIUS, LATTICE_COLOR).to_pov.to_s + "\n"
+    results << CrystalCell::Povray::Cylinder.new(v010, v110, LATTICE_RADIUS, LATTICE_COLOR).to_pov.to_s + "\n"
+    results << CrystalCell::Povray::Cylinder.new(v011, v111, LATTICE_RADIUS, LATTICE_COLOR).to_pov.to_s + "\n"
     results
   end
 

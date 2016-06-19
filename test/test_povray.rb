@@ -85,11 +85,8 @@ class TC_Povray < Test::Unit::TestCase
   end
 
   def test_shoot_4in1
-    basename = 'test/povray/tmp'
-    #povfile = basename + '.pov'
-    #pngfile = basename + '.png'
-    @p00.shoot_4in1(basename)
-
+    #basename = 'test/povray/tmp'
+    #@p00.shoot_4in1(basename)
   end
 
   def test_dump

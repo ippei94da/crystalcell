@@ -15,32 +15,32 @@ class TC_Povray_Sphere < Test::Unit::TestCase
   end
 end
 
-class TC_Povray_Cylinder < Test::Unit::TestCase
-  def setup
-    @c00 = Mageo::Cylinder.new([[ 1.0, 2.0, 3.0 ], [4.0, 5.0, 6.0]], 2.0)
-  end
-
-  def test_to_pov
-    assert_equal(
-      "object { cylinder{ < 1.0000,  2.0000,  3.0000>, < 4.0000,  5.0000,  6.0000>,  2.0000 } pigment { color rgb <0.30, 0.60, 0.90> } }",
-      @c00.to_pov([0.3, 0.6, 0.9]) )
-  end
-end
-
-class TC_Povray_Triangle < Test::Unit::TestCase
-  def setup
-    @t00 = Mageo::Triangle.new(
-      [[ 1.0, 2.0, 3.0 ], [4.0, 5.0, 6.0], [0.3, 0.6, 0.9 ]]
-    )
-  end
-
-  def test_to_pov
-    assert_equal(
-      "polygon { 4, < 1.0000,  2.0000,  3.0000>, < 4.0000,  5.0000,  6.0000>, < 0.3000,  0.6000,  0.9000>, < 1.0000,  2.0000,  3.0000> pigment { color rgb <1, 0, 0> } }",
-      @t00.to_pov([0.3, 0.6, 0.9])
-    )
-  end
-end
+#class TC_Povray_Cylinder < Test::Unit::TestCase
+#  def setup
+#    @c00 = Mageo::Cylinder.new([[ 1.0, 2.0, 3.0 ], [4.0, 5.0, 6.0]], 2.0)
+#  end
+#
+#  def test_to_pov
+#    assert_equal(
+#      "object { cylinder{ < 1.0000,  2.0000,  3.0000>, < 4.0000,  5.0000,  6.0000>,  2.0000 } pigment { color rgb <0.30, 0.60, 0.90> } }",
+#      @c00.to_pov([0.3, 0.6, 0.9]) )
+#  end
+#end
+#
+#class TC_Povray_Triangle < Test::Unit::TestCase
+#  def setup
+#    @t00 = Mageo::Triangle.new(
+#      [[ 1.0, 2.0, 3.0 ], [4.0, 5.0, 6.0], [0.3, 0.6, 0.9 ]]
+#    )
+#  end
+#
+#  def test_to_pov
+#    assert_equal(
+#      "polygon { 4, < 1.0000,  2.0000,  3.0000>, < 4.0000,  5.0000,  6.0000>, < 0.3000,  0.6000,  0.9000>, < 1.0000,  2.0000,  3.0000> pigment { color rgb <1, 0, 0> } }",
+#      @t00.to_pov([0.3, 0.6, 0.9])
+#    )
+#  end
+#end
 
 class CrystalCell::Povray::Cell
 #public :atoms_to_povs, :bonds_to_povs, :lattice_to_povs

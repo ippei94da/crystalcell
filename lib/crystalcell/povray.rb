@@ -21,7 +21,8 @@ class CrystalCell::Povray
     @camera      = CrystalCell::Povray::Camera.new(camera_info)
     @environments = environments
     @cell = cell.to_povcell
-    @objects     = []
+    @axes = cell.to_povcell
+    @objects     = nil
 
     ## @camera.look_at
     center = Mageo::Vector3D[0.0, 0.0, 0.0]
@@ -55,26 +56,47 @@ class CrystalCell::Povray
     File.open(povfile, 'w') do |io|
       dump(io)
     end
-    system "povray #{povfile}"
+    system "povray -D #{povfile}"
   end
 
   # shoot 4 angles and unite.
-  def shoot_4in1(basename)
+  def shoot_4in1(basename, delete_intermediate = true)
+    name_x = basename + '-x'
+    name_y = basename + '-y'
+    name_z = basename + '-z'
+    name_w = basename + '-w'
+    name_zw = basename + '-zw'
+    name_xy = basename + '-xy'
+    name_zwxy = basename + '-zwxy'
+
     r = 10.0
     povray = Marshal.load(Marshal.dump(self))
-    povray.camera_location_polar(r, 0, 0)
-    povray.shoot_snap(basename + '-z')
-    povray.camera_location_polar(r, 90, 0)
-    povray.shoot_snap(basename + '-x')
-    povray.camera_location_polar(r, 90, 90)
-    povray.shoot_snap(basename + '-y')
-    povray.camera_location_polar(r, 80, 70)
-    povray.shoot_snap(basename + '-w')
+    povray.camera_location_polar(r, 0, 0)   ; povray.shoot_snap( name_z )
+    povray.camera_location_polar(r, 90, 0)  ; povray.shoot_snap( name_x )
+    povray.camera_location_polar(r, 90, 90) ; povray.shoot_snap( name_y )
+    povray.camera_location_polar(r, 80, 70) ; povray.shoot_snap( name_w )
 
-    #unite
+    system "convert +append #{name_z }.png #{name_w }.png #{name_zw  }.png"
+    system "convert +append #{name_x }.png #{name_y }.png #{name_xy  }.png"
+    system "convert -append #{name_zw}.png #{name_xy}.png #{name_zwxy}.png"
 
-
-
+    #中間ファイルを消す。
+    if delete_intermediate
+      [
+        name_w + '.png',
+        name_w + '.pov',
+        name_x + '.png',
+        name_x + '.pov',
+        name_y + '.png',
+        name_y + '.pov',
+        name_z + '.png',
+        name_z + '.pov',
+        name_zw + '.png',
+        name_xy + '.png',
+      ].each do |file|
+        FileUtils.rm file if FileTest.exist? file
+      end
+    end
   end
 
   ##lattice を描くか
@@ -84,14 +106,24 @@ class CrystalCell::Povray
   #def set_atoms(cell)
   #end
 
+  # 3つの棒で座標軸を配置
+  # x, y, z 軸をそれぞれ red, green, blue で表示。
+  def set_axes
+    o = Vector3D[-1.0, -1.0, 0.0]
+    x = o + Vector3D[1.0, 0.0, 0.0]
+    y = o + Vector3D[0.0, 1.0, 0.0]
+    z = o + Vector3D[0.0, 0.0, 1.0]
+
+    @objects << Mageo::Cylinder.new([o, x], 0.04).to_pov(x).to_s + "\n"
+    @objects << Mageo::Cylinder.new([o, y], 0.04).to_pov(y).to_s + "\n"
+    @objects << Mageo::Cylinder.new([o, z], 0.04).to_pov(z).to_s + "\n"
+  end
+
   def dump(io)
     @camera.dump(io)
     @environments.each { |item| io.puts item }
     @cell.dump(io)
-    @objects.each { |obj|
-      #pp obj
-      obj.dump(io)
-    }
+    @objects.each { |obj| obj.dump(io) }
   end
   
 
