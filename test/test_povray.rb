@@ -6,9 +6,6 @@ require "helper"
 #require "test/unit"
 #require "pkg/klass.rb"
 #
-class CrystalCell::Povray
-  attr_reader :camera
-end
 
 class TC_Povray < Test::Unit::TestCase
   TOLERANCE = 1.0E-10
@@ -94,6 +91,13 @@ class TC_Povray < Test::Unit::TestCase
     #@p00.dump(io)
     #io.rewind
     #puts io.read
+  end
+
+  def test_set_axes
+    assert_equal(nil, @p00.axes)
+    @p00.set_axes([-1.0, -1.0, 0.0])
+    #assert_equal(false, @p00.axes)
+    @p00.axes
   end
 
 end

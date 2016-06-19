@@ -3,8 +3,8 @@
 class CrystalCell::Povray::Cylinder < Mageo::Cylinder
   attr_reader :positions, :color
 
-  def initialize(positions, radius, color)
-    super(positions, radius)
+  def initialize(position0, position1, radius, color)
+    super(position0, position1, radius)
     @color = color
   end
 

@@ -69,8 +69,8 @@ class TC_Camera < Test::Unit::TestCase
     assert_equal( 'orthographic'     , c01.camera_type)
     assert_equal( [   3.0, 3.0, 3.0 ], c01.location    )
     assert_equal( [   0.0, 0.0, 0.0 ], c01.look_at     )
-    assert_equal( nil                , c01.sky         )
-    assert_equal( [ -1.00, 0.0, 0.0 ], c01.right       )
+    assert_equal( [   0.0, 0.0, 1.0], c01.sky         )
+    assert_equal( [  -1.0, 0.0, 0.0 ], c01.right       )
     assert_equal( [   0.0, 1.0, 0.0 ], c01.up          )
     assert_equal( 68                 , c01.angle       )
 
@@ -88,7 +88,7 @@ class TC_Camera < Test::Unit::TestCase
     assert_equal( [   3.0, 3.0, 3.0 ], c01.location    )
     assert_equal( [   0.0, 0.0, 0.0 ], c01.look_at     )
     assert_equal( [   0.0, 0.0, 1.0 ], c01.sky         )
-    assert_equal( nil                , c01.right       )
+    assert_equal( [  -1.33,0.0, 0.0], c01.right       )
     assert_equal( [   0.0, 1.0, 0.0 ], c01.up          )
     assert_equal( 68                 , c01.angle       )
 

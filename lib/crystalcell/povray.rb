@@ -14,6 +14,7 @@ DEFAULT_ENVIRONMENTS = [
 ]
 
 class CrystalCell::Povray
+  attr_reader :camera, :environments, :cell, :axes
   
   # camera_info indicates hash with the keys of camera info,
   #   e.g., :camera_type, :location, :direction, :right, :sky, :up, :look_at
@@ -21,8 +22,8 @@ class CrystalCell::Povray
     @camera      = CrystalCell::Povray::Camera.new(camera_info)
     @environments = environments
     @cell = cell.to_povcell
-    @axes = cell.to_povcell
-    @objects     = nil
+    @axes = nil
+    @objects     = []
 
     ## @camera.look_at
     center = Mageo::Vector3D[0.0, 0.0, 0.0]
@@ -108,32 +109,33 @@ class CrystalCell::Povray
 
   # 3つの棒で座標軸を配置
   # x, y, z 軸をそれぞれ red, green, blue で表示。
-  def set_axes
-    o = Vector3D[-1.0, -1.0, 0.0]
-    x = o + Vector3D[1.0, 0.0, 0.0]
-    y = o + Vector3D[0.0, 1.0, 0.0]
-    z = o + Vector3D[0.0, 0.0, 1.0]
+  def set_axes(position)
+    #o = Vector3D[-1.0, -1.0, 0.0]
+    o = Mageo::Vector3D[*position]
+    x = Mageo::Vector3D[1.0, 0.0, 0.0]
+    y = Mageo::Vector3D[0.0, 1.0, 0.0]
+    z = Mageo::Vector3D[0.0, 0.0, 1.0]
+    ox = o + x
+    oy = o + y
+    oz = o + z
 
-    @objects << Mageo::Cylinder.new([o, x], 0.04).to_pov(x).to_s + "\n"
-    @objects << Mageo::Cylinder.new([o, y], 0.04).to_pov(y).to_s + "\n"
-    @objects << Mageo::Cylinder.new([o, z], 0.04).to_pov(z).to_s + "\n"
+    @axes = [
+      CrystalCell::Povray::Cylinder.new(o, ox, 0.04, x),
+      CrystalCell::Povray::Cylinder.new(o, oy, 0.04, y),
+      CrystalCell::Povray::Cylinder.new(o, oz, 0.04, z)
+    ]
   end
 
   def dump(io)
     @camera.dump(io)
     @environments.each { |item| io.puts item }
     @cell.dump(io)
+
+    if @axes
+      @axes.each {|axis| axis.dump(io)}
+    end
+    
     @objects.each { |obj| obj.dump(io) }
-  end
-  
-
-  # Indicate camera position as polar coordinate)
-  # theta, phi in degree.
-  def gen_image(r, theta, phi) 
-    to_pov
-  end
-
-  def gen_4in1_images
   end
 
 end

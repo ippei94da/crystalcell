@@ -8,7 +8,7 @@ require "helper"
 
 class TC_Cylinder < Test::Unit::TestCase
   def setup
-    @c00 = CrystalCell::Povray::Cylinder.new([[1.0, 2.0, 3.0], [4.0, 6.0, 8.0]], 0.5 , [0.25, 0.5, 0.75])
+    @c00 = CrystalCell::Povray::Cylinder.new([1.0, 2.0, 3.0], [4.0, 6.0, 8.0], 0.5 , [0.25, 0.5, 0.75])
   end
 
   def test_initialize

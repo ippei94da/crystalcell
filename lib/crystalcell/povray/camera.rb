@@ -42,10 +42,10 @@ class CrystalCell::Povray::Camera
   #   look_at       <0,0,1>
   def initialize(camera_type:      nil, # perspective
                  location:         nil, # <0,0,0>
-                 right:            nil,
+                 right:            [-1.33, 0.0, 0.0],
                  up:               nil,
                  direction:        nil,
-                 sky:              nil,
+                 sky:              [0.0, 0.0, 1.0],
                  angle:            nil,
                  #camera_modifiers: nil,
                  look_at:          nil
