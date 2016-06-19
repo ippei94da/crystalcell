@@ -60,6 +60,8 @@ class CrystalCell::Povray
 
   # shoot 4 angles and unite.
   def shoot_4
+    povray = Marshal.load(Marshal.dump(self))
+    povray.camera.
   end
 
   ##lattice を描くか

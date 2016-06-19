@@ -70,6 +70,18 @@ class TC_Povray < Test::Unit::TestCase
     #@p00.camera_location_polar()
   end
 
+  def test_shoot_snap
+    basename = 'test/povray/tmp'
+    povfile = basename + '.pov'
+    pngfile = basename + '.png'
+
+    FileUtils.rm povfile if File.exist? povfile
+    FileUtils.rm pngfile if File.exist? pngfile
+
+
+
+  end
+
   #def test_dump
   #  io = StringIO.new
   #  #@p00.dump(STDOUT)
