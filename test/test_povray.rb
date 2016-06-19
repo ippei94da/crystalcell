@@ -33,9 +33,43 @@ class TC_Povray < Test::Unit::TestCase
     assert_in_delta( 3.0, @p00.camera.look_at[2], TOLERANCE)
   end
 
-  def test_foo
+  def test_camera_location
+    ## look_at
+    @p00.camera_location([ 1.2, 2.3, 3.4])
+    assert_in_delta(2.2 , @p00.camera.location[0], TOLERANCE)
+    assert_in_delta(4.3 , @p00.camera.location[1], TOLERANCE)
+    assert_in_delta(6.4 , @p00.camera.location[2], TOLERANCE)
+
+    setup
+    @p00.camera.look_at = [0.1, 2.3, 3.4]
+    @p00.camera_location([ 1.2, 2.3, 3.4])
+    assert_in_delta(1.3 , @p00.camera.location[0], TOLERANCE)
+    assert_in_delta(4.6 , @p00.camera.location[1], TOLERANCE)
+    assert_in_delta(6.8 , @p00.camera.location[2], TOLERANCE)
   end
-  
+
+  def test_camera_location_polar
+    ## look_at
+    @p00.camera_location_polar( 6.0, 0.0, 0.0)
+    assert_in_delta(1.0 , @p00.camera.location[0], TOLERANCE)
+    assert_in_delta(2.0 , @p00.camera.location[1], TOLERANCE)
+    assert_in_delta(9.0 , @p00.camera.location[2], TOLERANCE)
+
+    @p00.camera_location_polar( 6.0, 90.0, 0.0)
+    assert_in_delta(7.0 , @p00.camera.location[0], TOLERANCE)
+    assert_in_delta(2.0 , @p00.camera.location[1], TOLERANCE)
+    assert_in_delta(3.0 , @p00.camera.location[2], TOLERANCE)
+
+    @p00.camera_location_polar( 6.0, 90.0, 90.0)
+    assert_in_delta(1.0 , @p00.camera.location[0], TOLERANCE)
+    assert_in_delta(8.0 , @p00.camera.location[1], TOLERANCE)
+    assert_in_delta(3.0 , @p00.camera.location[2], TOLERANCE)
+
+    #setup
+    #@p00.camera.look_at = [0.1, 2.3, 3.4]
+    #@p00.camera_location_polar()
+  end
+
   #def test_dump
   #  io = StringIO.new
   #  #@p00.dump(STDOUT)

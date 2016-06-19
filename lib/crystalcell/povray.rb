@@ -25,30 +25,49 @@ class CrystalCell::Povray
 
     ## @camera.look_at
     center = Mageo::Vector3D[0.0, 0.0, 0.0]
-    @cell.axes.each do |axis|
-      #pp center
-      #pp axis
-      center += axis.to_v3d * 0.5
-    end
+    @cell.axes.each { |axis| center += axis.to_v3d * 0.5 }
     @camera.look_at = center
   end
 
-  # Indicate relative position from center of cell with polar coordinate.
-  def camera_location(r, theta, phi)
+  # Reset camera location, using relative vector from center of cell
+  # with cartesian coordinate.
+  def camera_location(vector)
+    look_at = @camera.look_at || [0.0, 0.0, 0.0]
+    look_at = Mageo::Vector3D[*look_at]
+    @camera.location = look_at + Mageo::Vector3D[*vector]
   end
 
+  # Reset camera location, using relative vector from center of cell
+  # with polar coordinates.
+  # theta and phi is set as degree. Not radian.
   def camera_location_polar(r, theta, phi)
-    Mageo::Polar3D.to_cartesian(r, theta, phi)
+    theta =  (2.0 * Math::PI) * theta / 360.0
+    phi   =  (2.0 * Math::PI) * phi   / 360.0
 
-    #@camera.look_at +
+    look_at = Mageo::Vector3D[*(@camera.look_at || [0.0, 0.0, 0.0])]
+    polar = Mageo::Polar3D.new(r, theta, phi)
+    @camera.location = look_at + polar.to_v3d
   end
 
-  #lattice を描くか
-  def set_lattice(axes)
+  #
+  def shoot_snap(basename)
+    povfile = basename + '.pov'
+    File.open(povfile, 'w') do |io|
+      dump(io)
+    end
+    system "povray #{povfile}"
   end
 
-  def set_atoms(cell)
+  # shoot 4 angles and unite.
+  def shoot_4
   end
+
+  ##lattice を描くか
+  #def set_lattice(axes)
+  #end
+
+  #def set_atoms(cell)
+  #end
 
   def dump(io)
     @camera.dump(io)
