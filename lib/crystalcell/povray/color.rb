@@ -5,6 +5,8 @@
 #
 #
 class CrystalCell::Povray::Color
+
+  PI = Math::PI
   #
   def initialize()
   end
@@ -12,25 +14,32 @@ class CrystalCell::Povray::Color
   # R,G,B のいずれかの色の theta における強度を返す。
   def self.round_color(theta)
 
-    local phi = mod(theta - thetaBase, 2*pi); #-2*pi 〜 +2*pi の範囲に入る
-    if (phi < 0)
-      phi = phi + 2*pi;
-    end
+    #theta = theta % (2*PI); #-2*pi 〜 +2*pi の範囲に入る
 
-    local intensity = 0;
-    switch (phi)
-      ((0/6)*(2*pi) , (1/6)*(2*pi))
-        intensity = phi/((1/6)*(2*pi)) ;
+    #if (0.0/6.0)*(2.0*PI) <= theta && theta < (1.0/6.0)*(2.0*PI))
+    #  r = 0.0
+    #  g = theta/((1/6)*(2*PI))
+    #elsif (0.0/6.0)*(2.0*PI) <= theta && theta < (1.0/6.0)*(2.0*PI))
+    #    intensity = 1;
 
-      ((1/6)*(2*pi) , (3/6)*(2*pi))
-        intensity = 1;
+    #  ((3/6)*(2*PI) , (4/6)*(2*PI))
+    #    intensity = 4-theta/((1/6)*(2*PI)) ;
 
-      ((3/6)*(2*pi) , (4/6)*(2*pi))
-        intensity = 4-phi/((1/6)*(2*pi)) ;
+    #  ((4/6)*(2*PI) , (6/6)*(2*PI))
+    #    intensity = 0;
+    #intensity
+  end
 
-      ((4/6)*(2*pi) , (6/6)*(2*pi))
-        intensity = 0;
-    intensity
+  def self.intensity(theta, shift)
+    theta /= (2*PI)
+    theta -= theta.to_i
+    if (0.0/6.0)*(2.0*PI) <= theta && theta < (1.0/6.0)*(2.0*PI))
+      return 1.0
+    elsif (1.0/6.0)*(2.0*PI) <= theta && theta < (2.0/6.0)*(2.0*PI))
+      return 1.0 -theta
+    HERE
+  end
+
 end
 
   #      thetaBase: その色が上がり始める点を基準とする。R ならば 4π/3

@@ -7,6 +7,7 @@ require 'crystalcell/povray/element.rb'
 require 'crystalcell/povray/sphere.rb'
 require 'crystalcell/povray/triangle.rb'
 require 'crystalcell/povray/tetrahedron.rb'
+require 'crystalcell/povray/color.rb'
 
 
 DEFAULT_ENVIRONMENTS = [
