@@ -129,6 +129,11 @@ class CrystalCell::Povray
     ]
   end
 
+  # object should have dump method
+  def add(object)
+    @objects << object
+  end
+
   def dump(io)
     @camera.dump(io)
     @environments.each { |item| io.puts item }
