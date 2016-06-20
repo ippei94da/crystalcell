@@ -3,6 +3,7 @@
 == Master (for 0.1.0)
 
 * Add Cell.to_povcell
+* Add CrystalCell::Povray::Tetrahedron
 
 == Version 0.0.6 [2016-05-31] released
 
