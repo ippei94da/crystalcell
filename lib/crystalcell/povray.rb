@@ -64,28 +64,30 @@ class CrystalCell::Povray
   end
 
   # shoot 4 angles and unite.
-  def shoot_4in1(basename, delete_intermediate = true)
+  def shoot_4in1(basename, remain_intermediate = false)
     name_x = basename + '-x'
     name_y = basename + '-y'
     name_z = basename + '-z'
     name_w = basename + '-w'
     name_zw = basename + '-zw'
     name_xy = basename + '-xy'
-    name_zwxy = basename + '-zwxy'
+    #name_zwxy = basename + '-zwxy'
+    name_zwxy = basename
 
     r = 10.0
     povray = Marshal.load(Marshal.dump(self))
     povray.camera_location_polar(r, 0, 0)   ; povray.shoot_snap( name_z )
     povray.camera_location_polar(r, 90, 0)  ; povray.shoot_snap( name_x )
     povray.camera_location_polar(r, 90, 90) ; povray.shoot_snap( name_y )
-    povray.camera_location_polar(r, 80, 70) ; povray.shoot_snap( name_w )
+    #povray.camera_location_polar(r, 80, 70) ; povray.shoot_snap( name_w )
+    povray.camera_location_polar(r, 120, 230) ; povray.shoot_snap( name_w )
 
     system "convert +append #{name_z }.png #{name_w }.png #{name_zw  }.png"
     system "convert +append #{name_x }.png #{name_y }.png #{name_xy  }.png"
     system "convert -append #{name_zw}.png #{name_xy}.png #{name_zwxy}.png"
 
     #中間ファイルを消す。
-    if delete_intermediate
+    unless remain_intermediate
       [
         name_w + '.png',
         name_w + '.pov',

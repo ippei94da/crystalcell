@@ -2,9 +2,13 @@
 
 class CrystalCell::Povray::Tetrahedron < Mageo::Tetrahedron
   
-  def initialize(v0, v1, v2, v3, color)
+  attr_accessor :color, :transmit
+  
+  # color should be Array like [r, g, b]. Float from 0.0 to 1.0.
+  def initialize(v0, v1, v2, v3, color, transmit = nil)
     super(v0, v1, v2, v3)
     @color =  color
+    @transmit =  transmit
   end
 
   # povray 形式の文字列を返す。
@@ -19,7 +23,7 @@ class CrystalCell::Povray::Tetrahedron < Mageo::Tetrahedron
 
   def triangles
     results = VERTEX_INDICES_OF_TRIANGLES.map do |indices|
-    CrystalCell::Povray::Triangle.new( *(indices.map{|i| @vertices[i] }), @color )
+    CrystalCell::Povray::Triangle.new( *(indices.map{|i| @vertices[i] }), @color, @transmit )
     end
     return results
   end

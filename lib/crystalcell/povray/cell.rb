@@ -3,7 +3,7 @@
 class CrystalCell::Povray::Cell < CrystalCell::Cell
   RADIUS_RATIO = 0.3
   
-  LATTICE_RADIUS = 0.1
+  LATTICE_RADIUS = 0.02
   LATTICE_COLOR  = [0.50, 0.50, 0.50]
   BOND_RADIUS    = 0.05
   BOND_COLOR     = [0.75, 0.75, 0.75]
@@ -69,18 +69,21 @@ class CrystalCell::Povray::Cell < CrystalCell::Cell
     v111 = Vector3DInternal[ 1.0, 1.0, 1.0 ].to_v3d(self.axes)
 
     results = []
-    results << CrystalCell::Povray::Cylinder.new(v000, v001, LATTICE_RADIUS, LATTICE_COLOR).to_pov.to_s + "\n"
-    results << CrystalCell::Povray::Cylinder.new(v010, v011, LATTICE_RADIUS, LATTICE_COLOR).to_pov.to_s + "\n"
-    results << CrystalCell::Povray::Cylinder.new(v100, v101, LATTICE_RADIUS, LATTICE_COLOR).to_pov.to_s + "\n"
-    results << CrystalCell::Povray::Cylinder.new(v110, v111, LATTICE_RADIUS, LATTICE_COLOR).to_pov.to_s + "\n"
-    results << CrystalCell::Povray::Cylinder.new(v000, v010, LATTICE_RADIUS, LATTICE_COLOR).to_pov.to_s + "\n"
-    results << CrystalCell::Povray::Cylinder.new(v100, v110, LATTICE_RADIUS, LATTICE_COLOR).to_pov.to_s + "\n"
-    results << CrystalCell::Povray::Cylinder.new(v001, v011, LATTICE_RADIUS, LATTICE_COLOR).to_pov.to_s + "\n"
-    results << CrystalCell::Povray::Cylinder.new(v101, v111, LATTICE_RADIUS, LATTICE_COLOR).to_pov.to_s + "\n"
-    results << CrystalCell::Povray::Cylinder.new(v000, v100, LATTICE_RADIUS, LATTICE_COLOR).to_pov.to_s + "\n"
-    results << CrystalCell::Povray::Cylinder.new(v001, v101, LATTICE_RADIUS, LATTICE_COLOR).to_pov.to_s + "\n"
-    results << CrystalCell::Povray::Cylinder.new(v010, v110, LATTICE_RADIUS, LATTICE_COLOR).to_pov.to_s + "\n"
-    results << CrystalCell::Povray::Cylinder.new(v011, v111, LATTICE_RADIUS, LATTICE_COLOR).to_pov.to_s + "\n"
+    cy = CrystalCell::Povray::Cylinder
+    r = LATTICE_RADIUS
+    c = LATTICE_COLOR
+    results << cy.new(v000, v001, r, c).to_pov.to_s + "\n"
+    results << cy.new(v010, v011, r, c).to_pov.to_s + "\n"
+    results << cy.new(v100, v101, r, c).to_pov.to_s + "\n"
+    results << cy.new(v110, v111, r, c).to_pov.to_s + "\n"
+    results << cy.new(v000, v010, r, c).to_pov.to_s + "\n"
+    results << cy.new(v100, v110, r, c).to_pov.to_s + "\n"
+    results << cy.new(v001, v011, r, c).to_pov.to_s + "\n"
+    results << cy.new(v101, v111, r, c).to_pov.to_s + "\n"
+    results << cy.new(v000, v100, r, c).to_pov.to_s + "\n"
+    results << cy.new(v001, v101, r, c).to_pov.to_s + "\n"
+    results << cy.new(v010, v110, r, c).to_pov.to_s + "\n"
+    results << cy.new(v011, v111, r, c).to_pov.to_s + "\n"
     results
   end
 
