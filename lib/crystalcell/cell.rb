@@ -135,7 +135,7 @@ class CrystalCell::Cell
   #b_max : b 軸方向のセルの方向を整数で示したときの最大値
   #c_min : c 軸方向のセルの方向を整数で示したときの最小値
   #c_max : c 軸方向のセルの方向を整数で示したときの最大値
-  #-1, 1, -1, 1, -1, 1 と指定すれば 3x3x3 の 27倍体積の構造になる。
+  #-1, 1, -1, 1, -1, 1 と指定すれば 3x3x3 の 27倍の原子数になる。
   def atoms_in_supercell( a_min, a_max, b_min, b_max, c_min, c_max )
     results = []
     @atoms.each do |atom|
