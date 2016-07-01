@@ -4,6 +4,7 @@
 
 * Add Cell.to_povcell
 * Add CrystalCell::Povray::Tetrahedron
+* Add LatticeAxes.to_a
 
 == Version 0.0.6 [2016-05-31] released
 
