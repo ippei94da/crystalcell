@@ -291,7 +291,7 @@ class CrystalCell::Cell
   #Generate a new cell with the same lattice consants,
   #containing atoms of indicated elements.
   #Argument 'elems' must be an array of element names.
-  #含まれる @atoms の順序は、保存される。元素ごとに並び換えたりしない。
+  #含まれる @atoms の順序は保存される。元素ごとに並び換えたりしない。
   #CrystalCell::Atom.element が elems の要素のどれかと完全一致しているもののみ対象となる。
   #サブクラスのインスタンスで実行した場合には、
   #サブクラスのインスタンスとして生成する。
