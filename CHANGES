@@ -1,6 +1,8 @@
 = crystalcell Changelog
 
-== Master (for 0.1.0)
+<!-- Master -->
+
+== Version 0.1.0 [2016-07-12] released
 
 * Add Cell.to_povcell
 * Add CrystalCell::Povray::Tetrahedron
