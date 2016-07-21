@@ -13,7 +13,7 @@ class CrystalCell::Povray::Triangle < Mageo::Triangle
   # povray 形式の文字列を返す。
   # color は Float による配列。通常、0〜1の範囲。
   def to_pov
-    v = self.vertices
+    #v = self.vertices
     result = sprintf("triangle{<%f,%f,%f>,<%f,%f,%f>,<%f,%f,%f>",
       *@vertices[0], *@vertices[1], *@vertices[2])
     result +=  sprintf(" pigment {color rgb<%f,%f,%f>", *@color)

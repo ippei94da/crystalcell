@@ -1285,7 +1285,6 @@ class TC_Cell < Test::Unit::TestCase
   end
 
   def test_symmetry_operations
-    f13 = 1.0/3.0
 
     #cubic/POSCAR #Pm-3m (221) / m-3m / -P 4 2 3 (517)
     corrects = [
@@ -1416,6 +1415,7 @@ class TC_Cell < Test::Unit::TestCase
     #]
     #assert_equal(corrects, @c15 .symmetry_operations) #triclinic
 
+    #f13 = 1.0/3.0
     ##trigonal/POSCAR #P-3m1 (164) / -3m  / -P 3 2= (456)
     #corrects = [
     #  {:rotation => [[ 1.0,  0.0,  0], [ 0.0,  1.0,  0], [ 0.0, 0.0,  1.0]], :translation => [0.0, 0.0, 0.0]}, #----01----
