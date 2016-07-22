@@ -60,7 +60,7 @@ class CrystalCell::Povray
     File.open(povfile, 'w') do |io|
       dump(io)
     end
-    system "povray -D #{povfile}"
+    system "povray -D #{povfile} > /dev/null"
   end
 
   # shoot 4 angles and unite.
