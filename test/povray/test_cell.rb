@@ -2,6 +2,7 @@
 # coding: utf-8
 
 require "helper"
+require "pp"
 
 class TC_Povray_Sphere < Test::Unit::TestCase
   def setup
@@ -90,30 +91,80 @@ class TC_Povray_Cell < Test::Unit::TestCase
     assert_equal(corrects.size, t.size)
   end
 
-  def test_bonds_to_povs
-    ## PeriodicCell.find_bonds に依存しており、
-    ## これがなんか不安な動作。 -0.0000 になるとか、誤差だろうなあ。
-    ## このためテストは頑張って作らない。
-    ## PeriodicCell.find_bonds をリファクタリングとかしてから
-    ## テストをするかもしれん。
-    
-    #assert_equal( [
-    #	"object { cylinder{ < 0.0000,  0.0000,  0.0000>, < 0.4000,  0.6000,  0.8000>,  0.0500 } pigment { color rgb <0.75, 0.75, 0.75> } }"
-    #	],
-    #	@c00.bonds_to_povs(["Li", "O"], 0.0, 1.1)
-    #)
+  def test_bond
+    axes = [
+      [2.0, 0.0, 0.0],
+      [0.0, 2.0, 0.0],
+      [0.0, 0.0, 2.0],
+    ]
+    atoms = [
+      CrystalCell::Atom.new("Li", [0.0, 0.0, 0.0]),
+      CrystalCell::Atom.new("O", [0.2, 0.3, 0.4]),
+      CrystalCell::Atom.new("O", [0.3, 0.3, 0.4]),
+    ]
+    c00 = CrystalCell::Povray::Cell.new(axes, atoms)
+    result =  c00.bond(['Li1', 'O2'])
+    correct = [
+      "object { cylinder{ < 0.0000,  0.0000,  0.0000>, < 0.3000,  0.3000,  0.4000>,  0.0500 } pigment { color rgb <0.53, 0.88, 0.45> } }",
+      "object { cylinder{ < 0.6000,  0.6000,  0.8000>, < 0.3000,  0.3000,  0.4000>,  0.0500 } pigment { color rgb <1.00, 0.01, 0.00> } }",
+    ].join("\n")
+    assert_equal( correct, result)
 
-    #assert_equal( [
-    #	"object { cylinder{ < 0.0000,  0.0000,  0.0000>, < 0.4000,  0.6000,  0.8000>,  0.0500 } pigment { color rgb <0.75, 0.75, 0.75> } }"
-    #	],
-    #	@c00.bonds_to_povs(["O", "Li"], 0, 1.1 )
-    #)
+    result =  c00.bond(['Li1-555', 'O2-555'])
+    correct = [
+      "object { cylinder{ < 0.0000,  0.0000,  0.0000>, < 0.3000,  0.3000,  0.4000>,  0.0500 } pigment { color rgb <0.53, 0.88, 0.45> } }",
+      "object { cylinder{ < 0.6000,  0.6000,  0.8000>, < 0.3000,  0.3000,  0.4000>,  0.0500 } pigment { color rgb <1.00, 0.01, 0.00> } }",
+    ].join("\n")
+    assert_equal( correct, result)
 
-    #assert_equal([
-    #	"object { cylinder{ < 0.0000,  0.0000,  0.0000>, < 0.0000,  0.0000,  0.0000>,  0.0500 } pigment { color rgb <0.75, 0.75, 0.75> } }"
-    #	],
-    #	@c00.bonds_to_povs(["Li", "Li"], 0, 2.0 )
-    #)
+    result =  c00.bond(['Li1-555', 'Li1-556'])
+    correct = [
+      "object { cylinder{ < 0.0000,  0.0000,  0.0000>, < 0.0000,  0.0000,  1.0000>,  0.0500 } pigment { color rgb <0.53, 0.88, 0.45> } }",
+      "object { cylinder{ < 0.0000,  0.0000,  2.0000>, < 0.0000,  0.0000,  1.0000>,  0.0500 } pigment { color rgb <0.53, 0.88, 0.45> } }",
+    ].join("\n")
+    assert_equal( correct, result)
+  end
+
+  def test_triangle
+    axes = [
+      [2.0, 0.0, 0.0],
+      [0.0, 2.0, 0.0],
+      [0.0, 0.0, 2.0],
+    ]
+    atoms = [
+      CrystalCell::Atom.new("Li", [0.0, 0.0, 0.0]),
+      CrystalCell::Atom.new("O", [0.2, 0.3, 0.4]),
+      CrystalCell::Atom.new("O", [0.3, 0.3, 0.4]),
+    ]
+    c00 = CrystalCell::Povray::Cell.new(axes, atoms)
+    result =  c00.triangle(['Li1', 'O1', 'O2'])
+    correct = [
+      "triangle{ <  0.0000,  0.0000,  0.0000>,< 0.4000, 0.6000, 0.8000>,< 0.6000, 0.6000, 0.8000> pigment {color rgb< 0.5255, 0.8784, 0.4549>}}",
+    ].join('')
+    assert_equal( correct, result)
+  end
+
+  def test_tetrahedron
+    axes = [
+      [2.0, 0.0, 0.0],
+      [0.0, 2.0, 0.0],
+      [0.0, 0.0, 2.0],
+    ]
+    atoms = [
+      CrystalCell::Atom.new("Li", [0.0, 0.0, 0.0]),
+      CrystalCell::Atom.new("Li", [0.5, 0.5, 0.5]),
+      CrystalCell::Atom.new("O", [0.2, 0.3, 0.4]),
+      CrystalCell::Atom.new("O", [0.3, 0.3, 0.4]),
+    ]
+    c00 = CrystalCell::Povray::Cell.new(axes, atoms)
+    result =  c00.tetrahedron(['Li1', 'Li2', 'O1', 'O2'])
+    correct = [
+      "triangle{ <  0.0000,  0.0000,  0.0000>,< 1.0000, 1.0000, 1.0000>,< 0.4000, 0.6000, 0.8000> pigment {color rgb< 0.5255, 0.8784, 0.4549>}}",
+      "triangle{ <  1.0000,  1.0000,  1.0000>,< 0.4000, 0.6000, 0.8000>,< 0.6000, 0.6000, 0.8000> pigment {color rgb< 0.5255, 0.8784, 0.4549>}}",
+      "triangle{ <  0.4000,  0.6000,  0.8000>,< 0.6000, 0.6000, 0.8000>,< 0.0000, 0.0000, 0.0000> pigment {color rgb< 0.5255, 0.8784, 0.4549>}}",
+      "triangle{ <  0.6000,  0.6000,  0.8000>,< 0.0000, 0.0000, 0.0000>,< 1.0000, 1.0000, 1.0000> pigment {color rgb< 0.5255, 0.8784, 0.4549>}}"
+    ].join("\n")
+    assert_equal( correct, result)
   end
 
   def test_lattice_to_povs
@@ -173,6 +224,29 @@ class TC_Povray_Cell < Test::Unit::TestCase
     ]
     t = @c00.periodic_translations([0.0, 0.0, 0.0], 0.0)
     assert_equal(corrects, t)
+  end
+
+  def test_atom_by_id
+    result = @c00.atom_by_id('Li1-555')
+    correct = CrystalCell::Atom.new("Li", [0.0, 0.0, 0.0])
+    assert_equal(correct, result)
+
+    result = @c00.atom_by_id('Li1-556')
+    correct = CrystalCell::Atom.new("Li", [0.0, 0.0, 1.0])
+    assert_equal(correct, result)
+
+    result = @c00.atom_by_id('Li1-565')
+    correct = CrystalCell::Atom.new("Li", [0.0, 1.0, 0.0])
+    assert_equal(correct, result)
+
+    result = @c00.atom_by_id('Li1-655')
+    correct = CrystalCell::Atom.new("Li", [1.0, 0.0, 0.0])
+    assert_equal(correct, result)
+
+    result = @c00.atom_by_id('Li1-455')
+    correct = CrystalCell::Atom.new("Li", [-1.0, 0.0, 0.0])
+    assert_equal(correct, result)
+
   end
 
 end

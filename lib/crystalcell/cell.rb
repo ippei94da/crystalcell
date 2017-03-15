@@ -99,12 +99,19 @@ class CrystalCell::Cell
     @atoms.collect{ |i| i.position }
   end
 
-  #元素情報が elem の原子の index を配列にまとめて返す。
-  #index は原子の永続的な id ではない。
+  # ブロックの評価が真になった原子の index を配列にして返す。
   #Array#select は index ではなく要素そのものを配列にして返すので、少し違う。
+  #index は原子の永続的な id ではない。
   def select_indices( &block )
     return @atoms.select_indices( &block )
   end
+
+  #元素情報が elem の原子を配列にまとめて返す。(not indices)
+  def atoms_of_element(str)
+    @atoms.select{ |i| i.element == str }
+  end
+
+
 
   #Set element name to each atom in self.
   #Argument 'elems' is a list of new names, which has [] method. e.g.,

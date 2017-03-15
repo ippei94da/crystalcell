@@ -14,15 +14,12 @@ class CrystalCell::Povray::Triangle < Mageo::Triangle
   # color は Float による配列。通常、0〜1の範囲。
   def to_pov
     #v = self.vertices
-    result = sprintf("triangle{<%f,%f,%f>,<%f,%f,%f>,<%f,%f,%f>",
+    #sprintf( "object { cylinder{ <% 7.4f, % 7.4f, % 7.4f>, <% 7.4f, % 7.4f, % 7.4f>, %7.4f } pigment { color rgb <%4.2f, %4.2f, %4.2f> } }",
+    result = sprintf("triangle{ < % 7.4f, % 7.4f, % 7.4f>,<% 7.4f,% 7.4f,% 7.4f>,<% 7.4f,% 7.4f,% 7.4f>",
       *@vertices[0], *@vertices[1], *@vertices[2])
-    result +=  sprintf(" pigment {color rgb<%f,%f,%f>", *@color)
-    result +=  sprintf(" transmit %f", @transmit) if @transmit
+    result +=  sprintf(" pigment {color rgb<% 7.4f,% 7.4f,% 7.4f>", *@color)
+    result +=  sprintf(" transmit % 7.4f", @transmit) if @transmit
     result +=  "}}"
-    #result = sprintf("triangle{<%f,%f,%f>,<%f,%f,%f>,<%f,%f,%f> " +
-    #  "pigment {color rgb<%f,%f,%f>}}",
-    #  *@vertices[0], *@vertices[1], *@vertices[2], *@color)
-    #
     return result
   end
 

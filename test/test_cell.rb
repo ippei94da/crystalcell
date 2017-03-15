@@ -3,6 +3,7 @@
 
 require "helper"
 require 'stringio'
+require 'pp'
 
 #class CrystalCell::Cell
 #  public :symmetry_operations
@@ -242,6 +243,20 @@ class TC_Cell < Test::Unit::TestCase
     assert_equal( [ ], @c04.select_indices{ |i| i.element == 1 } )
 
     assert_equal( [1, 2], @c04.select_indices{ |i| i.position[0] > 0.05 } )
+  end
+
+  def test_atoms_of_element
+    vectors00 = [[2.0, 2.0, 2.0], [0.0, 2.0, 2.0], [0.0, 0.0, 2.0]]
+    atom0 = CrystalCell::Atom.new( 'Li', [0.0, 0.0, 0.0] )
+    atom1 = CrystalCell::Atom.new( 'Li', [0.1, 0.2, 0.3] )
+    atom2 = CrystalCell::Atom.new( 'O' , [0.2, 0.2, 0.2] )
+    atoms = [ atom0, atom1, atom2] 
+    c04 = CrystalCell::Cell.new(vectors00, atoms)
+    c04.comment = 'c04'
+
+    assert_equal([atom0, atom1], c04.atoms_of_element('Li'))
+    assert_equal([atom2]       , c04.atoms_of_element('O'))
+    assert_equal([]            , c04.atoms_of_element('S'))
   end
 
   def test_atoms_in_supercell

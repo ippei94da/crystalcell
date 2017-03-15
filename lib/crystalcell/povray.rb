@@ -10,13 +10,14 @@ require 'crystalcell/povray/tetrahedron.rb'
 require 'crystalcell/povray/color.rb'
 
 
-DEFAULT_ENVIRONMENTS = [
-  'background {color rgb<1,1,1>}',
-  'light_source{ < 4, 1, 4 > color <1,1,1> parallel point_at 0 }',
-  'default{ texture{ finish{ ambient 0.4 phong 1.0 phong_size 10 } } }',
-]
-
 class CrystalCell::Povray
+
+  DEFAULT_ENVIRONMENTS = [
+    'background {color rgb<1,1,1>}',
+    'light_source{ < 4, 1, 4 > color <1,1,1> parallel point_at 0 }',
+    'default{ texture{ finish{ ambient 0.4 phong 1.0 phong_size 10 } } }',
+  ]
+
   attr_reader :camera, :environments, :cell, :axes
   
   # camera_info indicates hash with the keys of camera info,
