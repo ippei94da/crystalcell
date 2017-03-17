@@ -112,7 +112,6 @@ class CrystalCell::Cell
   end
 
 
-
   #Set element name to each atom in self.
   #Argument 'elems' is a list of new names, which has [] method. e.g.,
   #    1. Array, [ 'Li', 'O' ]
@@ -146,10 +145,22 @@ class CrystalCell::Cell
   def atoms_in_supercell( a_min, a_max, b_min, b_max, c_min, c_max )
     results = []
     @atoms.each do |atom|
+      #pp atom; exit
       a_min.upto( a_max ) do |a|
         b_min.upto( b_max ) do |b|
           c_min.upto( c_max ) do |c|
-            results << CrystalCell::Atom.new( atom.element, (atom.position.to_v3di + [ a, b, c ].to_v3di).to_a )
+            new_name = sprintf("%s-%d%d%d",
+                               atom.name,
+                               a + 5,
+                               b + 5,
+                               c + 5
+                              )
+            results << CrystalCell::Atom.new(
+              atom.element,
+              (atom.position.to_v3di + [ a, b, c ].to_v3di).to_a,
+              new_name
+            )
+
           end
         end
       end

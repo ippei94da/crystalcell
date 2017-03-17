@@ -34,8 +34,8 @@ class TC_Cell < Test::Unit::TestCase
     # Li と O を1つずつ入れたセル。
     # @c02 = CrystalCell::Cell.new( [ [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0] ] )
     atoms = [
-      CrystalCell::Atom.new( 'Li', [0.0, 0.0, 0.0] ),
-      CrystalCell::Atom.new( 'O' , [0.2, 0.2, 0.2] ),
+      CrystalCell::Atom.new( 'Li', [0.0, 0.0, 0.0], 'Li1' ),
+      CrystalCell::Atom.new( 'O' , [0.2, 0.2, 0.2], 'O1' ),
     ]
     @c02 = CrystalCell::Cell.new(vectors00, atoms)
     @c02.comment = 'c02'
@@ -215,8 +215,6 @@ class TC_Cell < Test::Unit::TestCase
     assert_in_delta( 0.0, c10.axes[2][0], $tolerance )
     assert_in_delta( 0.0, c10.axes[2][1], $tolerance )
     assert_in_delta( 2.0, c10.axes[2][2], $tolerance )
-
-
   end
 
   def test_positions
@@ -259,6 +257,11 @@ class TC_Cell < Test::Unit::TestCase
     assert_equal([]            , c04.atoms_of_element('S'))
   end
 
+  #def test_supercell
+  #  @c02.supercell(
+
+  #end
+
   def test_atoms_in_supercell
     t = @c02.atoms_in_supercell( 0, 0, 0, 0, 0, 1 )
     assert_equal( 'Li', t[0].element )
@@ -272,61 +275,63 @@ class TC_Cell < Test::Unit::TestCase
     assert_equal( Mageo::Vector3DInternal[0.2, 0.2, 1.2], t[3].position )
 
     t = @c02.atoms_in_supercell(-1, 1,-1, 1,-1, 1 )
-    assert_equal( ['Li']*27 + ['O'] * 27 , t.map{|i| i.element} )
-    assert_equal( Mageo::Vector3DInternal[-1.0, -1.0, -1.0], t[ 0].position )
-    assert_equal( Mageo::Vector3DInternal[-1.0, -1.0,    0.0], t[ 1].position )
-    assert_equal( Mageo::Vector3DInternal[-1.0, -1.0,    1.0], t[ 2].position )
-    assert_equal( Mageo::Vector3DInternal[-1.0,  0.0, -1.0], t[ 3].position )
-    assert_equal( Mageo::Vector3DInternal[-1.0,  0.0,    0.0], t[ 4].position )
-    assert_equal( Mageo::Vector3DInternal[-1.0,  0.0,    1.0], t[ 5].position )
-    assert_equal( Mageo::Vector3DInternal[-1.0,  1.0, -1.0], t[ 6].position )
-    assert_equal( Mageo::Vector3DInternal[-1.0,  1.0,    0.0], t[ 7].position )
-    assert_equal( Mageo::Vector3DInternal[-1.0,  1.0,    1.0], t[ 8].position )
-    assert_equal( Mageo::Vector3DInternal[ 0.0, -1.0, -1.0], t[ 9].position )
-    assert_equal( Mageo::Vector3DInternal[ 0.0, -1.0,    0.0], t[10].position )
-    assert_equal( Mageo::Vector3DInternal[ 0.0, -1.0,    1.0], t[11].position )
-    assert_equal( Mageo::Vector3DInternal[ 0.0,  0.0, -1.0], t[12].position )
-    assert_equal( Mageo::Vector3DInternal[ 0.0,  0.0,    0.0], t[13].position )
-    assert_equal( Mageo::Vector3DInternal[ 0.0,  0.0,    1.0], t[14].position )
-    assert_equal( Mageo::Vector3DInternal[ 0.0,  1.0, -1.0], t[15].position )
-    assert_equal( Mageo::Vector3DInternal[ 0.0,  1.0,    0.0], t[16].position )
-    assert_equal( Mageo::Vector3DInternal[ 0.0,  1.0,    1.0], t[17].position )
-    assert_equal( Mageo::Vector3DInternal[ 1.0, -1.0, -1.0], t[18].position )
-    assert_equal( Mageo::Vector3DInternal[ 1.0, -1.0,    0.0], t[19].position )
-    assert_equal( Mageo::Vector3DInternal[ 1.0, -1.0,    1.0], t[20].position )
-    assert_equal( Mageo::Vector3DInternal[ 1.0,  0.0, -1.0], t[21].position )
-    assert_equal( Mageo::Vector3DInternal[ 1.0,  0.0,    0.0], t[22].position )
-    assert_equal( Mageo::Vector3DInternal[ 1.0,  0.0,    1.0], t[23].position )
-    assert_equal( Mageo::Vector3DInternal[ 1.0,  1.0, -1.0], t[24].position )
-    assert_equal( Mageo::Vector3DInternal[ 1.0,  1.0,    0.0], t[25].position )
-    assert_equal( Mageo::Vector3DInternal[ 1.0,  1.0,    1.0], t[26].position )
-    assert_equal( Mageo::Vector3DInternal[-0.8, -0.8, -0.8], t[27].position )
-    assert_equal( Mageo::Vector3DInternal[-0.8, -0.8,    0.2], t[28].position )
-    assert_equal( Mageo::Vector3DInternal[-0.8, -0.8,    1.2], t[29].position )
-    assert_equal( Mageo::Vector3DInternal[-0.8,  0.2, -0.8], t[30].position )
-    assert_equal( Mageo::Vector3DInternal[-0.8,  0.2,    0.2], t[31].position )
-    assert_equal( Mageo::Vector3DInternal[-0.8,  0.2,    1.2], t[32].position )
-    assert_equal( Mageo::Vector3DInternal[-0.8,  1.2, -0.8], t[33].position )
-    assert_equal( Mageo::Vector3DInternal[-0.8,  1.2,    0.2], t[34].position )
-    assert_equal( Mageo::Vector3DInternal[-0.8,  1.2,    1.2], t[35].position )
-    assert_equal( Mageo::Vector3DInternal[ 0.2, -0.8, -0.8], t[36].position )
-    assert_equal( Mageo::Vector3DInternal[ 0.2, -0.8,    0.2], t[37].position )
-    assert_equal( Mageo::Vector3DInternal[ 0.2, -0.8,    1.2], t[38].position )
-    assert_equal( Mageo::Vector3DInternal[ 0.2,  0.2, -0.8], t[39].position )
-    assert_equal( Mageo::Vector3DInternal[ 0.2,  0.2,    0.2], t[40].position )
-    assert_equal( Mageo::Vector3DInternal[ 0.2,  0.2,    1.2], t[41].position )
-    assert_equal( Mageo::Vector3DInternal[ 0.2,  1.2, -0.8], t[42].position )
-    assert_equal( Mageo::Vector3DInternal[ 0.2,  1.2,    0.2], t[43].position )
-    assert_equal( Mageo::Vector3DInternal[ 0.2,  1.2,    1.2], t[44].position )
-    assert_equal( Mageo::Vector3DInternal[ 1.2, -0.8, -0.8], t[45].position )
-    assert_equal( Mageo::Vector3DInternal[ 1.2, -0.8,    0.2], t[46].position )
-    assert_equal( Mageo::Vector3DInternal[ 1.2, -0.8,    1.2], t[47].position )
-    assert_equal( Mageo::Vector3DInternal[ 1.2,  0.2, -0.8], t[48].position )
-    assert_equal( Mageo::Vector3DInternal[ 1.2,  0.2,    0.2], t[49].position )
-    assert_equal( Mageo::Vector3DInternal[ 1.2,  0.2,    1.2], t[50].position )
-    assert_equal( Mageo::Vector3DInternal[ 1.2,  1.2, -0.8], t[51].position )
-    assert_equal( Mageo::Vector3DInternal[ 1.2,  1.2,    0.2], t[52].position )
-    assert_equal( Mageo::Vector3DInternal[ 1.2,  1.2,    1.2], t[53].position )
+    assert_equal(['Li']*27 + ['O'] * 27 , t.map{|i| i.element} )
+    assert_equal(Mageo::Vector3DInternal[-1.0,-1.0,-1.0],t[ 0].position)
+    assert_equal(Mageo::Vector3DInternal[-1.0,-1.0, 0.0],t[ 1].position)
+    assert_equal(Mageo::Vector3DInternal[-1.0,-1.0, 1.0],t[ 2].position)
+    assert_equal(Mageo::Vector3DInternal[-1.0, 0.0,-1.0],t[ 3].position)
+    assert_equal(Mageo::Vector3DInternal[-1.0, 0.0, 0.0],t[ 4].position)
+    assert_equal(Mageo::Vector3DInternal[-1.0, 0.0, 1.0],t[ 5].position)
+    assert_equal(Mageo::Vector3DInternal[-1.0, 1.0,-1.0],t[ 6].position)
+    assert_equal(Mageo::Vector3DInternal[-1.0, 1.0, 0.0],t[ 7].position)
+    assert_equal(Mageo::Vector3DInternal[-1.0, 1.0, 1.0],t[ 8].position)
+    assert_equal(Mageo::Vector3DInternal[ 0.0,-1.0,-1.0],t[ 9].position)
+    assert_equal(Mageo::Vector3DInternal[ 0.0,-1.0, 0.0],t[10].position)
+    assert_equal(Mageo::Vector3DInternal[ 0.0,-1.0, 1.0],t[11].position)
+    assert_equal(Mageo::Vector3DInternal[ 0.0, 0.0,-1.0],t[12].position)
+    assert_equal(Mageo::Vector3DInternal[ 0.0, 0.0, 0.0],t[13].position)
+    assert_equal(Mageo::Vector3DInternal[ 0.0, 0.0, 1.0],t[14].position)
+    assert_equal(Mageo::Vector3DInternal[ 0.0, 1.0,-1.0],t[15].position)
+    assert_equal(Mageo::Vector3DInternal[ 0.0, 1.0, 0.0],t[16].position)
+    assert_equal(Mageo::Vector3DInternal[ 0.0, 1.0, 1.0],t[17].position)
+    assert_equal(Mageo::Vector3DInternal[ 1.0,-1.0,-1.0],t[18].position)
+    assert_equal(Mageo::Vector3DInternal[ 1.0,-1.0, 0.0],t[19].position)
+    assert_equal(Mageo::Vector3DInternal[ 1.0,-1.0, 1.0],t[20].position)
+    assert_equal(Mageo::Vector3DInternal[ 1.0, 0.0,-1.0],t[21].position)
+    assert_equal(Mageo::Vector3DInternal[ 1.0, 0.0, 0.0],t[22].position)
+    assert_equal(Mageo::Vector3DInternal[ 1.0, 0.0, 1.0],t[23].position)
+    assert_equal(Mageo::Vector3DInternal[ 1.0, 1.0,-1.0],t[24].position)
+    assert_equal(Mageo::Vector3DInternal[ 1.0, 1.0, 0.0],t[25].position)
+    assert_equal(Mageo::Vector3DInternal[ 1.0, 1.0, 1.0],t[26].position)
+    assert_equal(Mageo::Vector3DInternal[-0.8,-0.8,-0.8],t[27].position)
+    assert_equal(Mageo::Vector3DInternal[-0.8,-0.8, 0.2],t[28].position)
+    assert_equal(Mageo::Vector3DInternal[-0.8,-0.8, 1.2],t[29].position)
+    assert_equal(Mageo::Vector3DInternal[-0.8, 0.2,-0.8],t[30].position)
+    assert_equal(Mageo::Vector3DInternal[-0.8, 0.2, 0.2],t[31].position)
+    assert_equal(Mageo::Vector3DInternal[-0.8, 0.2, 1.2],t[32].position)
+    assert_equal(Mageo::Vector3DInternal[-0.8, 1.2,-0.8],t[33].position)
+    assert_equal(Mageo::Vector3DInternal[-0.8, 1.2, 0.2],t[34].position)
+    assert_equal(Mageo::Vector3DInternal[-0.8, 1.2, 1.2],t[35].position)
+    assert_equal(Mageo::Vector3DInternal[ 0.2,-0.8,-0.8],t[36].position)
+    assert_equal(Mageo::Vector3DInternal[ 0.2,-0.8, 0.2],t[37].position)
+    assert_equal(Mageo::Vector3DInternal[ 0.2,-0.8, 1.2],t[38].position)
+    assert_equal(Mageo::Vector3DInternal[ 0.2, 0.2,-0.8],t[39].position)
+    assert_equal(Mageo::Vector3DInternal[ 0.2, 0.2, 0.2],t[40].position)
+    assert_equal(Mageo::Vector3DInternal[ 0.2, 0.2, 1.2],t[41].position)
+    assert_equal(Mageo::Vector3DInternal[ 0.2, 1.2,-0.8],t[42].position)
+    assert_equal(Mageo::Vector3DInternal[ 0.2, 1.2, 0.2],t[43].position)
+    assert_equal(Mageo::Vector3DInternal[ 0.2, 1.2, 1.2],t[44].position)
+    assert_equal(Mageo::Vector3DInternal[ 1.2,-0.8,-0.8],t[45].position)
+    assert_equal(Mageo::Vector3DInternal[ 1.2,-0.8, 0.2],t[46].position)
+    assert_equal(Mageo::Vector3DInternal[ 1.2,-0.8, 1.2],t[47].position)
+    assert_equal(Mageo::Vector3DInternal[ 1.2, 0.2,-0.8],t[48].position)
+    assert_equal(Mageo::Vector3DInternal[ 1.2, 0.2, 0.2],t[49].position)
+    assert_equal(Mageo::Vector3DInternal[ 1.2, 0.2, 1.2],t[50].position)
+    assert_equal(Mageo::Vector3DInternal[ 1.2, 1.2,-0.8],t[51].position)
+    assert_equal(Mageo::Vector3DInternal[ 1.2, 1.2, 0.2],t[52].position)
+    assert_equal(Mageo::Vector3DInternal[ 1.2, 1.2, 1.2],t[53].position)
+
+    assert_equal('Li1-444',t[ 0].name)
   end
 
   def test_elements
@@ -983,11 +988,11 @@ class TC_Cell < Test::Unit::TestCase
     # checking atom 0
     assert_equal( 'Li'                   , t.atoms[0].element)
     assert_equal( Mageo::Vector3DInternal[0.0, 0.0, 0.0], t.atoms[0].position)
-    assert_equal( nil                        , t.atoms[0].name )
+    assert_equal( 'Li1'                       , t.atoms[0].name )
     # checking atom 1
     assert_equal( 'O'                        , t.atoms[1].element)
     assert_equal( Mageo::Vector3DInternal[-0.2, 0.2, 0.2], t.atoms[1].position)
-    assert_equal( nil                        , t.atoms[1].name )
+    assert_equal( 'O1'                       , t.atoms[1].name )
   end
 
   def test_inverse_axis
@@ -1010,11 +1015,11 @@ class TC_Cell < Test::Unit::TestCase
     # checking atom 0
     assert_equal( 'Li'                   , t.atoms[0].element)
     assert_equal( Mageo::Vector3DInternal[0.0, 0.0, 0.0], t.atoms[0].position)
-    assert_equal( nil                        , t.atoms[0].name )
+    assert_equal( 'Li1'                      , t.atoms[0].name )
     # checking atom 1
     assert_equal( 'O'                        , t.atoms[1].element)
     assert_equal( Mageo::Vector3DInternal[-0.2, 0.2, 0.2], t.atoms[1].position)
-    assert_equal( nil                        , t.atoms[1].name )
+    assert_equal( 'O1'                       , t.atoms[1].name )
     # checking non-destructive
     assert_equal( CrystalCell::Cell, t.class )
     assert_in_delta( 2.0, @c02.axes[0][0], $tolerance )
@@ -1030,11 +1035,11 @@ class TC_Cell < Test::Unit::TestCase
     # checking atom 0
     assert_equal( 'Li'                   , @c02.atoms[0].element)
     assert_equal( Mageo::Vector3DInternal[0.0, 0.0, 0.0], @c02.atoms[0].position)
-    assert_equal( nil                        , @c02.atoms[0].name )
+    assert_equal( 'Li1'                      , @c02.atoms[0].name )
     # checking atom 1
     assert_equal( 'O'                        , @c02.atoms[1].element)
     assert_equal( Mageo::Vector3DInternal[ 0.2, 0.2, 0.2], @c02.atoms[1].position)
-    assert_equal( nil                        , @c02.atoms[1].name )
+    assert_equal( 'O1'                       , @c02.atoms[1].name )
 
     # y 軸反転
     # [ [ ax, ay, az], [    0, by, bz], [    0,  0, cz] ]
@@ -1058,11 +1063,11 @@ class TC_Cell < Test::Unit::TestCase
     # checking atom 0
     assert_equal( 'Li'                   , t.atoms[0].element)
     assert_equal( Mageo::Vector3DInternal[0.0, 0.0, 0.0], t.atoms[0].position)
-    assert_equal( nil                        , t.atoms[0].name )
+    assert_equal( 'Li1'                      , t.atoms[0].name )
     # checking atom 1
     assert_equal( 'O'                        , t.atoms[1].element)
     assert_equal( Mageo::Vector3DInternal[ 0.2,-0.2, 0.2], t.atoms[1].position)
-    assert_equal( nil                        , t.atoms[1].name )
+    assert_equal( 'O1'                       , t.atoms[1].name )
 
     # z 軸反転
     # [ [ ax, ay, az], [    0, by, bz], [    0,  0, cz] ]
@@ -1087,11 +1092,11 @@ class TC_Cell < Test::Unit::TestCase
     # checking atom 0
     assert_equal( 'Li'                   , t.atoms[0].element)
     assert_equal( Mageo::Vector3DInternal[0.0, 0.0, 0.0], t.atoms[0].position)
-    assert_equal( nil                        , t.atoms[0].name )
+    assert_equal( 'Li1'                      , t.atoms[0].name )
     # checking atom 1
     assert_equal( 'O'                        , t.atoms[1].element)
     assert_equal( Mageo::Vector3DInternal[ 0.2, 0.2,-0.2], t.atoms[1].position)
-    assert_equal( nil                        , t.atoms[1].name )
+    assert_equal( 'O1'                       , t.atoms[1].name )
 
   end
 
@@ -1117,7 +1122,7 @@ class TC_Cell < Test::Unit::TestCase
     # checking atom 1
     assert_equal( 'O'                        , t.atoms[1].element)
     assert_equal( Mageo::Vector3DInternal[-1.2, -5.6, -3.4], t.atoms[1].position)
-    assert_equal( nil                        , t.atoms[1].name )
+    assert_equal( nil                       , t.atoms[1].name )
   end
 
   def test_exchange_axes

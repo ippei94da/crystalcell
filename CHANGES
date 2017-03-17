@@ -4,6 +4,7 @@
 
 * Add CrystalCell::Povray::Cell.bond
 * Add CrystalCell::atoms_of_element
+* Add name in CrystalCell::Cell.atoms_in_supercell
 
 == Version 0.1.0 [2016-07-12] released
 
