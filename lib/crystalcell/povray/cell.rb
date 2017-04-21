@@ -26,11 +26,12 @@ class CrystalCell::Povray::Cell < CrystalCell::Cell
 
   # 原子を描画するための pov 形式文字列を返す。
   # 周期境界近傍の原子が tolerance 未満ならば、反対側のセル境界にも描画する。
-  def atoms_to_povs(tolerance = 0.0)
+  def atoms_to_povs(tolerance: 0.0, transmit: nil)
     results = []
     atoms.each do |atom|
       periodic_translations(atom.position, tolerance).each do |translation|
-        results << atom_to_pov(atom.translate(translation))
+        results << atom_to_pov(atom: atom.translate(translation), transmit: transmit)
+        #results << atom_to_pov(atom.translate(translation))
       end
     end
     results
@@ -150,11 +151,11 @@ class CrystalCell::Povray::Cell < CrystalCell::Cell
 
   private
 
-
-  def atom_to_pov(atom)
+  def atom_to_pov(atom:, transmit: nil)
+  #def atom_to_pov(atom)
     color  = CrystalCell::Povray::Element.color( atom.element)
     radius = CrystalCell::Povray::Element.draw_radius(atom.element) * RADIUS_RATIO
-    Mageo::Sphere.new(atom.position.to_v3d(axes), radius).to_pov(color) +
+    Mageo::Sphere.new(atom.position.to_v3d(axes), radius).to_pov(color: color, transmit: transmit) +
     " // #{atom.element}" + "\n"
   end
 

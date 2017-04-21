@@ -12,7 +12,11 @@ class TC_Povray_Sphere < Test::Unit::TestCase
   def test_to_pov
     assert_equal( 
       "object { sphere{< 1.0000,  2.0000,  3.0000>,  2.0000} pigment {color rgb <0.30, 0.60, 0.90>} }",
-      @s00.to_pov([0.3, 0.6, 0.9]) )
+      @s00.to_pov(color: [0.3, 0.6, 0.9]) )
+
+    assert_equal( 
+      "object { sphere{< 1.0000,  2.0000,  3.0000>,  2.0000} pigment {color rgbt <0.30, 0.60, 0.90, 0.50>} }",
+      @s00.to_pov(color: [0.3, 0.6, 0.9], transmit: 0.5) )
   end
 end
 
@@ -84,11 +88,19 @@ class TC_Povray_Cell < Test::Unit::TestCase
       "object { sphere{< 2.0000,  2.0000,  2.0000>,  0.1770} pigment {color rgb <0.53, 0.88, 0.45>} } // Li\n",
       "object { sphere{< 0.4000,  0.6000,  0.8000>,  0.4200} pigment {color rgb <1.00, 0.01, 0.00>} } // O\n",
     ]
-    t = @c00.atoms_to_povs(0.01)
+    t = @c00.atoms_to_povs(tolerance: 0.01)
     corrects.each_with_index do |correct, index|
       assert_equal(correct, t[index], "line #{index.to_s}")
     end
     assert_equal(corrects.size, t.size)
+
+    # with transmit
+    results = @c00.atoms_to_povs(transmit: 0.5)
+    corrects = [ "object { sphere{< 0.0000,  0.0000,  0.0000>,  0.1770} pigment {color rgbt <0.53, 0.88, 0.45, 0.50>} } // Li\n",
+        "object { sphere{< 0.4000,  0.6000,  0.8000>,  0.4200} pigment {color rgbt <1.00, 0.01, 0.00, 0.50>} } // O\n"
+      ]
+    assert_equal(corrects, results)
+
   end
 
   def test_bond
@@ -192,7 +204,12 @@ class TC_Povray_Cell < Test::Unit::TestCase
   def test_atom_to_pov
     assert_equal(
       "object { sphere{< 0.2000,  0.4000,  0.6000>,  0.1770} pigment {color rgb <0.53, 0.88, 0.45>} } // Li\n",
-      @c00.atom_to_pov( CrystalCell::Atom.new("Li", [0.1, 0.2, 0.3]))
+      @c00.atom_to_pov(atom: CrystalCell::Atom.new("Li", [0.1, 0.2, 0.3]))
+    )
+
+    assert_equal(
+      "object { sphere{< 0.2000,  0.4000,  0.6000>,  0.1770} pigment {color rgbt <0.53, 0.88, 0.45, 0.50>} } // Li\n",
+      @c00.atom_to_pov(atom: CrystalCell::Atom.new("Li", [0.1, 0.2, 0.3]), transmit: 0.5)
     )
   end
 

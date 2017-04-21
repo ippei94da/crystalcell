@@ -6,6 +6,11 @@
 * Add CrystalCell::atoms_of_element
 * Add name in CrystalCell::Cell.atoms_in_supercell
 
+TODO
+
+povray 以下で transmit
+  vasputils とかで example, command せつめい
+
 == Version 0.1.0 [2016-07-12] released
 
 * Add Cell.to_povcell
